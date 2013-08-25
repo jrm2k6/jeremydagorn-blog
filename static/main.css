@@ -1,0 +1,45 @@
+body {
+    background-color: #222;
+    background: #222 url(/img/background.png) top left repeat;
+    color: #fff
+}
+
+.name {
+    display: inline-block;
+}
+
+.motto {
+    display: inline-block;
+}
+
+.icon {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    background: url(/img/me.jpg) no-repeat;
+}
+
+.banner {
+    width: 35%;
+    margin: 0 auto;
+}
+
+.menu {
+    margin: 0 auto;
+    border-radius: 7px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu ul {
+    display: inline-block;
+}
+
+.menu li {
+    display: inline;
+}
