@@ -1,25 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
 <title> Jeremy Dagorn - Software engineer and story teller </title>
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-<div class=header>
-    <div class=banner>
-    <div class=motto>
-            <h4> Learn everywhere, everything, all the time </h4>
+<header class="subhead">
+    <div class="container">
+        <div class="first_line">
+            <div class="icon"></div>
+            <h1 class="name">Jeremy Dagorn</h1>
         </div>
-        <div class=icon></div>
-        <div class=name>
-            <h2>Jeremy Dagorn<h2>
-        </div>
-    </div>
-        <div class=menu>
-            <ul class=items>
-                <li><a href="/about">ABOUT</a></li>
+        <p class="lead">
+            "Learn everywhere, everything, all the time"
+    </div> 
+</header>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="/about">ABOUT</a></li>
                 <li><a href="/projects">PROJECTS</a></li>
                 <li><a href="/blog">BLOG</a></li>
             </ul>
         </div>
-    <div>
+    </div>
 </div>
-   {% block body %} {% endblock %}
+{% block body %} {% endblock %}
 
