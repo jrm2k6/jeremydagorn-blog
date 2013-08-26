@@ -1,13 +1,16 @@
 body {
     background-color: #222;
     background: #222 url(img/background.png) top left repeat;
-    color: #fff
+    color: #fff;
+    font-size: 16px;
 }
 
+.love {
+    color: #ffa5d2;
+}
 .name {
     display: inline-block;
 }
-
 
 .icon {
     margin-top: 10px;
