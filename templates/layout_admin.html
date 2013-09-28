@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<title> Jeremy Dagorn - Software engineer and story teller </title>
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<header class="subhead">
+    <div class="container">
+        <div class="first_line">
+            <div class="icon"></div>
+            <h1 class="name">Jeremy Dagorn</h1>
+        </div>
+        <p class="lead">
+            "Learn everywhere, everything, all the time"
+    </div> 
+</header>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav nav-pills">
+            	<li><a href="/adduser">USERS</a></li>
+                <li><a href="/projects">PROJECTS</a></li>
+                <li><a href="/posts">POSTS</a></li>
+                <li><a href="/technologies">TECHNOLOGIES</a></li>
+                <li><a href="/categories">CATEGORIES</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<h2>Admin interface</h2>
+{% block body %} {% endblock %}
