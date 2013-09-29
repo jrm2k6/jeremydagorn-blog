@@ -1,6 +1,6 @@
 {% extends "layout_admin.html" %}
 {% block body %}
-<h1>Add users</h1>
+<h1>Add {{ target_model }}</h1>
 {% from "_formhelpers.html" import render_field %}
 <form method=post action="/adduser">
   <dl>
@@ -8,10 +8,12 @@
     {{ render_field(form.email) }}
     {{ render_field(form.password) }}
   </dl>
-  <p><input type=submit class="btn-large btn-success" value=Add user>
+  <p><input type=submit class="btn-large btn-success" value="Add {{ target_model }}">
 </form>
 
-<h1>Existing users</h2>
+<h2> 
+      Existing {{ target_model.lower() }}s
+</h2>
 	<table class="mtable table table-condensed">
 	  <thead><tr>
       	<th>Id</th>
@@ -20,12 +22,13 @@
       </tr></thead>
     </tr>
    	{% for user in users %}
-   	<tr>
+   	<tr id="{{target_model.lower()}}_{{user.id }}">
    	<td> {{ user.id }} </td>
    	<td> {{ user.username }} </td>
    	<td> {{ user.email }} </td>
-   	<td><input type='button' class="btn btn-primary" value='Edit'></td>
-   	<td><input type='button' class="btn btn-danger" value='Delete'></td>
+    <td> {{ user.password }} </td>
+   	<td><input type='button' class="btn btn-primary edit-btn" value='Edit'></td>
+   	<td><input type='button' class="btn btn-danger delete-btn" value='Delete'></td>
    	</tr>
    	{% endfor %} 
 	</table>

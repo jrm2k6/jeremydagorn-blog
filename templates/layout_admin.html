@@ -3,6 +3,10 @@
 <title> Jeremy Dagorn - Software engineer and story teller </title>
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<script type=text/javascript src="{{
+  url_for('static', filename='js/jquery-v2.0.3.js') }}"></script>
+<script type=text/javascript src="{{
+  url_for('static', filename='js/admin.js') }}"></script>
 <header class="subhead">
     <div class="container">
         <div class="first_line">
@@ -27,4 +31,13 @@
     </div>
 </div>
 <h2>Admin interface</h2>
-{% block body %} {% endblock %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success"> {{ message }} </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% block body %}{% endblock %}
+
