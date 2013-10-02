@@ -24,8 +24,8 @@
    	{% for user in users %}
    	<tr id="{{target_model.lower()}}_{{user.id }}">
    	<td> {{ user.id }} </td>
-   	<td> {{ user.username }} </td>
-   	<td> {{ user.email }} </td>
+   	<td id="username" class="editable"> {{ user.username }} </td>
+   	<td id="email" class="editable"> {{ user.email }} </td>
     <td> {{ user.password }} </td>
    	<td><input type='button' class="btn btn-primary edit-btn" value='Edit'></td>
    	<td><input type='button' class="btn btn-danger delete-btn" value='Delete'></td>

@@ -38,7 +38,7 @@ def add_user():
                     form.password.data)
         db.session.add(user)
         db.session.commit()
-        # flash('User added')
+        flash('User added')
     return render_template('adduser.html', form=form, users=User.query.all(), 
         target_model="User")
 
@@ -47,9 +47,23 @@ def add_user():
 def delete_resource(model_name, _id):
     if model_name == 'user':
         user = User.query.filter_by(id=_id).first()
-        print user.email
         if user is not None:
             db.session.delete(user)
+            db.session.commit()
+        js = json.dumps({})
+        resp = Response(js, status=200, mimetype='application/json')
+    else:
+        resp = Response({}, status=500, mimetype='application/json')
+    return resp
+
+
+@app.route('/update/<model_name>/<int:_id>', methods=['POST'])
+def update_resource(model_name, _id):
+    if model_name == 'user':
+        user = User.query.filter_by(id=_id).first()
+        if user is not None:
+            user.email = request.json['_email']
+            user.username = request.json['_username']
             db.session.commit()
         js = json.dumps({})
         resp = Response(js, status=200, mimetype='application/json')
