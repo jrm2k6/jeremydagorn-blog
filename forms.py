@@ -1,6 +1,6 @@
 from wtforms import Form, BooleanField, TextField, PasswordField, \
 			validators, SelectField
-from custom_form_widgets import StatusField
+from wtfcustomwidgets import StatusField
 
 class AddUserForm(Form):
 	username = TextField('Username', [validators.Length(min=4, max=50)])
