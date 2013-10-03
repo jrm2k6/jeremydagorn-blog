@@ -31,7 +31,13 @@ class Project(db.Model):
 	description = db.Column(db.String(1000))
 	technologies = db.Column(db.String(200))
 	status = db.Column(db.Integer, db.ForeignKey('status.id'))
-
+	
+	def __init__(self, title, description, technologies, status_id):
+		self.title = title
+		self.description = description
+		self.technologies = technologies
+		self.status = status_id
+	
 	def __repr__(self):
 		return '<Project %r  - %r >' % self.title, self.technologies 
 
@@ -39,6 +45,9 @@ class Project(db.Model):
 class Technology(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(400), unique=True)
+
+	def __init__(self, name):
+		self.name = name
 
 	def __repr__(self):
 		return '<Technology %r  - %r >' % self.name 
@@ -52,11 +61,19 @@ class Post(db.Model):
 	category = db.Column(db.Integer, db.ForeignKey('category.id'))
 	author = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+	def __init__(self, title, content, date):
+		self.title = title
+		self.content = content
+		self.date = date
+
 
 class Category(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(400), unique=True)
 	posts = db.relationship('Post', backref = 'post_category', lazy = 'dynamic')
+
+	def __init__(self, name):
+		self.name = name
 
 	def __repr__(self):
 		return '<Category %r  - %r >' % self.name 
@@ -67,6 +84,9 @@ class Status(db.Model):
 	status = db.Column(db.String(400), unique=True)
 	projects = db.relationship('Project', backref = 'project_status', lazy = 'dynamic')
 
+	def __init__(self, status):
+		self.status = status
+
 	def __repr__(self):
-		return '<Status %r  - %r >' % self.status 
+		return '<Status %r >' % self.status 
 

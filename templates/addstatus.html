@@ -2,11 +2,9 @@
 {% block body %}
 <h1>Add {{ target_model }}</h1>
 {% from "_formhelpers.html" import render_field %}
-<form method=post action="/adduser">
+<form method=post action="/addstatus">
   <dl>
-    {{ render_field(form.username) }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.password) }}
+    {{ render_field(form.status) }}
   </dl>
   <p><input type=submit class="btn-large btn-success" value="Add {{ target_model }}">
 </form>
@@ -17,16 +15,14 @@
 	<table class="mtable table table-condensed">
 	  <thead><tr>
        {% for field in fields %}
-      	<th> {{ field.capitalize() }}</th>
+      	<th> {{ field.capitalize()  }}</th>
       	{% endfor %}
       </tr></thead>
     </tr>
-   	{% for user in users %}
-   	<tr id="{{target_model.lower()}}_{{user.id }}">
-   	<td> {{ user.id }} </td>
-   	<td id="username" class="editable"> {{ user.username }} </td>
-   	<td id="email" class="editable"> {{ user.email }} </td>
-    <td> {{ user.password }} </td>
+   	{% for status in statuses %}
+   	<tr id="{{target_model.lower()}}_{{status.id }}">
+   	<td> {{ status.id }} </td>
+   	<td id="username" class="editable"> {{ status.status }} </td>
    	<td><input type='button' class="btn btn-primary edit-btn" value='Edit'></td>
    	<td><input type='button' class="btn btn-danger delete-btn" value='Delete'></td>
    	</tr>

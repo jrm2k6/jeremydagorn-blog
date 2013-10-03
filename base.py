@@ -2,8 +2,8 @@ import sqlite3
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
-from models import db, User
-from forms import AddUserForm
+from models import db, User, Project, Technology, Status
+from forms import AddUserForm, AddProjectForm, AddStatusForm
 from flask import jsonify
 from flask import json
 
@@ -40,7 +40,30 @@ def add_user():
         db.session.commit()
         flash('User added')
     return render_template('adduser.html', form=form, users=User.query.all(), 
-        target_model="User")
+        target_model="User", fields=User.__mapper__.c.keys())
+
+@app.route('/addproject', methods=['GET', 'POST'])
+def add_project():
+    form = AddProjectForm(request.form)
+    if request.method == 'POST' and form.validate():
+        project = Project(form.title.data, form.description.data,
+                    form.technologies.data, form.status.data)
+        db.session.add(project)
+        db.session.commit()
+        flash('Project added')
+    return render_template('addproject.html', form=form, projects=Project.query.all(), 
+        target_model="Project", fields=Project.__mapper__.c.keys())
+
+@app.route('/addstatus', methods=['GET', 'POST'])
+def add_status():
+    form = AddStatusForm(request.form)
+    status = Status(form.status.data)
+    if request.method == 'POST' and form.validate():
+        db.session.add(status)
+        db.session.commit()
+        flash('Status added')
+    return render_template('addstatus.html', form=form, statuses=Status.query.all(), 
+        target_model="Status", fields=Status.__mapper__.c.keys())
 
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
