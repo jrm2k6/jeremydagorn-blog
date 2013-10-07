@@ -1,5 +1,7 @@
 
 $(document).ready(function() {
+	var test;
+
 	$(".delete-btn" ).click(function() {
 		var id = $(this).closest('tr')[0].id;
 		id = id.replace('_', '/');
@@ -9,6 +11,7 @@ $(document).ready(function() {
 	});
 
 	$(".edit-btn").click(function() {
+		var listFields = $(this).closest('table').data('list-fields');
 		var editables = $(this).closest('tr').find('td.editable').each(function() {
 			var text = $(this).text();
 			var currentId = $(this).attr("id");
