@@ -7,8 +7,6 @@ from forms import AddUserForm, AddProjectForm, AddStatusForm
 from flask import jsonify
 from flask import json
 
-
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_object('config')
@@ -39,8 +37,8 @@ def add_user():
         db.session.add(user)
         db.session.commit()
         flash('User added')
-    return render_template('adduser.html', form=form, users=User.query.all(), 
-        target_model="User", fields=User.__mapper__.c.keys())
+    return render_template('_add.html', form=form, rows=User.query.all(), 
+        target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
 
 @app.route('/addproject', methods=['GET', 'POST'])
 def add_project():
@@ -51,19 +49,19 @@ def add_project():
         db.session.add(project)
         db.session.commit()
         flash('Project added')
-    return render_template('addproject.html', form=form, projects=Project.query.all(), 
-        target_model="Project", fields=Project.__mapper__.c.keys())
+    return render_template('_add.html', form=form, rows=Project.query.all(), 
+        target_model="Project", fields=Project.__mapper__.c.keys(), action="addproject")
 
 @app.route('/addstatus', methods=['GET', 'POST'])
 def add_status():
     form = AddStatusForm(request.form)
-    status = Status(form.status.data)
     if request.method == 'POST' and form.validate():
+        status = Status(form.status.data)
         db.session.add(status)
         db.session.commit()
         flash('Status added')
-    return render_template('addstatus.html', form=form, statuses=Status.query.all(), 
-        target_model="Status", fields=Status.__mapper__.c.keys())
+    return render_template('_add.html', form=form, rows=Status.query.all(), 
+        target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
 
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])

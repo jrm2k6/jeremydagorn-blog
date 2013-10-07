@@ -1,9 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
+from sqlalchemy.orm import class_mapper, ColumnProperty
 
 db = SQLAlchemy()
 
 class User(db.Model):
+
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(80), unique=True)
 	email = db.Column(db.String(120), unique=True)
@@ -24,6 +26,11 @@ class User(db.Model):
 	def __repr__(self):
 		return '<User %r>' % self.username
 
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
+
 
 class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +48,11 @@ class Project(db.Model):
 	def __repr__(self):
 		return '<Project %r  - %r >' % self.title, self.technologies 
 
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
+
 
 class Technology(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +63,11 @@ class Technology(db.Model):
 
 	def __repr__(self):
 		return '<Technology %r  - %r >' % self.name 
+
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
 
 
 class Post(db.Model):
@@ -66,6 +83,11 @@ class Post(db.Model):
 		self.content = content
 		self.date = date
 
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
+
 
 class Category(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -78,8 +100,16 @@ class Category(db.Model):
 	def __repr__(self):
 		return '<Category %r  - %r >' % self.name 
 
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
+
 
 class Status(db.Model):
+	column_list = ('id', 'status')
+	editable_column = ('status')
+	
 	id = db.Column(db.Integer, primary_key=True)
 	status = db.Column(db.String(400), unique=True)
 	projects = db.relationship('Project', backref = 'project_status', lazy = 'dynamic')
@@ -89,4 +119,9 @@ class Status(db.Model):
 
 	def __repr__(self):
 		return '<Status %r >' % self.status 
+
+	def columns(self):
+	    """Return the actual columns of a SQLAlchemy-mapped object"""
+	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
+	            if isinstance(prop, ColumnProperty)]
 
