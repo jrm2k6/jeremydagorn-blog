@@ -2,10 +2,11 @@ import sqlite3
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
-from models import db, User, Project, Technology, Status
-from forms import AddUserForm, AddProjectForm, AddStatusForm
-from flask import jsonify
-from flask import json
+from models import db, User, Project, Technology, Status, Category, Post
+from forms import AddUserForm, AddProjectForm, AddStatusForm, \
+     AddCategoryForm, AddTechnologyForm, AddPostForm
+from flask import jsonify, json
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -62,6 +63,41 @@ def add_status():
         flash('Status added')
     return render_template('_add.html', form=form, rows=Status.query.all(), 
         target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
+
+@app.route('/addtechnology', methods=['GET', 'POST'])
+def add_technology():
+    form = AddTechnologyForm(request.form)
+    if request.method == 'POST' and form.validate():
+        technology = Technology(form.name.data)
+        db.session.add(technology)
+        db.session.commit()
+        flash('Technology added')
+    return render_template('_add.html', form=form, rows=Technology.query.all(), 
+        target_model="Technology", fields=Technology.__mapper__.c.keys(), action="addtechnology")
+
+
+@app.route('/addcategory', methods=['GET', 'POST'])
+def add_category():
+    form = AddCategoryForm(request.form)
+    if request.method == 'POST' and form.validate():
+        category = Category(form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        flash('Category added')
+    return render_template('_add.html', form=form, rows=Category.query.all(), 
+        target_model="Category", fields=Category.__mapper__.c.keys(), action="addcategory")
+
+
+@app.route('/addpost', methods=['GET', 'POST'])
+def add_post():
+    form = AddPostForm(request.form)
+    if request.method == 'POST' and form.validate():
+        post = Post(form.title.data, form.content.data, datetime.now(), form.category.data, form.author.data)
+        db.session.add(post)
+        db.session.commit()
+        flash('Post added')
+    return render_template('_add.html', form=form, rows=Post.query.all(), 
+        target_model="Post", fields=Post.__mapper__.c.keys(), action="addpost")
 
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])

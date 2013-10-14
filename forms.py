@@ -1,6 +1,6 @@
 from wtforms import Form, BooleanField, TextField, PasswordField, \
-			validators, SelectField
-from wtfcustomwidgets import StatusField
+			validators, SelectField, DateField
+from wtfcustomwidgets import StatusField, CategoryField, AuthorField
 
 class AddUserForm(Form):
 	username = TextField('Username', [validators.Length(min=4, max=50)])
@@ -15,5 +15,20 @@ class AddProjectForm(Form):
 	status = StatusField('Status', coerce=int)
 
 
+class AddPostForm(Form):
+	title = TextField('Title', [validators.Length(min=4, max=200)])
+	content = TextField('Content', [validators.Length(min=6, max=1000)])
+	category = CategoryField('Category', coerce=int)
+	author = AuthorField('Author', coerce=int)
+
+
 class AddStatusForm(Form):
 	status = TextField('Status', [validators.Length(min=4, max=200)])
+
+
+class AddTechnologyForm(Form):
+	name = TextField('Name', [validators.Length(min=4, max=200)])
+
+
+class AddCategoryForm(Form):
+	name = TextField('Name', [validators.Length(min=4, max=200)])

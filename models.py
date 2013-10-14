@@ -78,10 +78,12 @@ class Post(db.Model):
 	category = db.Column(db.Integer, db.ForeignKey('category.id'))
 	author = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	def __init__(self, title, content, date):
+	def __init__(self, title, content, date, category, author):
 		self.title = title
 		self.content = content
 		self.date = date
+		self.category = category
+		self.author = author
 
 	def columns(self):
 	    """Return the actual columns of a SQLAlchemy-mapped object"""
