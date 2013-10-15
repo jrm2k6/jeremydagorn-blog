@@ -14,7 +14,7 @@
 <h2> 
       Existing {{ target_model.lower() }}s
 </h2>
-  <table class="mtable table table-condensed" data-list-fields='{{ fields }}'>
+  <table class="mtable table table-condensed" data-list-fields='{{ fields }}' data-model-name='{{ target_model.lower() }}'>
     <thead><tr>
        {% for field in fields %}
         <th> {{ field.capitalize() }}</th>
@@ -24,7 +24,7 @@
     {% for o in rows %}
     <tr>
       {% for col, value in o.columns() %}
-        <td id="{{col}}" class="editable"> {{ value }} </td>
+        <td id="{{col}}" {% if not col == "id" %} class="editable" {% endif %}> {{ value }} </td>
       {% endfor %}
         <td><input type='button' class="btn btn-primary edit-btn" value='Edit'></td>
         <td><input type='button' class="btn btn-danger delete-btn" value='Delete'></td>

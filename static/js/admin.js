@@ -1,37 +1,46 @@
+var REGEX_LIST_FIELDS = /[\'\[\]\' ']/g;
 
 $(document).ready(function() {
-	var test;
 
 	$(".delete-btn" ).click(function() {
-		var id = $(this).closest('tr')[0].id;
-		id = id.replace('_', '/');
-		$.post('/delete/' + id, function(data) {
+		var modelName = $(this).closest('table').data('model-name');
+		$.post('/delete/' + modelName, function(data) {
 			console.log(data);
 		});
 	});
 
 	$(".edit-btn").click(function() {
 		var listFields = $(this).closest('table').data('list-fields');
+		listFields = listFields.replace(REGEX_LIST_FIELDS, "").split(',')
+		
+		var modelName = $(this).closest('table').data('model-name');
 		var editables = $(this).closest('tr').find('td.editable').each(function() {
 			var text = $(this).text();
 			var currentId = $(this).attr("id");
-			$(this).replaceWith('<td><input id="'+currentId+'" type="text" value="' + text +'"></input></td>');
+			$(this).replaceWith('<td><input id="'+ currentId +'" type="text" value="' + text +'"></input></td>');
 		});
 
 		$(this).addClass("btn-success").val("Update").click(function() {
-			var id = $(this).closest('tr')[0].id;
-			id = id.replace('_', '/');
+			var newValuesForModelFields = {}
+			var idToUpdate;
+			for (var i = 0; i < listFields.length; i++) {
+				var key = listFields[i];
+				var inputStr = 'input#' + key;
+				if (key === "id") {
+					// get id of object
+				} else {
+					var inputValue = $(this).closest('tr').find(inputStr).val();
+					newValuesForModelFields['_'+key] = inputValue;
+				}
+			};
 
-			var _username = $(this).closest('tr').find('input#username').val();
-			var _email = $(this).closest('tr').find('input#email').val();
-
-			$.ajax({
-				type: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify({'_username': _username, '_email': _email}),
-				dataType: 'json',
-				url: '/update/' + id
-			});
+			// $.ajax({
+			// 	type: 'POST',
+			// 	contentType: 'application/json',
+			// 	data: JSON.stringify(newValuesForModelFields),
+			// 	dataType: 'json',
+			// 	url: '/update/' + modelName
+			// });
 
 			$(this).removeClass("btn-success").val("Edit");
 

@@ -121,11 +121,39 @@ def update_resource(model_name, _id):
         if user is not None:
             user.email = request.json['_email']
             user.username = request.json['_username']
-            db.session.commit()
-        js = json.dumps({})
-        resp = Response(js, status=200, mimetype='application/json')
+    elif model_name == 'status':
+        status = Status.query.filter_by(id=_id).first()
+        if status is not None:
+            status.status = request.json['_status']
+    elif model_name == 'post':
+        post = Post.query.filter_by(id=_id).first()
+        if post is not None:
+            post.title = request.json['_title']
+            post.content = request.json['_content']
+            post.date = request.json['_date']
+            post.category = request.json['_category']
+            post.author = request.json['_author']
+    elif model_name == 'technology':
+        technology = Technology.query.filter_by(id=_id).first()
+        if technology is not None:
+            technology.name = request.json['_name']
+    elif model_name == 'category':
+        category = Category.query.filter_by(id=_id).first()
+        if category is not None:
+            category.name = request.json['_name']
+    elif model_name == 'project':
+        project = Project.query.filter_by(id=_id).first()
+        if project is not None:
+            project.title = request.json['_title']
+            project.description = request.json['_description']
+            project.technologies = request.json['_technologies']
+            project.status = request.json['_status']
     else:
         resp = Response({}, status=500, mimetype='application/json')
+    
+    db.session.commit()
+    js = json.dumps({})
+    resp = Response(js, status=200, mimetype='application/json')
     return resp
 
 if __name__ == '__main__':
