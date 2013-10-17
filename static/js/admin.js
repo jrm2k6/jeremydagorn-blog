@@ -1,15 +1,22 @@
 var REGEX_LIST_FIELDS = /[\'\[\]\' ']/g;
 
+var getResourcePath = function(that) {
+	var modelName = $(that).closest('table').data('model-name');
+	var selectedId = $(that).closest('tr').find('td#id')[0].innerText;
+
+	return modelName + '/' + selectedId;
+}
+
 $(document).ready(function() {
 
 	$(".delete-btn" ).click(function() {
-		var modelName = $(this).closest('table').data('model-name');
-		$.post('/delete/' + modelName, function(data) {
+		$.post('/delete/' + getResourcePath(this), function(data) {
 			console.log(data);
 		});
 	});
 
 	$(".edit-btn").click(function() {
+		getResourcePath(this);
 		var listFields = $(this).closest('table').data('list-fields');
 		listFields = listFields.replace(REGEX_LIST_FIELDS, "").split(',')
 		
@@ -27,20 +34,23 @@ $(document).ready(function() {
 				var key = listFields[i];
 				var inputStr = 'input#' + key;
 				if (key === "id") {
-					// get id of object
+					var cellId = $(this).closest('tr').find('td#id')[0];
+					idToUpdate = cellId.innerText;
 				} else {
 					var inputValue = $(this).closest('tr').find(inputStr).val();
 					newValuesForModelFields['_'+key] = inputValue;
 				}
 			};
+			
+			modelName = modelName + '/' + idToUpdate;
 
-			// $.ajax({
-			// 	type: 'POST',
-			// 	contentType: 'application/json',
-			// 	data: JSON.stringify(newValuesForModelFields),
-			// 	dataType: 'json',
-			// 	url: '/update/' + modelName
-			// });
+			$.ajax({
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(newValuesForModelFields),
+				dataType: 'json',
+				url: '/update/' + modelName
+			});
 
 			$(this).removeClass("btn-success").val("Edit");
 
