@@ -13,6 +13,14 @@ app.config.from_object(__name__)
 app.config.from_object('config')
 app.secret_key = 'this is my secret key'
 
+MODELS_NAMES = {'user' : User,
+     'project' : Project,
+     'status' : Status,
+     'technology' : Technology,
+     'post' : Post,
+     'category' : Category
+    }
+
 with app.app_context():
 	db.init_app(app)
 	db.create_all()
@@ -102,15 +110,15 @@ def add_post():
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
 def delete_resource(model_name, _id):
-    if model_name == 'user':
-        user = User.query.filter_by(id=_id).first()
-        if user is not None:
-            db.session.delete(user)
-            db.session.commit()
+    row_count = MODELS_NAMES[model_name].query.filter_by(id=_id).delete()
+
+    if row_count >= 1:
+        db.session.commit()
         js = json.dumps({})
         resp = Response(js, status=200, mimetype='application/json')
     else:
-        resp = Response({}, status=500, mimetype='application/json')
+         resp = Response({}, status=410, mimetype='application/json')
+    
     return resp
 
 
