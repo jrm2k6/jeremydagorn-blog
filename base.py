@@ -8,6 +8,8 @@ from forms import AddUserForm, AddProjectForm, AddStatusForm, \
 from flask import jsonify, json
 from datetime import datetime
 
+from authentication import requires_auth
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_object('config')
@@ -34,10 +36,12 @@ def show_about():
     return render_template('about.html')
 
 @app.route('/admin')
+@requires_auth
 def show_admin():
 	return render_template('admin.html')
 
 @app.route('/adduser', methods=['GET', 'POST'])
+@requires_auth
 def add_user():
     form = AddUserForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -50,6 +54,7 @@ def add_user():
         target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
 
 @app.route('/addproject', methods=['GET', 'POST'])
+@requires_auth
 def add_project():
     form = AddProjectForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -62,6 +67,7 @@ def add_project():
         target_model="Project", fields=Project.__mapper__.c.keys(), action="addproject")
 
 @app.route('/addstatus', methods=['GET', 'POST'])
+@requires_auth
 def add_status():
     form = AddStatusForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -73,6 +79,7 @@ def add_status():
         target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
 
 @app.route('/addtechnology', methods=['GET', 'POST'])
+@requires_auth
 def add_technology():
     form = AddTechnologyForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -85,6 +92,7 @@ def add_technology():
 
 
 @app.route('/addcategory', methods=['GET', 'POST'])
+@requires_auth
 def add_category():
     form = AddCategoryForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -97,6 +105,7 @@ def add_category():
 
 
 @app.route('/addpost', methods=['GET', 'POST'])
+@requires_auth
 def add_post():
     form = AddPostForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -109,6 +118,7 @@ def add_post():
 
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
+@requires_auth
 def delete_resource(model_name, _id):
     row_count = MODELS_NAMES[model_name].query.filter_by(id=_id).delete()
 
@@ -123,6 +133,7 @@ def delete_resource(model_name, _id):
 
 
 @app.route('/update/<model_name>/<int:_id>', methods=['POST'])
+@requires_auth
 def update_resource(model_name, _id):
     if model_name == 'user':
         user = User.query.filter_by(id=_id).first()
