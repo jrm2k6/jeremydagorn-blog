@@ -6,11 +6,13 @@ from models import db, User, Project, Technology, Status, Category, Post
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
      AddCategoryForm, AddTechnologyForm, AddPostForm
 from flask import jsonify, json
+from flaskext.markdown import Markdown
 from datetime import datetime
 
 from authentication import requires_auth
 
 app = Flask(__name__)
+Markdown(app)
 app.config.from_object(__name__)
 app.config.from_object('config')
 app.secret_key = 'this is my secret key'
@@ -29,7 +31,10 @@ with app.app_context():
 
 @app.route('/')
 def show_home():
-    return render_template('about.html')
+    return show_home_page()
+
+def show_home_page():
+    return render_template('home.html', posts=Post.query.all())
 
 @app.route('/about')
 def show_about():
@@ -39,6 +44,10 @@ def show_about():
 @requires_auth
 def show_admin():
 	return render_template('admin.html')
+
+@app.route('/blog')
+def show_blog():
+    return show_home_page()
 
 @app.route('/adduser', methods=['GET', 'POST'])
 @requires_auth
@@ -149,7 +158,7 @@ def update_resource(model_name, _id):
         if post is not None:
             post.title = request.json['_title']
             post.content = request.json['_content']
-            post.date = request.json['_date']
+            post.date = datetime.now()
             post.category = request.json['_category']
             post.author = request.json['_author']
     elif model_name == 'technology':
