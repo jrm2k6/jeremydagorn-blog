@@ -17,7 +17,7 @@ class AddProjectForm(Form):
 
 class AddPostForm(Form):
 	title = TextField('Title', [validators.Length(min=4, max=200)])
-	content = TextAreaField('Content')
+	content = TextField('Content')
 	category = CategoryField('Category', coerce=int)
 	author = AuthorField('Author', coerce=int)
 

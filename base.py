@@ -37,7 +37,6 @@ class PostWithContent(object):
         self.content = content
 
 
-
 @app.route('/')
 def show_home():
     to_return = []
