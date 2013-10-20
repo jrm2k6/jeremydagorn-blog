@@ -1,13 +1,15 @@
 import sqlite3
+import markdown
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
 from models import db, User, Project, Technology, Status, Category, Post
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
      AddCategoryForm, AddTechnologyForm, AddPostForm
-from flask import jsonify, json
+from flask import jsonify, json, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
+from post_loader import load_blogpost
 
 from authentication import requires_auth
 
@@ -29,12 +31,25 @@ with app.app_context():
 	db.init_app(app)
 	db.create_all()
 
+class PostWithContent(object):
+    def __init__(self, post, content):
+        self.post = post
+        self.content = content
+
+
+
 @app.route('/')
 def show_home():
-    return show_home_page()
+    to_return = []
+    posts = Post.query.limit(10).all()
+    for p in posts:
+        content = load_blogpost('posts/' + p.content)
+        content = Markup(markdown.markdown(content))
+        to_return.append(PostWithContent(p, content))
+    return show_home_page(to_return)
 
-def show_home_page():
-    return render_template('home.html', posts=Post.query.all())
+def show_home_page(list_posts):
+    return render_template('home.html', posts=list_posts)
 
 @app.route('/about')
 def show_about():
@@ -47,7 +62,7 @@ def show_admin():
 
 @app.route('/blog')
 def show_blog():
-    return show_home_page()
+    return show_home()
 
 @app.route('/adduser', methods=['GET', 'POST'])
 @requires_auth
@@ -118,6 +133,7 @@ def add_category():
 def add_post():
     form = AddPostForm(request.form)
     if request.method == 'POST' and form.validate():
+        print form.content.data
         post = Post(form.title.data, form.content.data, datetime.now(), form.category.data, form.author.data)
         db.session.add(post)
         db.session.commit()

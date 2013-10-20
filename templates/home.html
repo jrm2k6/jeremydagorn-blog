@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-
-{% for post in posts %}
-	<div id="post_title"> {{ post.title }} </div>
-	<div id="post_content">{{ post.content | markdown }} </div>
-	<div id="post_infos"> {{ post.post_author.username}} - {{ post.date }} </div>
-{% endfor %}
+	{% for post in posts %}
+		{{ post.content }}
+	{% endfor %}
 {% endblock %}
