@@ -72,7 +72,7 @@ class Technology(db.Model):
 
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	title = db.Column(db.String(400), unique=True)
+	title = db.Column(db.String(400))
 	content = db.Column(db.String(1000))
 	date = db.Column(db.DateTime)
 	category = db.Column(db.Integer, db.ForeignKey('category.id'))
