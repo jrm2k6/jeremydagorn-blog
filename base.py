@@ -54,6 +54,10 @@ def show_home_page(list_posts):
 def show_about():
     return render_template('about.html')
 
+@app.route('/projects')
+def show_projects():
+    return render_template('projects.html')
+
 @app.route('/admin')
 @requires_auth
 def show_admin():
