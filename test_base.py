@@ -10,7 +10,7 @@ class Tests(TestCase):
     def create_app(self):
         app = base.app
         app.config['TESTING'] = True
-        app.config['DATABASE'] = 'sqlite:////temp/jdblog_test.db'
+        app.config['SQLITE_DATABASE_URI'] = 'sqlite:////temp/jdblog_test.db'
         return app
 
     def setUp(self):

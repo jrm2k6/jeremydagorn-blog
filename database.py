@@ -5,7 +5,7 @@ from contextlib import closing
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-app.config['DATABASE'] = '/tmp/jdblog.db'
+app.config['SQLITE_DATABASE_URI'] = '/tmp/jdblog.db'
 
 def init_db():
     with closing(connect_db()) as db:
@@ -14,7 +14,7 @@ def init_db():
         db.commit()
 
 def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
+    return sqlite3.connect(app.config['SQLITE_DATABASE_URI'])
 
 def get_db():
     db = getattr(g, '_database', None)
