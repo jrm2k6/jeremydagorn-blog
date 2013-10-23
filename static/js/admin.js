@@ -19,8 +19,9 @@ $(document).ready(function() {
 	removeAlerts();
 
 	$(".delete-btn" ).click(function() {
+		var that = $(this);
 		$.post('/delete/' + getResourcePath(this), function(data) {
-			console.log(data);
+			that.parent().parent().remove();
 		});
 	});
 
