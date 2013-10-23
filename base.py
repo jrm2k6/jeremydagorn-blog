@@ -27,9 +27,12 @@ MODELS_NAMES = {'user' : User,
      'category' : Category
     }
 
-with app.app_context():
-	db.init_app(app)
-	db.create_all()
+def create_app(db):
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+
+create_app(db)
 
 class PostWithContent(object):
     def __init__(self, post, content):
