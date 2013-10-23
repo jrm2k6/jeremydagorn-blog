@@ -77,6 +77,7 @@ def add_user():
         db.session.add(user)
         db.session.commit()
         flash('User added')
+        return redirect(url_for('add_user'))
     return render_template('_add.html', form=form, rows=User.query.all(), 
         target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
 
@@ -90,6 +91,7 @@ def add_project():
         db.session.add(project)
         db.session.commit()
         flash('Project added')
+        return redirect(url_for('add_project'))
     return render_template('_add.html', form=form, rows=Project.query.all(), 
         target_model="Project", fields=Project.__mapper__.c.keys(), action="addproject")
 
@@ -102,6 +104,7 @@ def add_status():
         db.session.add(status)
         db.session.commit()
         flash('Status added')
+        return redirect(url_for('add_status'))
     return render_template('_add.html', form=form, rows=Status.query.all(), 
         target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
 
@@ -114,6 +117,7 @@ def add_technology():
         db.session.add(technology)
         db.session.commit()
         flash('Technology added')
+        return redirect(url_for('add_technology'))
     return render_template('_add.html', form=form, rows=Technology.query.all(), 
         target_model="Technology", fields=Technology.__mapper__.c.keys(), action="addtechnology")
 
@@ -127,6 +131,7 @@ def add_category():
         db.session.add(category)
         db.session.commit()
         flash('Category added')
+        return redirect(url_for('add_category'))
     return render_template('_add.html', form=form, rows=Category.query.all(), 
         target_model="Category", fields=Category.__mapper__.c.keys(), action="addcategory")
 
@@ -141,6 +146,7 @@ def add_post():
         db.session.add(post)
         db.session.commit()
         flash('Post added')
+        return redirect(url_for('add_post'))
     return render_template('_add.html', form=form, rows=Post.query.all(), 
         target_model="Post", fields=Post.__mapper__.c.keys(), action="addpost")
 
@@ -155,8 +161,7 @@ def delete_resource(model_name, _id):
         js = json.dumps({})
         resp = Response(js, status=200, mimetype='application/json')
     else:
-         resp = Response({}, status=410, mimetype='application/json')
-    
+        resp = Response({}, status=410, mimetype='application/json')
     return resp
 
 
