@@ -76,7 +76,7 @@ def add_user():
                     form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('User added')
+        flash('User added'. 'info')
         return redirect(url_for('add_user'))
     return render_template('_add.html', form=form, rows=User.query.all(), 
         target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
@@ -90,7 +90,7 @@ def add_project():
                     form.technologies.data, form.status.data)
         db.session.add(project)
         db.session.commit()
-        flash('Project added')
+        flash('Project added', 'info')
         return redirect(url_for('add_project'))
     return render_template('_add.html', form=form, rows=Project.query.all(), 
         target_model="Project", fields=Project.__mapper__.c.keys(), action="addproject")
@@ -103,7 +103,7 @@ def add_status():
         status = Status(form.status.data)
         db.session.add(status)
         db.session.commit()
-        flash('Status added')
+        flash('Status added', 'info')
         return redirect(url_for('add_status'))
     return render_template('_add.html', form=form, rows=Status.query.all(), 
         target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
@@ -116,7 +116,7 @@ def add_technology():
         technology = Technology(form.name.data)
         db.session.add(technology)
         db.session.commit()
-        flash('Technology added')
+        flash('Technology added', 'info')
         return redirect(url_for('add_technology'))
     return render_template('_add.html', form=form, rows=Technology.query.all(), 
         target_model="Technology", fields=Technology.__mapper__.c.keys(), action="addtechnology")
@@ -130,7 +130,7 @@ def add_category():
         category = Category(form.name.data)
         db.session.add(category)
         db.session.commit()
-        flash('Category added')
+        flash('Category added', 'info')
         return redirect(url_for('add_category'))
     return render_template('_add.html', form=form, rows=Category.query.all(), 
         target_model="Category", fields=Category.__mapper__.c.keys(), action="addcategory")
@@ -145,7 +145,7 @@ def add_post():
         post = Post(form.title.data, form.content.data, datetime.now(), form.category.data, form.author.data)
         db.session.add(post)
         db.session.commit()
-        flash('Post added')
+        flash('Post added', 'info')
         return redirect(url_for('add_post'))
     return render_template('_add.html', form=form, rows=Post.query.all(), 
         target_model="Post", fields=Post.__mapper__.c.keys(), action="addpost")
