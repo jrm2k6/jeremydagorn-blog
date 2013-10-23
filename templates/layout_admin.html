@@ -6,6 +6,9 @@
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
 <script type=text/javascript src="{{
   url_for('static', filename='js/jquery-v2.0.3.js') }}"></script>
+<script type="text/javascript">
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+</script>
 <script type=text/javascript src="{{
   url_for('static', filename='js/admin.js') }}"></script>
 <header class="subhead">
@@ -33,13 +36,8 @@
     </div>
 </div>
 <h2>Admin interface</h2>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-success"> {{ message }} </div>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="alert alert-{{category}}" data-dismiss="alert" href="#"> {{ message }} </div>
     {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 {% block body %}{% endblock %}
 
