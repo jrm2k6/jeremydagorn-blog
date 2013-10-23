@@ -76,7 +76,7 @@ def add_user():
                     form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('User added'. 'info')
+        flash('User added', 'info')
         return redirect(url_for('add_user'))
     return render_template('_add.html', form=form, rows=User.query.all(), 
         target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
