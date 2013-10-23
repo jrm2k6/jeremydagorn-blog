@@ -7,7 +7,16 @@ var getResourcePath = function(that) {
 	return modelName + '/' + selectedId;
 }
 
+function removeAlerts() {
+    setTimeout(function(){
+        var selectedEffect = 'blind';
+        var options = {};
+        $(".alert").hide();
+     }, 5000);
+}
+
 $(document).ready(function() {
+	removeAlerts();
 
 	$(".delete-btn" ).click(function() {
 		$.post('/delete/' + getResourcePath(this), function(data) {
