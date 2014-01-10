@@ -168,6 +168,15 @@ def delete_resource(model_name, _id):
     return resp
 
 
+@app.route('/fetch/projects/', methods=['GET'])
+def fetch_projects():
+    projects = Project.query.all()
+    response = []
+    for p in projects:
+        response.append(p.row2dict())
+    return Response(json.dumps(response), status=200, mimetype='application/json')
+
+
 @app.route('/update/<model_name>/<int:_id>', methods=['POST'])
 @requires_auth
 def update_resource(model_name, _id):
