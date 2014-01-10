@@ -46,12 +46,19 @@ class Project(db.Model):
 		self.status = status_id
 	
 	def __repr__(self):
-		return '<Project %r  - %r >' % self.title, self.technologies 
+		return '<Project %r  - %r >' % (self.title, self.technologies) 
 
 	def columns(self):
 	    """Return the actual columns of a SQLAlchemy-mapped object"""
 	    return [(prop.key, getattr(self, prop.key)) for prop in class_mapper(self.__class__).iterate_properties
 	            if isinstance(prop, ColumnProperty)]
+	
+	def row2dict(self):
+		d = {}
+		for prop in class_mapper(self.__class__).iterate_properties:
+			if isinstance(prop, ColumnProperty):
+				d[prop.key] = getattr(self, prop.key)
+		return d
 
 
 class Technology(db.Model):
