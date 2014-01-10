@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <title> Jeremy Dagorn - Software engineer and story teller </title>
+<script type=text/javascript src="{{ url_for('static', filename='js/jquery-v2.0.3.js') }}"></script>
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+{% block js_script %}{% endblock %}
+{% block css %}{% endblock %}
 <header class="subhead">
     <div class="container">
         <div class="first_line">
@@ -24,5 +27,6 @@
         </div>
     </div>
 </div>
-{% block body %} {% endblock %}
+{% block body %} 
+{% endblock %}
 
