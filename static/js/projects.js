@@ -10,7 +10,6 @@ function createSquareElement(i, _text) {
 
 function getRandom(minValue, maxValue) {
 	var p =  Math.round(Math.random() * (maxValue - minValue + 1)) + minValue;
-	console.log(p);
 	return p;
 }	
 
