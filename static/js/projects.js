@@ -22,7 +22,7 @@ function Cell() {
 		this.direction = direction;
 	}
 
-	this.applyCSS = function(rectangle, _width, _height, _left, _top) {
+	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction) {
 		
 		this.init(_left, _top, _width, _height, _direction);
 
@@ -83,8 +83,8 @@ function generateLayout(projects) {
 		var cellRight = new Cell();
 
 
-		cellLeft.applyCSS(squareDivLeft, firstProjectWidth, randomHeight, posX, posY);
-		cellRight.applyCSS(squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY);
+		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft);
+		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight);
 		cellLeft.setLine(i);
 		cellRight.setLine(i+1);
 
