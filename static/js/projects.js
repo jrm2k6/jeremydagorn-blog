@@ -14,7 +14,8 @@ function getRandom(minValue, maxValue) {
 }	
 
 function Cell() {	
-	this.init = function(x, y, width, height, direction) {
+	this.init = function(id, x, y, width, height, direction) {
+		this.id = id
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -24,7 +25,7 @@ function Cell() {
 
 	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction) {
 		
-		this.init(_left, _top, _width, _height, _direction);
+		this.init(_id, _left, _top, _width, _height, _direction);
 
 		var cssParams = {
 			id: _id,
