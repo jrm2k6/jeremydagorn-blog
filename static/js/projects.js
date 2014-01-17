@@ -14,16 +14,17 @@ function getRandom(minValue, maxValue) {
 }	
 
 function Cell() {	
-	this.init = function(x, y, width, height) {
+	this.init = function(x, y, width, height, direction) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.direction = direction;
 	}
 
 	this.applyCSS = function(rectangle, _width, _height, _left, _top) {
 		
-		this.init(_left, _top, _width, _top);
+		this.init(_left, _top, _width, _height, _direction);
 
 		rectangle.css({
 			'background-color': 'gray',
