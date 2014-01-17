@@ -82,6 +82,8 @@ function generateLayout(projects) {
 		var cellLeft = new Cell();
 		var cellRight = new Cell();
 
+		grid.append(squareDivLeft);
+		grid.append(squareDivRight);
 
 		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft);
 		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight);
@@ -89,9 +91,7 @@ function generateLayout(projects) {
 		cellRight.setLine(i+1);
 
 		cells = cells.concat([cellLeft, cellRight]);
-		
-		grid.append(squareDivLeft);
-		grid.append(squareDivRight);
+
 
 		posY += randomHeight;
 	}
