@@ -58,7 +58,17 @@ function Cell() {
 		}
 	}
 
-	this.generateAnimationDirection = function(direction) {
+	this.setProject = function(obj) {
+		this.project = new Project();
+		this.project.init(obj);
+
+		displayProjectInformation();
+	}
+
+	var displayProjectInformation = function() {
+
+	}
+
 	var generateAnimationDirection = function(direction) {
 		var _cssParams = {};
 		var _animParams = {};
@@ -173,6 +183,10 @@ function generateLayout(projects) {
 
 
 		posY += randomHeight;
+	}
+
+	for (var i=0; i<cells.length; i++) {
+		cells[i].setProject(projects[i]);
 	}
 }
 
