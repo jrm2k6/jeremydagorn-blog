@@ -85,6 +85,30 @@ function fetchProjects() {
 	});
 }
 
+function getDirection(i, maxIndex) {
+	var DIRECTIONS = ["top", "left", "right", "bottom"];
+	var d;
+	switch (i) {
+		case 0:
+		case 1:
+			d = DIRECTIONS[0];
+			break;
+		case maxIndex - 1:
+		case maxIndex - 2:
+			d = DIRECTIONS[3];
+			break;
+		default:
+			if (i % 2 == 0) {
+				d = DIRECTIONS[1];
+			} else {
+				d = DIRECTIONS[2];
+			}
+			break;
+	}
+
+	return d;
+}
+
 function generateLayout(projects) {
 	var WIDTH=200;
 	var HEIGTH=200;
