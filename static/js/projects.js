@@ -42,7 +42,7 @@ function Cell() {
 			opacity: "show",
 		}
 
-		var params = generateAnimationDirection(_direction);
+		var params = this.generateAnimationDirection(_direction);
 
 		$.extend(cssParams, params[0]);
 		$.extend(animParams, params[1]);
@@ -69,7 +69,7 @@ function Cell() {
 
 	}
 
-	var generateAnimationDirection = function(direction) {
+	this.generateAnimationDirection = function(direction) {
 		var _cssParams = {};
 		var _animParams = {};
 		if (direction == "top") {
