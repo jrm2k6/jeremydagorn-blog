@@ -65,9 +65,6 @@ function generateLayout(projects) {
 	var grid = $('#pgrid');
 	var gridTotalWidth = getWidthAsStringFromCSSProperty(grid.css('width'));
 	var gridTotalHeight = getWidthAsStringFromCSSProperty(grid.css('height'));
-
-	var firstProjectWidth = randomWidth;
-	var secondProjectWidth = gridTotalWidth - randomWidth;
 	
 	var posX = 0;
 	var posY = 0;
@@ -81,9 +78,12 @@ function generateLayout(projects) {
 		
 		var firstProjectWidth = randomWidth;
 		var secondProjectWidth = gridTotalWidth - randomWidth;
+		
 		var cellLeft = new Cell();
-		cellLeft.applyCSS(squareDivLeft, firstProjectWidth, randomHeight, posX, posY);
 		var cellRight = new Cell();
+
+
+		cellLeft.applyCSS(squareDivLeft, firstProjectWidth, randomHeight, posX, posY);
 		cellRight.applyCSS(squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY);
 		cellLeft.setLine(i);
 		cellRight.setLine(i+1);
