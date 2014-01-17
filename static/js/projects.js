@@ -126,7 +126,7 @@ function getDirection(i, maxIndex) {
 function generateLayout(projects) {
 	var WIDTH=100;
 	var HEIGTH=100;
-	var MIN_SIZE=50;
+	var MIN_SIZE=100;
 	var MAX_INDEX = projects.length-1;
 
 	var grid = $('#pgrid');
@@ -142,8 +142,8 @@ function generateLayout(projects) {
 
 		var squareDivRight = createSquareElement(i+1, (i+1).toString());
 		
-		var randomWidth = getRandom(MIN_SIZE, gridTotalWidth - MIN_SIZE);
-		var randomHeight = getRandom(MIN_SIZE, gridTotalHeight - MIN_SIZE);
+		var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
+		var randomHeight = getRandom(MIN_SIZE, gridTotalHeight/2 - MIN_SIZE);
 		
 		var firstProjectWidth = randomWidth;
 		var secondProjectWidth = gridTotalWidth - randomWidth;
