@@ -90,6 +90,13 @@ function Cell() {
 
 
 function Project() {
+	this.init = function(obj) {
+		this.id = obj.id;
+		this.title = obj.title;
+		this.description = obj.description;
+		this.status = obj.status;
+		this.technologies = obj.technologies;
+	}
 }
 
 
