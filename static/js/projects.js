@@ -44,6 +44,34 @@ function Cell() {
 			this.line = Math.round(i/2);
 		}
 	}
+
+	this.generateAnimationDirection = function(direction) {
+		var _cssParams = {};
+		var _animParams = {};
+		if (direction == "top") {
+			_cssParams["top"] = this.y - this.height;
+			_cssParams["left"] = this.x;
+
+			_animParams["top"] = this.y;
+		} else if (direction == "bottom") {
+			_cssParams["top"] = this.y + this.height;
+			_cssParams["left"] = this.x;
+
+			_animParams["top"] = this.y;
+		} else if (direction == "left") {
+			_cssParams["top"] = this.y;
+			_cssParams["left"] = this.x - this.width;
+
+			_animParams["left"] = this.x;
+		}  else if (direction == "right") {
+			_cssParams["top"] = this.y;
+			_cssParams["left"] = this.x + this.width;
+
+			_animParams["left"] = this.x;
+		}
+
+		return [_cssParams, _animParams];
+	}
 };
 
 
