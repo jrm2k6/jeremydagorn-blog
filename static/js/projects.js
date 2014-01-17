@@ -26,15 +26,27 @@ function Cell() {
 		
 		this.init(_left, _top, _width, _height, _direction);
 
-		rectangle.css({
+		var cssParams = {
+			id: _id,
 			'background-color': 'gray',
 			width: _width,
 			height: _height,
 			position: 'absolute',
-			top: _top,
-			left: _left,
-			border: '1px green solid'
-		});
+			border: '1px green solid',
+			display: 'none',
+		}
+
+
+		var animParams = {
+			opacity: "show",
+		}
+
+		var params = this.generateAnimationDirection(_direction);
+
+		$.extend(cssParams, params[0]);
+		$.extend(animParams, params[1]);
+
+		_rectangle.css(cssParams).animate(animParams, 1000);
 	}
 
 	this.setLine = function(i) {
@@ -110,9 +122,10 @@ function getDirection(i, maxIndex) {
 }
 
 function generateLayout(projects) {
-	var WIDTH=200;
-	var HEIGTH=200;
-	var MIN_SIZE=200;
+	var WIDTH=100;
+	var HEIGTH=100;
+	var MIN_SIZE=50;
+	var MAX_INDEX = projects.length-1;
 
 	var grid = $('#pgrid');
 	var gridTotalWidth = getWidthAsStringFromCSSProperty(grid.css('width'));
@@ -121,9 +134,11 @@ function generateLayout(projects) {
 	var posX = 0;
 	var posY = 0;
 
-	 for (var i=0; i<4; i+=2) {
+
+	 for (var i=0; i<MAX_INDEX; i+=2) {
 	 	var squareDivLeft = createSquareElement(i, i.toString());
-		var squareDivRight = createSquareElement(i+1, i.toString());
+
+		var squareDivRight = createSquareElement(i+1, (i+1).toString());
 		
 		var randomWidth = getRandom(MIN_SIZE, gridTotalWidth - MIN_SIZE);
 		var randomHeight = getRandom(MIN_SIZE, gridTotalHeight - MIN_SIZE);
@@ -136,6 +151,9 @@ function generateLayout(projects) {
 
 		grid.append(squareDivLeft);
 		grid.append(squareDivRight);
+		
+		var cellDirectionLeft = getDirection(i, MAX_INDEX);
+		var cellDirectionRight= getDirection(i+1, MAX_INDEX);
 
 		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft);
 		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight);
