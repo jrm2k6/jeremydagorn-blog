@@ -38,7 +38,6 @@ function Cell() {
 	}
 
 	this.setLine = function(i) {
-		if (i ==0) {
 		if (i == 0) {
 			this.line = 1;
 		} else {
