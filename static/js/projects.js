@@ -191,5 +191,7 @@ function generateLayout(projects) {
 }
 
 $(window).load(function() {
-	fetchProjects();
+	if (!CONFIG.Test) {
+		fetchProjects();
+	}
 });
