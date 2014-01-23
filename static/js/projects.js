@@ -37,7 +37,6 @@ function Cell() {
 			display: 'none',
 		}
 
-
 		var animParams = {
 			opacity: "show",
 		}
@@ -183,8 +182,20 @@ function getDirection(i, maxIndex) {
 	return d;
 }
 
+function getColor() {
+	var COLORS = ["cyan", "#0000FF", "green", "orange", "red", "#FFD700", "#FF00FF"];
+	var c1;
+	var c2;
+	do {
+		c1 = getRandom(0, COLORS.length-2);
+		c2 = getRandom(0, COLORS.length-2);
+	}
+	while (c1 == c2);
+
+	return [COLORS[c1], COLORS[c2]];
+}
+
 function generateLayout(projects) {
-	var COLORS = ["cyan", "#0000FF", "green", "orange", "red", "yellow", "#FF00FF"];
 	var WIDTH=100;
 	var HEIGTH=100;
 	var MIN_SIZE=100;
@@ -218,11 +229,9 @@ function generateLayout(projects) {
 		var cellDirectionLeft = getDirection(i, MAX_INDEX);
 		var cellDirectionRight= getDirection(i+1, MAX_INDEX);
 
-		var colorLeft = COLORS[getRandom(0, COLORS.length-1)];
-		var colorRight= COLORS[getRandom(0, COLORS.length-1)];
-
-		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft, colorLeft);
-		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight, colorRight);
+		var cellColors = getColor();
+		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft, cellColors[0]);
+		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight, cellColors[1]);
 		cellLeft.setLine(i);
 		cellRight.setLine(i+1);
 

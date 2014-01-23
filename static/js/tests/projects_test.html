@@ -29,6 +29,13 @@
       throws(function () {getDirection(8, 6)}, "Current index cannot be bigger than maxIndex");
     });
 
+    test("getColor always return two different colors", function() {
+      for (var i=0; i<100; i++) {
+        r = getColor();
+        notEqual(r[0], r[1]);
+      }
+    });
+
     test("Cell.generateAnimationDirection from top", function() {
       var c = new Cell();
       c.init("1", 100, 100, 300, 400, "top");
@@ -80,6 +87,7 @@
       equal(anim.left, 100);
 
     });
+
   </script>
 </head>
 <body>
