@@ -5,7 +5,7 @@ function getWidthAsStringFromCSSProperty(value) {
 }
 
 function createSquareElement(i, _text) {
-    return $('<div>', { id: "rect_" + i, text: _text});
+    return $('<div>', { id: "rect_" + i});
 }
 
 function getRandom(minValue, maxValue) {
@@ -85,7 +85,7 @@ function Cell() {
 
 		var widthText = $statusText.css('width');
 		var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
-		
+
 		var statusTextCss = {
 			'class' : 'status-text',
 			'color' : this.color,
@@ -196,9 +196,7 @@ function getColor() {
 }
 
 function generateLayout(projects) {
-	var WIDTH=100;
-	var HEIGTH=100;
-	var MIN_SIZE=100;
+	var MIN_SIZE = 100;
 	var MAX_INDEX = projects.length-1;
 
 	var $grid = $('#pgrid');
@@ -211,7 +209,6 @@ function generateLayout(projects) {
 
 	 for (var i=0; i<MAX_INDEX; i+=2) {
 	 	var squareDivLeft = createSquareElement(i, i.toString());
-
 		var squareDivRight = createSquareElement(i+1, (i+1).toString());
 		
 		var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
