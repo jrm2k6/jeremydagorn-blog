@@ -14,26 +14,26 @@ function getRandom(minValue, maxValue) {
 }	
 
 function Cell() {	
-	this.init = function(id, x, y, width, height, direction) {
+	this.init = function(id, x, y, width, height, direction, color) {
 		this.id = id
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.direction = direction;
+		this.color = color;
 	}
 
-	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction) {
+	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
 		
-		this.init(_id, _left, _top, _width, _height, _direction);
+		this.init(_id, _left, _top, _width, _height, _direction, _color);
 
 		var cssParams = {
 			id: _id,
-			'background-color': 'gray',
+			'background-color': _color,
 			width: _width,
 			height: _height,
 			position: 'absolute',
-			border: '1px green solid',
 			display: 'none',
 		}
 
@@ -62,11 +62,42 @@ function Cell() {
 		this.project = new Project();
 		this.project.init(obj);
 
-		displayProjectInformation();
+		this.displayProjectInformation();
 	}
 
-	var displayProjectInformation = function() {
+	this.displayProjectInformation = function() {
+		var $rect = $("#rect_"+this.id);
+		var statusId = this.project.status;
+		var $statusDiv = $('<div>', { id: "status_" + this.id});
 
+		var statusDivCss = {
+			'background-color' : 'white',
+			'color' : this.color,
+			'float' : 'right',
+			'width' : '30px',
+			'height' : this.height,
+		}
+
+		var $statusText = $('<span>', {text: this.project.getStatusAsString(this.project.status).toUpperCase()}); 
+
+		$statusDiv.css(statusDivCss);
+		$statusDiv.append($statusText);
+		$rect.append($statusDiv);
+
+		var widthText = $statusText.css('width');
+		var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
+		console.log(top);
+		console.log(widthText)
+		var statusTextCss = {
+			'class' : 'status-text',
+			'color' : this.color,
+			'-webkit-transform' : 'rotate(-90deg)', 
+			'-moz-transform': 'rotate(-90deg)',
+			'display': 'block',
+			'position': 'relative',
+			'top': top
+		}
+		$statusText.css(statusTextCss);
 	}
 
 	this.generateAnimationDirection = function(direction) {
@@ -107,11 +138,21 @@ function Project() {
 		this.status = obj.status;
 		this.technologies = obj.technologies;
 	}
+
+	this.getStatusAsString = function() {
+		var STATUS = ["done", "in-progress"];
+		var status = this.status-1
+		if (this.status !== undefined) {
+			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
+				 + "Have you referenced your new status in this array?")
+			return STATUS[status];
+		}
+	}
 }
 
 
 function fetchProjects() {
-	$.getJSON( "http://localhost:5000/fetch/projects", function(data) {
+	$.getJSON( "/fetch/projects", function(data) {
   		generateLayout(data);
 	});
 }
@@ -144,14 +185,15 @@ function getDirection(i, maxIndex) {
 }
 
 function generateLayout(projects) {
+	var COLORS = ["cyan", "#0000FF", "green", "orange", "red", "yellow", "#FF00FF"];
 	var WIDTH=100;
 	var HEIGTH=100;
 	var MIN_SIZE=100;
 	var MAX_INDEX = projects.length-1;
 
-	var grid = $('#pgrid');
-	var gridTotalWidth = getWidthAsStringFromCSSProperty(grid.css('width'));
-	var gridTotalHeight = getWidthAsStringFromCSSProperty(grid.css('height'));
+	var $grid = $('#pgrid');
+	var gridTotalWidth = getWidthAsStringFromCSSProperty($grid.css('width'));
+	var gridTotalHeight = getWidthAsStringFromCSSProperty($grid.css('height'));
 	
 	var posX = 0;
 	var posY = 0;
@@ -171,19 +213,21 @@ function generateLayout(projects) {
 		var cellLeft = new Cell();
 		var cellRight = new Cell();
 
-		grid.append(squareDivLeft);
-		grid.append(squareDivRight);
+		$grid.append(squareDivLeft);
+		$grid.append(squareDivRight);
 		
 		var cellDirectionLeft = getDirection(i, MAX_INDEX);
 		var cellDirectionRight= getDirection(i+1, MAX_INDEX);
 
-		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft);
-		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight);
+		var colorLeft = COLORS[getRandom(0, COLORS.length-1)];
+		var colorRight= COLORS[getRandom(0, COLORS.length-1)];
+
+		cellLeft.applyCSSAndAnimate(i, squareDivLeft, firstProjectWidth, randomHeight, posX, posY, cellDirectionLeft, colorLeft);
+		cellRight.applyCSSAndAnimate(i+1, squareDivRight, secondProjectWidth, randomHeight, firstProjectWidth, posY, cellDirectionRight, colorRight);
 		cellLeft.setLine(i);
 		cellRight.setLine(i+1);
 
 		cells = cells.concat([cellLeft, cellRight]);
-
 
 		posY += randomHeight;
 	}
@@ -194,7 +238,7 @@ function generateLayout(projects) {
 }
 
 $(window).load(function() {
-	if (!CONFIG.Test) {
+	if (window.CONFIG === undefined || !CONFIG.Test) {
 		fetchProjects();
 	}
 });
