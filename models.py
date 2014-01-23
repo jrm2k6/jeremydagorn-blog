@@ -1,3 +1,4 @@
+import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
 from sqlalchemy.orm import class_mapper, ColumnProperty
@@ -57,6 +58,9 @@ class Project(db.Model):
 		d = {}
 		for prop in class_mapper(self.__class__).iterate_properties:
 			if isinstance(prop, ColumnProperty):
+				# if type(prop._orig_columns[0].type) != sqlalchemy.types.String and len(prop._orig_columns[0].foreign_keys) > 0:
+				# 	import pdb; pdb.set_trace()
+				# 	print prop, prop._orig_columns[0].type
 				d[prop.key] = getattr(self, prop.key)
 		return d
 
