@@ -21,7 +21,6 @@ function Cell() {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		console.log("this.height, y", this.height, this.y);
 		this.direction = direction;
 		this.color = color;
 	}
