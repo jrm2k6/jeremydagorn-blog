@@ -96,6 +96,12 @@ function Cell() {
 			'top': top
 		}
 		$statusText.css(statusTextCss);
+
+		var $title = $('<div>', { id: "title_" + this.id, text: this.project.title});
+		var $description = $('<div>', { id: "description_" + this.id, text: this.project.description});
+		$description.css({"margin-top" : "10px"});
+		$rect.append($title);
+		$rect.append($description);
 	}
 
 	this.generateAnimationDirection = function(direction) {
