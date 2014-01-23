@@ -5,11 +5,20 @@ body {
     font-size: 16px;
 }
 
+.white, .white a {
+  color: #fff;
+}
+
 .love {
     color: #ffa5d2;
 }
 .name {
     display: inline-block;
+    color: white;
+}
+
+.lead {
+    color: white;
 }
 
 .icon {
