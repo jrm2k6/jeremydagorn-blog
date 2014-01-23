@@ -27,12 +27,12 @@ function Cell() {
 	}
 
 	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
-		this.square = _rectangle;
 		this.init(_id, _left, _top, _width, _height, _direction, _color);
 
 		var cssParams = {
 			id: _id,
 			'background-color': _color,
+			color: 'white',
 			width: _width,
 			height: _height,
 			position: 'absolute',
@@ -47,22 +47,7 @@ function Cell() {
 
 		$.extend(cssParams, params[0]);
 		$.extend(animParams, params[1]);
-		this.animParams = animParams;
-		_rectangle.css(cssParams);
-		.animate(animParams, 1000, function() {
-			var $statusText = $("#status_text_"+this.id);
-			var widthText = $statusText.css('width');
-			var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
-			var statusTextCss = {
-				'-webkit-transform' : 'rotate(-90deg)', 
-				'-moz-transform': 'rotate(-90deg)',
-				'display': 'block',
-				'position': 'relative',
-				'top': top
-			}
-			
-			$statusText.css(statusTextCss);
-		});
+		_rectangle.css(cssParams).animate(animParams, 1000);
 	}
 
 	this.setLine = function(i) {
@@ -83,36 +68,12 @@ function Cell() {
 	this.displayProjectInformation = function() {
 		var $rect = $("#rect_"+this.id);
 		var statusId = this.project.status;
-		var $statusDiv = $('<div>', { id: "status_" + this.id});
 
-		var statusDivCss = {
-			'background-color' : 'white',
-			'color' : this.color,
-			'float' : 'right',
-			'width' : '30px',
-			'height' : this.height,
-		}
+		var $statusIcon = $('<div>', {id: "status_icon_" + this.id});
+		$statusIcon.css({"float": "right"});
+		$statusIcon.addClass("glyphicon white " + this.project.getGlyphiconNameFromStatus())
 
-		var $statusText = $('<div>', {id: "status_text_"+this.id, text: this.project.getStatusAsString(this.project.status)}); 
-
-		$statusDiv.css(statusDivCss);
-		$statusDiv.append($statusText);
-		$rect.append($statusDiv);
-
-		var widthText = $statusText.css('width');
-		var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
-
-		var statusTextCss = {
-			'class' : 'status-text',
-			'color' : this.color,
-			'-webkit-transform' : 'rotate(-90deg)', 
-			'-moz-transform': 'rotate(-90deg)',
-			'display': 'block',
-			'position': 'relative',
-			'top': top
-		}
-		
-		$statusText.css(statusTextCss);
+		$rect.append($statusIcon);
 
 		var $title = $('<div>', { id: "title_" + this.id, text: this.project.title});
 		var $description = $('<div>', { id: "description_" + this.id, text: this.project.description});
@@ -124,22 +85,6 @@ function Cell() {
 		$rect.append($title);
 		$rect.append($description);
 		$rect.append($technologies);
-		var that = this
-		this.square.animate(this.animParams, 1000, function() {
-			var widthText = $statusText.css('width');
-
-			var top = that.y + that.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
-			console.log(this.id, widthText, top);
-			var statusTextCss = {
-				'-webkit-transform' : 'rotate(-90deg)', 
-				'-moz-transform': 'rotate(-90deg)',
-				'display': 'block',
-				'position': 'relative',
-				'top': top
-			}
-			
-			$statusText.css(statusTextCss);
-		});
 	}
 
 	this.generateAnimationDirection = function(direction) {
@@ -183,6 +128,16 @@ function Project() {
 
 	this.getStatusAsString = function() {
 		var STATUS = ["DONE", "IN-PROGRESS"];
+		var status = this.status-1
+		if (this.status !== undefined) {
+			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
+				 + "Have you referenced your new status in this array?")
+			return STATUS[status];
+		}
+	}
+
+	this.getGlyphiconNameFromStatus = function() {
+		var STATUS = ["glyphicon-ok", "glyphicon-pencil"];
 		var status = this.status-1
 		if (this.status !== undefined) {
 			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
