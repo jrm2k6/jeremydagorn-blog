@@ -1,4 +1,5 @@
 var cells = [];
+var MIN_SIZE = 100;
 
 function getWidthAsStringFromCSSProperty(value) {
 	return value.replace("px", "").toString();
@@ -20,12 +21,13 @@ function Cell() {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		console.log("this.height, y", this.height, this.y);
 		this.direction = direction;
 		this.color = color;
 	}
 
 	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
-		
+		this.square = _rectangle;
 		this.init(_id, _left, _top, _width, _height, _direction, _color);
 
 		var cssParams = {
@@ -45,8 +47,22 @@ function Cell() {
 
 		$.extend(cssParams, params[0]);
 		$.extend(animParams, params[1]);
-
-		_rectangle.css(cssParams).animate(animParams, 1000);
+		this.animParams = animParams;
+		_rectangle.css(cssParams);
+		.animate(animParams, 1000, function() {
+			var $statusText = $("#status_text_"+this.id);
+			var widthText = $statusText.css('width');
+			var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
+			var statusTextCss = {
+				'-webkit-transform' : 'rotate(-90deg)', 
+				'-moz-transform': 'rotate(-90deg)',
+				'display': 'block',
+				'position': 'relative',
+				'top': top
+			}
+			
+			$statusText.css(statusTextCss);
+		});
 	}
 
 	this.setLine = function(i) {
@@ -77,7 +93,7 @@ function Cell() {
 			'height' : this.height,
 		}
 
-		var $statusText = $('<span>', {text: this.project.getStatusAsString(this.project.status)}); 
+		var $statusText = $('<div>', {id: "status_text_"+this.id, text: this.project.getStatusAsString(this.project.status)}); 
 
 		$statusDiv.css(statusDivCss);
 		$statusDiv.append($statusText);
@@ -95,13 +111,35 @@ function Cell() {
 			'position': 'relative',
 			'top': top
 		}
+		
 		$statusText.css(statusTextCss);
 
 		var $title = $('<div>', { id: "title_" + this.id, text: this.project.title});
 		var $description = $('<div>', { id: "description_" + this.id, text: this.project.description});
+		var $technologies = $('<div>', { id: "technologies_" + this.id, text: this.project.technologies.replace(",", ", ").toUpperCase()});
+		
 		$description.css({"margin-top" : "10px"});
+		$technologies.css({"position" : "absolute", "bottom": "0px"});
+		
 		$rect.append($title);
 		$rect.append($description);
+		$rect.append($technologies);
+		var that = this
+		this.square.animate(this.animParams, 1000, function() {
+			var widthText = $statusText.css('width');
+
+			var top = that.y + that.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
+			console.log(this.id, widthText, top);
+			var statusTextCss = {
+				'-webkit-transform' : 'rotate(-90deg)', 
+				'-moz-transform': 'rotate(-90deg)',
+				'display': 'block',
+				'position': 'relative',
+				'top': top
+			}
+			
+			$statusText.css(statusTextCss);
+		});
 	}
 
 	this.generateAnimationDirection = function(direction) {
@@ -201,8 +239,22 @@ function getColor() {
 	return [COLORS[c1], COLORS[c2]];
 }
 
+function generateLayoutLastProject(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
+	var square = createSquareElement(index, index.toString());
+	var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
+	var randomHeight = getRandom(MIN_SIZE, gridTotalHeight/2 - MIN_SIZE);
+
+	var firstProjectWidth = randomWidth;
+	var cell = new Cell();
+	var cellColor = getColor()[0];
+	
+	$gridDomElement.append(square);
+
+	cell.applyCSSAndAnimate(index, square, firstProjectWidth, randomHeight, 0, posY, "bottom", cellColor);
+	cells.push(cell);
+}
+
 function generateLayout(projects) {
-	var MIN_SIZE = 100;
 	var MAX_INDEX = projects.length-1;
 
 	var $grid = $('#pgrid');
@@ -241,6 +293,10 @@ function generateLayout(projects) {
 		cells = cells.concat([cellLeft, cellRight]);
 
 		posY += randomHeight;
+	}
+
+	if (projects.length % 2 == 1) {
+		generateLayoutLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
 	}
 
 	for (var i=0; i<cells.length; i++) {
