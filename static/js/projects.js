@@ -78,7 +78,7 @@ function Cell() {
 			'height' : this.height,
 		}
 
-		var $statusText = $('<span>', {text: this.project.getStatusAsString(this.project.status).toUpperCase()}); 
+		var $statusText = $('<span>', {text: this.project.getStatusAsString(this.project.status)}); 
 
 		$statusDiv.css(statusDivCss);
 		$statusDiv.append($statusText);
@@ -86,8 +86,7 @@ function Cell() {
 
 		var widthText = $statusText.css('width');
 		var top = this.y + this.height/2 - getWidthAsStringFromCSSProperty(widthText)/4;
-		console.log(top);
-		console.log(widthText)
+		
 		var statusTextCss = {
 			'class' : 'status-text',
 			'color' : this.color,
@@ -140,7 +139,7 @@ function Project() {
 	}
 
 	this.getStatusAsString = function() {
-		var STATUS = ["done", "in-progress"];
+		var STATUS = ["DONE", "IN-PROGRESS"];
 		var status = this.status-1
 		if (this.status !== undefined) {
 			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
