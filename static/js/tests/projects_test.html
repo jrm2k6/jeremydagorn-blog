@@ -6,17 +6,80 @@
  
   <link rel="stylesheet" href="../../css/qunit.css">
   <script src="qunit.js"></script>
+  <script src="blanket.min.js" data-cover-flags="debug"></script>
   <script src="../jquery.js"></script>
     <script>
     var CONFIG = {
       Test: true
     };
   </script>
-  <script src="../projects.js"></script>
+  <script src="../projects.js" data-cover></script>
   <script>
-  test("prettydate basics", function() {
-    equal(true, true);
-  });
+    test("getWidthAsString", function() {
+      equal(getWidthAsStringFromCSSProperty("1024px"), "1024");
+      equal(getWidthAsStringFromCSSProperty("1024no"), "1024no");
+    });
+
+    test("getDirection", function() {
+      equal(getDirection(0, 4), "top");
+      equal(getDirection(1, 4), "top");
+      equal(getDirection(2, 6), "left");
+      equal(getDirection(3, 6), "right");
+      equal(getDirection(4, 6), "bottom");
+      throws(function () {getDirection(8, 6)}, "Current index cannot be bigger than maxIndex");
+    });
+
+    test("Cell.generateAnimationDirection from top", function() {
+      var c = new Cell();
+      c.init("1", 100, 100, 300, 400, "top");
+      r = c.generateAnimationDirection("top");
+      css = r[0];
+      anim = r[1];
+
+      equal(css.top, -300);
+      equal(css.left, 100);
+      equal(anim.top, 100);
+
+    });
+
+    test("Cell.generateAnimationDirection from bottom", function() {
+      var c = new Cell();
+      c.init("1", 100, 100, 300, 400, "top");
+      r = c.generateAnimationDirection("bottom");
+      css = r[0];
+      anim = r[1];
+
+      equal(css.top, 500);
+      equal(css.left, 100);
+      equal(anim.top, 100);
+
+    });
+
+    test("Cell.generateAnimationDirection from left", function() {
+      var c = new Cell();
+      c.init("1", 100, 100, 300, 400, "top");
+      r = c.generateAnimationDirection("left");
+      css = r[0];
+      anim = r[1];
+
+      equal(css.top, 100);
+      equal(css.left, -200);
+      equal(anim.left, 100);
+
+    });
+
+    test("Cell.generateAnimationDirection from right", function() {
+      var c = new Cell();
+      c.init("1", 100, 100, 300, 400, "top");
+      r = c.generateAnimationDirection("right");
+      css = r[0];
+      anim = r[1];
+
+      equal(css.top, 100);
+      equal(css.left, 400);
+      equal(anim.left, 100);
+
+    });
   </script>
 </head>
 <body>

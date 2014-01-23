@@ -111,7 +111,7 @@ function Project() {
 
 
 function fetchProjects() {
-	$.getJSON( "/fetch/projects", function(data) {
+	$.getJSON( "http://localhost:5000/fetch/projects", function(data) {
   		generateLayout(data);
 	});
 }
@@ -119,6 +119,9 @@ function fetchProjects() {
 function getDirection(i, maxIndex) {
 	var DIRECTIONS = ["top", "left", "right", "bottom"];
 	var d;
+
+	if (i > maxIndex) throw new Error("Current index cannot be bigger than maxIndex");
+
 	switch (i) {
 		case 0:
 		case 1:
