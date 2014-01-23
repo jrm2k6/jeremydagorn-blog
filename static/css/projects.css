@@ -4,3 +4,14 @@
 	position: relative;
 	margin-left: 25%;
 }
+
+#listing {
+	margin-right: 5%;
+	text-decoration: underline;
+	float:right;
+	color: white;
+}
+
+#listing:hover {
+	color: #ffa5d2;
+}

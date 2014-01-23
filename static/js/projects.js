@@ -258,8 +258,24 @@ function generateLayout(projects) {
 	}
 }
 
+function displayProjectsAsList() {
+	$("#pgrid").html("");
+	for (var i=0; i<cells.length; i++) {
+		var project = cells[i].project;
+		var $divProject = $('<div>', { id: "listing_project" + i, text: project.title});
+		$divProject.css({color: "white"});
+		$divProject.attr("data-description", project.description);
+		$("#pgrid").append($divProject);
+	}
+}
+
 $(window).load(function() {
 	if (window.CONFIG === undefined || !CONFIG.Test) {
 		fetchProjects();
 	}
+
+	$("#listing").on("click", function() {
+		displayProjectsAsList();
+	})
+
 });
