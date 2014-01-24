@@ -1,5 +1,5 @@
 var cells = [];
-var MIN_SIZE = 100;
+var MIN_SIZE = 400;
 
 function getWidthAsStringFromCSSProperty(value) {
 	return value.replace("px", "").toString();
@@ -144,6 +144,14 @@ function Project() {
 			return STATUS[status];
 		}
 	}
+
+	this.getTruncatedDescription = function() {
+		if (this.description.length > 150) {
+			return this.description.substring(0, 146) + "...";
+		} else {
+			return this.description;
+		}
+	}
 }
 
 
@@ -223,8 +231,9 @@ function generateLayout(projects) {
 	 	var squareDivLeft = createSquareElement(i, i.toString());
 		var squareDivRight = createSquareElement(i+1, (i+1).toString());
 		
-		var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
-		var randomHeight = getRandom(MIN_SIZE, gridTotalHeight/2 - MIN_SIZE);
+		// var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
+		var randomWidth = getRandom(300, 600);
+		var randomHeight = getRandom(300, 400);
 		
 		var firstProjectWidth = randomWidth;
 		var secondProjectWidth = gridTotalWidth - randomWidth;
@@ -263,10 +272,15 @@ function displayProjectsAsList() {
 	$("#pgrid").html("");
 	for (var i=0; i<cells.length; i++) {
 		var project = cells[i].project;
-		var $divProject = $('<div>', { id: "listing_project" + i, text: project.title});
-		$divProject.css({color: "white"});
-		$divProject.attr("data-description", project.description);
-		$("#pgrid").append($divProject);
+		var $container = $('<div>', { id: "container_project_"+i});
+		$container.css({"margin-top": "20px"})
+		var $divProjectTitle = $('<div>', { id: "project_title_" + i, text: project.title});
+		var $divProjectDescription = $('<div>', {id: "project_description_"+i, text: project.getTruncatedDescription()});
+		$divProjectTitle.css({color: "white", "font-size": "20px"});
+		$divProjectTitle.attr("data-description", project.description);
+		$("#pgrid").append($container);
+		$container.append($divProjectTitle);
+		$container.append($divProjectDescription);
 	}
 }
 
