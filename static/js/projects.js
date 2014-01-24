@@ -181,7 +181,7 @@ function getDirection(i, maxIndex) {
 }
 
 function getColor() {
-	var COLORS = ["cyan", "#0000FF", "green", "orange", "red", "#FFD700", "#FF00FF"];
+	var COLORS = ["#0080FF", "#088A29", "#FE2E2E", "#FFBF00"];
 	var c1;
 	var c2;
 	do {
@@ -259,6 +259,7 @@ function generateLayout(projects) {
 }
 
 function displayProjectsAsList() {
+	$("#listing").text("Display as cells layout");
 	$("#pgrid").html("");
 	for (var i=0; i<cells.length; i++) {
 		var project = cells[i].project;
