@@ -1,4 +1,5 @@
 var cells = [];
+var _projects;
 var MIN_SIZE = 400;
 
 function getWidthAsStringFromCSSProperty(value) {
@@ -6,7 +7,8 @@ function getWidthAsStringFromCSSProperty(value) {
 }
 
 function createSquareElement(i, _text) {
-    return $('<div>', { id: "rect_" + i});
+    var $rect = $('<div>', { id: "rect_" + i});
+    return $rect;
 }
 
 function getRandom(minValue, maxValue) {
@@ -15,8 +17,9 @@ function getRandom(minValue, maxValue) {
 }	
 
 function Cell() {	
-	this.init = function(id, x, y, width, height, direction, color) {
-		this.id = id
+	this.init = function(id, rectangle, x, y, width, height, direction, color) {
+		this.id = id;
+		this.rectangle = rectangle;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -26,7 +29,7 @@ function Cell() {
 	}
 
 	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
-		this.init(_id, _left, _top, _width, _height, _direction, _color);
+		this.init(_id, _rectangle, _left, _top, _width, _height, _direction, _color);
 
 		var cssParams = {
 			id: _id,
@@ -70,12 +73,13 @@ function Cell() {
 
 		var $statusIcon = $('<div>', {id: "status_icon_" + this.id});
 		$statusIcon.css({"float": "right"});
-		$statusIcon.addClass("glyphicon white " + this.project.getGlyphiconNameFromStatus())
+		$statusIcon.addClass("status-floating glyphicon white " + this.project.getGlyphiconNameFromStatus());
+
 
 		$rect.append($statusIcon);
 
 		var $title = $('<div>', { id: "title_" + this.id, text: this.project.title});
-		var $description = $('<div>', { id: "description_" + this.id, text: this.project.description});
+		var $description = $('<div>', { id: "description_" + this.id, text: this.project.getTruncatedDescription()});
 		var $technologies = $('<div>', { id: "technologies_" + this.id, text: this.project.technologies.replace(",", ", ").toUpperCase()});
 		
 		$description.css({"margin-top" : "10px"});
@@ -146,6 +150,7 @@ function Project() {
 	}
 
 	this.getTruncatedDescription = function() {
+		console.log(this.description.length);
 		if (this.description.length > 150) {
 			return this.description.substring(0, 146) + "...";
 		} else {
@@ -157,7 +162,7 @@ function Project() {
 
 function fetchProjects() {
 	$.getJSON( "/fetch/projects", function(data) {
-  		generateLayout(data);
+  		displayProjectsAsCells(data);
 	});
 }
 
@@ -201,10 +206,10 @@ function getColor() {
 	return [COLORS[c1], COLORS[c2]];
 }
 
-function generateLayoutLastProject(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
+function displayLastProject(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
 	var square = createSquareElement(index, index.toString());
-	var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
-	var randomHeight = getRandom(MIN_SIZE, gridTotalHeight/2 - MIN_SIZE);
+	var randomWidth = getRandom(300, gridTotalWidth/2);
+	var randomHeight = getRandom(300, gridTotalHeight/3);
 
 	var firstProjectWidth = randomWidth;
 	var cell = new Cell();
@@ -216,7 +221,13 @@ function generateLayoutLastProject(index, posY, gridTotalWidth, gridTotalHeight,
 	cells.push(cell);
 }
 
-function generateLayout(projects) {
+function displayProjectsAsCells(projects) {
+	clearMainDiv();
+	cells = [];
+	$("#listing").attr("data-layout", 0);
+	
+	_projects = projects;
+	
 	var MAX_INDEX = projects.length-1;
 
 	var $grid = $('#pgrid');
@@ -258,29 +269,144 @@ function generateLayout(projects) {
 	}
 
 	if (projects.length % 2 == 1) {
-		generateLayoutLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
+		displayLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
 	}
 
 	for (var i=0; i<cells.length; i++) {
-		cells[i].setProject(projects[i]);
+		var cell = cells[i];
+		cell.setProject(projects[i]);
+		cell.rectangle.on("click", function() {
+    		goProjectFullView($(this));
+    	});
 	}
+}
+
+function fadeOutCells() {
+	var $rectangles = $("[id^=rect_]");
+	var lastIndex = $rectangles.length - 1;
+	var displayListCallback = function() {};
+	
+	$rectangles.each(function(i, val) {
+		if (i == lastIndex) {
+			displayListCallback = function() {
+				clearMainDiv();
+				displayProjectsAsList();
+			};
+		}
+
+		$(this).fadeOut(1000, displayListCallback);
+	});
+}
+
+function clearMainDiv() {
+	$("#pgrid").html("");
 }
 
 function displayProjectsAsList() {
 	$("#listing").text("Display as cells layout");
-	$("#pgrid").html("");
+	$("#listing").attr("data-layout", 1);
+	
+	fadeOutCells();
+	
 	for (var i=0; i<cells.length; i++) {
 		var project = cells[i].project;
-		var $container = $('<div>', { id: "container_project_"+i});
-		$container.css({"margin-top": "20px"})
-		var $divProjectTitle = $('<div>', { id: "project_title_" + i, text: project.title});
-		var $divProjectDescription = $('<div>', {id: "project_description_"+i, text: project.getTruncatedDescription()});
-		$divProjectTitle.css({color: "white", "font-size": "20px"});
-		$divProjectTitle.attr("data-description", project.description);
+		var $container = createContainerProject(i);
+		var $divProjectTitle = createProjectTitleDiv(i, project);
+		var $divProjectDescription = createProjectDescriptionDiv(i, project);
+		
 		$("#pgrid").append($container);
 		$container.append($divProjectTitle);
 		$container.append($divProjectDescription);
 	}
+}
+
+function translateProjectsToRightExceptDiv(index) {
+	var $rectangles = $("[id^=rect_]");
+
+	$rectangles.each(function(i) {
+		if (i != index) {
+			$(this).fadeOut({queue: false, duration: 200});
+			$(this).animate(
+			{
+				left: "+=400px"
+			}, 1500);
+		}
+	});
+}
+
+function addCrossToProjectDiv($div) {
+	var $closeButton = $('<div>');
+		$closeButton.css({"position": "absolute", "top": "0px", "right": "0px"});
+		$closeButton.addClass("glyphicon white glyphicon-remove");
+	$div.append($closeButton);
+
+	$closeButton.on("click", function() {
+		displayProjectsAsCells(_projects);
+	});
+}
+
+function goProjectFullView($div) {
+	var index = $div.attr("id").split("_")[1];
+	moveProjectDivToTopLeft($div);
+	createProjectFullView(index);
+	translateProjectsToRightExceptDiv(index);
+}
+
+
+function moveProjectDivToTopLeft($div) {
+	$pgrid = $("#pgrid");
+	var _width = $pgrid.css("width");
+	var _height = $pgrid.css("height");
+	$div.animate({
+		top: 0,
+		left: 0,
+		width: _width,
+	}, 1500)
+}
+
+function createContainerProject(i) {
+	var $container = $('<div>', { id: "container_project_" + i});
+	$container.css({"margin-top": "20px"});
+	return $container;
+}
+
+function createProjectTitleDiv(i, project) {
+	var $div = $('<div>', { id: "title_" + i, text: project.title});
+	$div.css({color: "white", "font-size": "20px"});
+	$div.attr("data-description", project.description);
+
+	return $div;
+}
+
+function createProjectFullView(index) {
+	cell = cells[index];
+
+	addCrossToProjectDiv(cell.rectangle);
+
+	var $status = $("#status_icon_" + index);
+	$status.removeClass("glyphicon " + cell.project.getGlyphiconNameFromStatus());
+	$status.removeClass("remove-floating");
+	$status.removeClass();
+	$status.text(cell.project.getStatusAsString());
+	$status.css({"position": "relative"});
+
+	$(".glyphicon").css("font-size", "56px");
+
+	var $title = $("#title_" + index);
+	$title.css({color: "white", "font-size": "35px", "text-decoration": "underline", "text-align": "center"});
+
+	var $description = $("#description_" + index);
+	$description.text(cell.project.description);
+	$description.css({color: "white", "font-size": "18px"});
+
+	var $technologies =  $("#technologies_" + index);
+	$technologies.text(cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
+	$technologies.css({color: "white", "font-size": "30px", "position": "relative"});
+	
+}
+
+function createProjectDescriptionDiv(i, project) {
+	return $('<div>', {id: "description_" + i, text: project.getTruncatedDescription()});
 }
 
 $(window).load(function() {
@@ -289,7 +415,10 @@ $(window).load(function() {
 	}
 
 	$("#listing").on("click", function() {
-		displayProjectsAsList();
-	})
-
+		if ($("#listing").attr("data-layout") == 0) {
+			displayProjectsAsList();
+		} else {
+			displayProjectsAsCells(_projects);
+		}
+	});
 });

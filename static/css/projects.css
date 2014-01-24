@@ -16,3 +16,13 @@
 #listing:hover {
 	color: #ffa5d2;
 }
+
+.glyphicon {
+  font-size: 24px
+}
+
+.status-floating {
+	top: 0px;
+	right: 0px;
+	position: absolute;
+}
