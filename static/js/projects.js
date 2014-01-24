@@ -348,7 +348,12 @@ function addCrossToProjectDiv($div) {
 		displayProjectsAsCells(_projects);
 	});
 
-	$()
+	$(document).keyup(function(event) {
+		if (event.which == 27) {
+			displayProjectsAsCells(_projects);
+			$(document).unbind("keyup");
+		}
+	})
 }
 
 function goProjectFullView($div) {
