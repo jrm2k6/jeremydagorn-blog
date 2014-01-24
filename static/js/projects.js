@@ -69,12 +69,15 @@ function Cell() {
 
 	this.displayProjectInformation = function() {
 		var $rect = $("#rect_"+this.id);
+		$rect.css({
+			"padding-top": "10px",
+			"padding-left": "10px",
+			"spacing": "5px"
+		})
 		var statusId = this.project.status;
 
 		var $statusIcon = $('<div>', {id: "status_icon_" + this.id});
-		$statusIcon.css({"float": "right"});
 		$statusIcon.addClass("status-floating glyphicon white " + this.project.getGlyphiconNameFromStatus());
-
 
 		$rect.append($statusIcon);
 
@@ -82,8 +85,9 @@ function Cell() {
 		var $description = $('<div>', { id: "description_" + this.id, text: this.project.getTruncatedDescription()});
 		var $technologies = $('<div>', { id: "technologies_" + this.id, text: this.project.technologies.replace(",", ", ").toUpperCase()});
 		
-		$description.css({"margin-top" : "10px"});
-		$technologies.css({"position" : "absolute", "bottom": "0px"});
+		$title.css({"font-size" : "22px", "padding-bottom" : "5px", "border-bottom" : "2px solid white"});
+		$description.css({"margin-top" : "10px", "font-size" : "18px"});
+		$technologies.css({"width" : "100%", "position" : "absolute", "bottom": "10px", "padding" : "5px 5px 0px 5px", "border-left" : "4px solid white"});
 		
 		$rect.append($title);
 		$rect.append($description);
@@ -343,6 +347,8 @@ function addCrossToProjectDiv($div) {
 	$closeButton.on("click", function() {
 		displayProjectsAsCells(_projects);
 	});
+
+	$()
 }
 
 function goProjectFullView($div) {
@@ -387,21 +393,21 @@ function createProjectFullView(index) {
 	$status.removeClass("glyphicon " + cell.project.getGlyphiconNameFromStatus());
 	$status.html("");
 
-	var $statusAsString = $('<div>', { id: "status_" + index, text: "Status: " + cell.project.getStatusAsString()});
-	$statusAsString.css("font-size", "22px");
+	var $statusAsString = $('<div>', { id: "status_" + index, text: cell.project.getStatusAsString()});
+	$statusAsString.css({"font-size": "22px", "float" : "left", "position" : "absolute", "top" : "10px", "left" : "5px"});
 	cell.rectangle.append($statusAsString);
-	$(".glyphicon").css("font-size", "56px");
+	$(".glyphicon").css({"font-size": "48px", "top" : "5px", "right" : "5px"});
 
 	var $title = $("#title_" + index);
-	$title.css({color: "white", "font-size": "35px", "text-decoration": "underline", "text-align": "center"});
+	$title.css({color: "white", "font-size": "35px", "text-align": "center"});
 
 	var $description = $("#description_" + index);
 	$description.text(cell.project.description);
-	$description.css({color: "white", "font-size": "18px"});
+	$description.css({color: "white", "font-size": "18px", "padding-bottom" : "10px"});
 
 	var $technologies =  $("#technologies_" + index);
 	$technologies.text("Technologies used: " + cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
-	$technologies.css({color: "white", "font-size": "22px", "position": "relative"});
+	$technologies.css({color: "white", "font-size": "22px"});
 	
 }
 
