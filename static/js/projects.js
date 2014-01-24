@@ -231,9 +231,8 @@ function generateLayout(projects) {
 	 	var squareDivLeft = createSquareElement(i, i.toString());
 		var squareDivRight = createSquareElement(i+1, (i+1).toString());
 		
-		// var randomWidth = getRandom(MIN_SIZE, gridTotalWidth/2 - MIN_SIZE);
-		var randomWidth = getRandom(300, 600);
-		var randomHeight = getRandom(300, 400);
+		var randomWidth = getRandom(300, gridTotalWidth/2);
+		var randomHeight = getRandom(300, gridTotalWidth/3);
 		
 		var firstProjectWidth = randomWidth;
 		var secondProjectWidth = gridTotalWidth - randomWidth;
