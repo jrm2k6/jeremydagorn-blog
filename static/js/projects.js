@@ -385,11 +385,11 @@ function createProjectFullView(index) {
 
 	var $status = $("#status_icon_" + index);
 	$status.removeClass("glyphicon " + cell.project.getGlyphiconNameFromStatus());
-	$status.removeClass("remove-floating");
-	$status.removeClass();
-	$status.text(cell.project.getStatusAsString());
-	$status.css({"position": "relative"});
+	$status.html("");
 
+	var $statusAsString = $('<div>', { id: "status_" + index, text: "Status: " + cell.project.getStatusAsString()});
+	$statusAsString.css("font-size", "22px");
+	cell.rectangle.append($statusAsString);
 	$(".glyphicon").css("font-size", "56px");
 
 	var $title = $("#title_" + index);
@@ -400,13 +400,13 @@ function createProjectFullView(index) {
 	$description.css({color: "white", "font-size": "18px"});
 
 	var $technologies =  $("#technologies_" + index);
-	$technologies.text(cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
-	$technologies.css({color: "white", "font-size": "30px", "position": "relative"});
+	$technologies.text("Technologies used: " + cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
+	$technologies.css({color: "white", "font-size": "22px", "position": "relative"});
 	
 }
 
 function createProjectDescriptionDiv(i, project) {
-	return $('<div>', {id: "description_" + i, text: project.getTruncatedDescription()});
+	return $('<div>', {id: "description_" + i, text: project.getTruncatedDescription()}).addClass("pink-description");
 }
 
 $(window).load(function() {
