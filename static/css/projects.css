@@ -30,3 +30,12 @@
 	right: 5px;
 	position: absolute;
 }
+
+.list_layout_detailed_project > div {
+	padding-left: 10px;
+	margin-top: 15px;
+}
+
+.list_layout_detailed_project {
+	border-left: 5px solid #ffa5d2;
+}

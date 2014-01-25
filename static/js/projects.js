@@ -408,10 +408,13 @@ function closeOpenItem() {
 	var id = parseInt(openItem.attr("id").split("_")[2], 10);
 	var idFullDivs = id + 1;
 	
+	openItem.removeClass("list_layout_detailed_project");
+
 	$("#description_" + idFullDivs).remove();
 	$("#technologies_" + idFullDivs).remove();
 	$("#status_" + idFullDivs).remove();
 	var $title = openItem.find(">:first-child");
+	$title.css("border-bottom", "none");
 	var shortDescription = $title.attr("data-description");
 	var $description = $('<div>', {id: "description_" + id, text: shortDescription});
 	$description.addClass("pink-description");
@@ -422,16 +425,25 @@ function closeOpenItem() {
 function displayProjectDetails(project, statusAsString) {
 	var id = project.id - 1;
 	var $container = $("#container_project_" + id);
+
 	$("#description_"+ id).remove();
 	openItem = $container;
+	
+	$container.addClass("list_layout_detailed_project");
+
+	var $title = $("#title_" + id);
+	$title.css({"padding-bottom": "3px", "border-bottom":"1px solid #ffa5d2", "color" : "#e77471"});
 
 	var $description = $('<div>', {id: "description_" + project.id, text: project.description});
+	$description.css({"color": "white", "size" : "18px"});
 	$container.append($description);
 
 	var $technologies = $('<div>', {id: "technologies_" + project.id, text: project.technologies});
+	$technologies.css({"color": "#a1a8a3", "size" : "17px"});
 	$container.append($technologies);
 
 	var $status = $('<div>', {id: "status_" + project.id, text: statusAsString});
+	$status.css({"color": "#ffa5d2", "size" : "17px"});
 	$container.append($status);
 
 
