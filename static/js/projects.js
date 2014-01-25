@@ -481,6 +481,9 @@ function createProjectDescriptionDiv(i, project) {
 }
 
 $(window).load(function() {
+	removeCurrentActiveClass();
+	$(".projects").addClass("active");
+
 	if (window.CONFIG === undefined || !CONFIG.Test) {
 		fetchProjects();
 	}
