@@ -73,7 +73,7 @@ function Cell() {
 		$rect.css({
 			"padding-top": "10px",
 			"padding-left": "10px",
-			"spacing": "5px"
+			"spacing": "5px",
 		})
 		var statusId = this.project.status;
 
@@ -198,7 +198,7 @@ function getDirection(i, maxIndex) {
 }
 
 function getColor() {
-	var COLORS = ["#FF7575", "#6094DB", "#89FC63", "#FFCB2F", "#AAAAFF"];
+	var COLORS = ["#FF7575", "#6094DB", "#FFCB2F", "#AAAAFF", "#1BA63B"];
 	var c1;
 	var c2;
 	do {
