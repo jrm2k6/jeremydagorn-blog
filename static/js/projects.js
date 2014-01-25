@@ -198,7 +198,7 @@ function getDirection(i, maxIndex) {
 }
 
 function getColor() {
-	var COLORS = ["#0080FF", "#088A29", "#FE2E2E", "#FFBF00"];
+	var COLORS = ["#FF7575", "#6094DB", "#89FC63", "#FFCB2F", "#AAAAFF"];
 	var c1;
 	var c2;
 	do {
@@ -407,7 +407,6 @@ function closeOpenItem() {
 
 	var id = parseInt(openItem.attr("id").split("_")[2], 10);
 	var idFullDivs = id + 1;
-	console.log(openItem);
 	
 	$("#description_" + idFullDivs).remove();
 	$("#technologies_" + idFullDivs).remove();
@@ -421,7 +420,6 @@ function closeOpenItem() {
 }
 
 function displayProjectDetails(project, statusAsString) {
-	console.log(project.id);
 	var id = project.id - 1;
 	var $container = $("#container_project_" + id);
 	$("#description_"+ id).remove();
