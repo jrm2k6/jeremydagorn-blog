@@ -12,6 +12,7 @@ class AddProjectForm(Form):
 	title = TextField('Title', [validators.Length(min=4, max=200)])
 	description = TextField('Description', [validators.Length(min=6, max=400)])
 	technologies = TextField('Technologies', [validators.Length(min=6, max=400)])
+	url = TextField('Url', [validators.Length(min=6, max=600)])
 	status = StatusField('Status', coerce=int)
 
 

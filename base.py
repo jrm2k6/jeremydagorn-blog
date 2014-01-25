@@ -90,7 +90,7 @@ def add_project():
     form = AddProjectForm(request.form)
     if request.method == 'POST' and form.validate():
         project = Project(form.title.data, form.description.data,
-                    form.technologies.data, form.status.data)
+                    form.technologies.data, form.url.data, form.status.data)
         db.session.add(project)
         db.session.commit()
         flash('Project added', 'info')
@@ -211,6 +211,7 @@ def update_resource(model_name, _id):
             project.title = request.json['_title']
             project.description = request.json['_description']
             project.technologies = request.json['_technologies']
+            project.url = request.json['_url']
             project.status = request.json['_status']
     else:
         resp = Response({}, status=500, mimetype='application/json')

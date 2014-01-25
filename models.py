@@ -38,12 +38,14 @@ class Project(db.Model):
 	title = db.Column(db.String(400), unique=True)
 	description = db.Column(db.String(1000))
 	technologies = db.Column(db.String(200))
+	url = db.Column(db.String(500))
 	status = db.Column(db.Integer, db.ForeignKey('status.id'))
 	
-	def __init__(self, title, description, technologies, status_id):
+	def __init__(self, title, description, technologies, url, status_id):
 		self.title = title
 		self.description = description
 		self.technologies = technologies
+		self.url = url
 		self.status = status_id
 	
 	def __repr__(self):
