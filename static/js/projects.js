@@ -1,6 +1,7 @@
 var cells = [];
 var _projects;
 var MIN_SIZE = 400;
+var openItem;
 
 function getWidthAsStringFromCSSProperty(value) {
 	return value.replace("px", "").toString();
@@ -154,7 +155,6 @@ function Project() {
 	}
 
 	this.getTruncatedDescription = function() {
-		console.log(this.description.length);
 		if (this.description.length > 150) {
 			return this.description.substring(0, 146) + "...";
 		} else {
@@ -384,9 +384,59 @@ function createContainerProject(i) {
 function createProjectTitleDiv(i, project) {
 	var $div = $('<div>', { id: "title_" + i, text: project.title});
 	$div.css({color: "white", "font-size": "20px"});
-	$div.attr("data-description", project.description);
+	$div.attr("data-status", project.getStatusAsString());
+	$div.attr("data-description", project.getTruncatedDescription());
+	$div.mouseover(function() {
+		$div.css("color", "#e77471")
+	})
+
+	$div.mouseout(function() {
+		$div.css("color", "white")
+	});
+
+	$div.on("click", function() {
+		closeOpenItem();
+		displayProjectDetails(_projects[i], $(this).attr("data-status"));
+	});
 
 	return $div;
+}
+
+function closeOpenItem() {
+	if (openItem == undefined) return;
+
+	var id = parseInt(openItem.attr("id").split("_")[2], 10);
+	var idFullDivs = id + 1;
+	console.log(openItem);
+	
+	$("#description_" + idFullDivs).remove();
+	$("#technologies_" + idFullDivs).remove();
+	$("#status_" + idFullDivs).remove();
+	var $title = openItem.find(">:first-child");
+	var shortDescription = $title.attr("data-description");
+	var $description = $('<div>', {id: "description_" + id, text: shortDescription});
+	$description.addClass("pink-description");
+	openItem.append($description);
+
+}
+
+function displayProjectDetails(project, statusAsString) {
+	console.log(project.id);
+	var id = project.id - 1;
+	var $container = $("#container_project_" + id);
+	$("#description_"+ id).remove();
+	openItem = $container;
+
+	var $description = $('<div>', {id: "description_" + project.id, text: project.description});
+	$container.append($description);
+
+	var $technologies = $('<div>', {id: "technologies_" + project.id, text: project.technologies});
+	$container.append($technologies);
+
+	var $status = $('<div>', {id: "status_" + project.id, text: statusAsString});
+	$container.append($status);
+
+
 }
 
 function createProjectFullView(index) {
