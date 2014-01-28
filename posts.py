@@ -37,5 +37,5 @@ def get_text_elements(content_post):
 	
 	for p in paragraphs:
 		if len(p) > NB_CHAR_PREVIEWS:
-			return p[:NB_CHAR_PREVIEWS]
+			return p
 	return []
