@@ -226,6 +226,9 @@ function displayLastProject(index, posY, gridTotalWidth, gridTotalHeight, $gridD
 }
 
 function displayProjectsAsCells(projects) {
+	if (projects.length == 0) {
+		$("#listing").css('display', 'none');
+	}
 	clearMainDiv();
 	cells = [];
 	$("#listing").attr("data-layout", 0);
