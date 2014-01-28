@@ -9,7 +9,7 @@ from forms import AddUserForm, AddProjectForm, AddStatusForm, \
 from flask import jsonify, json, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
-from post_loader import load_blogpost
+from posts import PostWithMarkdownContent, load_blogpost, generate_previews
 
 from authentication import requires_auth
 
@@ -42,11 +42,13 @@ def show_home():
     for p in posts:
         content = load_blogpost('posts/' + p.content)
         content = Markup(markdown.markdown(content))
-        to_return.append(PostWithContent(p, content))
-    return show_home_page(to_return)
+        to_return.append(PostWithMarkdownContent(p, content))
+    # import pdb; pdb.set_trace()
+    previews = generate_previews(to_return)
+    return show_home_page(previews)
 
-def show_home_page(list_posts):
-    return render_template('home.html', posts=list_posts)
+def show_home_page(list_previews):
+    return render_template('home.html', previews_posts=list_previews)
 
 @app.route('/about')
 def show_about():
