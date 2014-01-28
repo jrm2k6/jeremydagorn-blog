@@ -34,11 +34,6 @@ def create_app(db):
 
 create_app(db)
 
-class PostWithContent(object):
-    def __init__(self, post, content):
-        self.post = post
-        self.content = content
-
 
 @app.route('/')
 def show_home():
