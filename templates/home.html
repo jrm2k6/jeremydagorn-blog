@@ -7,7 +7,8 @@
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/blog.css') }}"></link>
 {% endblock %}
 {% block body %}
-	{% for post in posts %}
-		{{ post.content }}
+	{% for preview in previews_posts %}
+		<h2> {{ preview.title }} </h2>
+		{{ preview.content }}
 	{% endfor %}
 {% endblock %}
