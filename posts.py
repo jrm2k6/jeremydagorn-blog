@@ -32,10 +32,11 @@ def generate_previews(posts):
 def get_text_elements(content_post):
 	NB_CHAR_PREVIEWS = 200
 	TEXT_ELEMENT_REGEX = re.compile('<p>(.*?)</p>')
+	
 	text_without_new_lines =  ''.join(content_post.splitlines())
 	paragraphs = re.findall(TEXT_ELEMENT_REGEX, text_without_new_lines)
 	
 	for p in paragraphs:
 		if len(p) > NB_CHAR_PREVIEWS:
 			return p
-	return []
+	return paragraphs[0] if len(paragraphs) > 0 else "No preview available"

@@ -43,7 +43,6 @@ def show_home():
         content = load_blogpost('posts/' + p.content)
         content = Markup(markdown.markdown(content))
         to_return.append(PostWithMarkdownContent(p, content))
-    # import pdb; pdb.set_trace()
     previews = generate_previews(to_return)
     return show_home_page(previews)
 
@@ -217,6 +216,13 @@ def update_resource(model_name, _id):
     js = json.dumps({})
     resp = Response(js, status=200, mimetype='application/json')
     return resp
+
+
+@app.route('/posts/<post_title>', methods=['GET'])
+def fetch_post(post_title):
+    post = Post.query.filter_by(id=1).first()
+    #post = Post.query.first()
+    return render_template("lol.html", post=post)
 
 if __name__ == '__main__':
     app.run(debug=True)

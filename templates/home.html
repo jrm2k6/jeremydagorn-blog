@@ -8,7 +8,9 @@
 {% endblock %}
 {% block body %}
 	{% for preview in previews_posts %}
-		<h2> {{ preview.title }} </h2>
+		<a href="/posts/{{preview.title.lower().replace(" ", "_")}}"> {{ preview.title }} </a>
 		{{ preview.content }}
+
+		<a  href="/posts/{{preview.title.lower().replace(" ", "_")}}" class="read-more load-article">Read more</a>
 	{% endfor %}
 {% endblock %}
