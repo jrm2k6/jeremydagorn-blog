@@ -1,3 +1,29 @@
 body {
 	color: white;
 }
+
+#post {
+	margin-top: 30px;
+	width: 75%;
+	margin-left: 15%;
+	border-bottom: 1px solid #ffa5d2;
+}
+
+a.post-title {
+	color: #ffa5d2;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+a.read-more {
+	color: #ffa5d2;
+}
+
+a.read-more:hover {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.post-content {
+	padding-top: 15px;
+}
