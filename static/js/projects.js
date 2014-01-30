@@ -1,7 +1,7 @@
 var cells = [];
 var _projects;
 var MIN_SIZE = 400;
-var openItem;
+var listLayout;
 
 function getWidthAsStringFromCSSProperty(value) {
 	return value.replace("px", "").toString();
@@ -324,7 +324,7 @@ function fadeOutCells() {
 		if (i == lastIndex) {
 			displayListCallback = function() {
 				clearMainDiv();
-				displayProjectsAsList();
+				listLayout.displayProjectsAsList();
 			};
 		}
 
@@ -336,23 +336,103 @@ function clearMainDiv() {
 	$("#pgrid").html("");
 }
 
-function displayProjectsAsList() {
-	$("#listing").text("Display as cells layout");
-	$("#listing").attr("data-layout", 1);
-	
-	fadeOutCells();
-	
-	for (var i=0; i<cells.length; i++) {
-		var project = cells[i].project;
-		var $container = createContainerProject(i);
-		var $divProjectTitle = createProjectTitleDiv(i, project);
-		var $divProjectDescription = createProjectDescriptionDiv(i, project);
+function ListLayout() {};
+
+ListLayout.prototype = {
+	createContainerProject : function(i) {
+		var $container = $('<div>', { id: "container_project_" + i});
+		$container.css({"margin-top": "20px"});
+		return $container;
+	},
+
+	createProjectTitleDiv : function(i, project) {
+		var $div = $('<div>', { id: "title_" + i, text: project.title});
+		$div.css({color: "white", "font-size": "20px"});
+		$div.attr("data-status", project.getStatusAsString());
+		$div.attr("data-description", project.getTruncatedDescription());
+		$div.mouseover(function() {
+			$div.css("color", "#e77471")
+		})
+
+		$div.mouseout(function() {
+			$div.css("color", "white")
+		});
+		var self = this;
+		$div.on("click", function() {
+			self.closeOpenItem();
+			self.displayProjectDetails(_projects[i], $(this).attr("data-status"));
+		});
+
+		return $div;
+	},
+
+	closeOpenItem : function(){
+		if (this.openItem == undefined) return;
+
+		var id = parseInt(this.openItem.attr("id").split("_")[2], 10);
+		var idFullDivs = id + 1;
 		
-		$("#pgrid").append($container);
-		$container.append($divProjectTitle);
-		$container.append($divProjectDescription);
+		this.openItem.removeClass("list_layout_detailed_project");
+
+		$("#description_" + idFullDivs).remove();
+		$("#technologies_" + idFullDivs).remove();
+		$("#status_" + idFullDivs).remove();
+		var $title = this.openItem.find(">:first-child");
+		$title.css("border-bottom", "none");
+		var shortDescription = $title.attr("data-description");
+		var $description = $('<div>', {id: "description_" + id, text: shortDescription});
+		$description.addClass("pink-description");
+		this.openItem.append($description);
+
+	},
+
+	displayProjectDetails : function(project, statusAsString) {
+		var id = project.id - 1;
+		var $container = $("#container_project_" + id);
+
+		$("#description_"+ id).remove();
+		this.openItem = $container;
+		
+		$container.addClass("list_layout_detailed_project");
+
+		var $title = $("#title_" + id);
+		$title.css({"padding-bottom": "3px", "border-bottom":"1px solid #ffa5d2", "color" : "#e77471"});
+
+		var $description = $('<div>', {id: "description_" + project.id, text: project.description});
+		$description.css({"color": "white", "size" : "18px"});
+		$container.append($description);
+
+		var $technologies = $('<div>', {id: "technologies_" + project.id, text: project.technologies});
+		$technologies.css({"color": "#a1a8a3", "size" : "17px"});
+		$container.append($technologies);
+
+		var $status = $('<div>', {id: "status_" + project.id, text: statusAsString});
+		$status.css({"color": "#ffa5d2", "size" : "17px"});
+		$container.append($status);
+	},
+
+	createProjectDescriptionDiv : function(i, project) {
+		return $('<div>', {id: "description_" + i, text: project.getTruncatedDescription()}).addClass("pink-description");
+	},
+
+	displayProjectsAsList : function() {
+		$("#listing").text("Display as cells layout");
+		$("#listing").attr("data-layout", 1);
+	
+		fadeOutCells();
+		
+		for (var i=0; i<cells.length; i++) {
+			var project = cells[i].project;
+			var $container = this.createContainerProject(i);
+			var $divProjectTitle = this.createProjectTitleDiv(i, project);
+			var $divProjectDescription = this.createProjectDescriptionDiv(i, project);
+			
+			$("#pgrid").append($container);
+			$container.append($divProjectTitle);
+			$container.append($divProjectDescription);
+		}
 	}
-}
+};
 
 function translateProjectsToRightExceptDiv(index) {
 	var $rectangles = $("[id^=rect_]");
@@ -405,80 +485,6 @@ function moveProjectDivToTopLeft($div) {
 	}, 1500)
 }
 
-function createContainerProject(i) {
-	var $container = $('<div>', { id: "container_project_" + i});
-	$container.css({"margin-top": "20px"});
-	return $container;
-}
-
-function createProjectTitleDiv(i, project) {
-	var $div = $('<div>', { id: "title_" + i, text: project.title});
-	$div.css({color: "white", "font-size": "20px"});
-	$div.attr("data-status", project.getStatusAsString());
-	$div.attr("data-description", project.getTruncatedDescription());
-	$div.mouseover(function() {
-		$div.css("color", "#e77471")
-	})
-
-	$div.mouseout(function() {
-		$div.css("color", "white")
-	});
-
-	$div.on("click", function() {
-		closeOpenItem();
-		displayProjectDetails(_projects[i], $(this).attr("data-status"));
-	});
-
-	return $div;
-}
-
-function closeOpenItem() {
-	if (openItem == undefined) return;
-
-	var id = parseInt(openItem.attr("id").split("_")[2], 10);
-	var idFullDivs = id + 1;
-	
-	openItem.removeClass("list_layout_detailed_project");
-
-	$("#description_" + idFullDivs).remove();
-	$("#technologies_" + idFullDivs).remove();
-	$("#status_" + idFullDivs).remove();
-	var $title = openItem.find(">:first-child");
-	$title.css("border-bottom", "none");
-	var shortDescription = $title.attr("data-description");
-	var $description = $('<div>', {id: "description_" + id, text: shortDescription});
-	$description.addClass("pink-description");
-	openItem.append($description);
-
-}
-
-function displayProjectDetails(project, statusAsString) {
-	var id = project.id - 1;
-	var $container = $("#container_project_" + id);
-
-	$("#description_"+ id).remove();
-	openItem = $container;
-	
-	$container.addClass("list_layout_detailed_project");
-
-	var $title = $("#title_" + id);
-	$title.css({"padding-bottom": "3px", "border-bottom":"1px solid #ffa5d2", "color" : "#e77471"});
-
-	var $description = $('<div>', {id: "description_" + project.id, text: project.description});
-	$description.css({"color": "white", "size" : "18px"});
-	$container.append($description);
-
-	var $technologies = $('<div>', {id: "technologies_" + project.id, text: project.technologies});
-	$technologies.css({"color": "#a1a8a3", "size" : "17px"});
-	$container.append($technologies);
-
-	var $status = $('<div>', {id: "status_" + project.id, text: statusAsString});
-	$status.css({"color": "#ffa5d2", "size" : "17px"});
-	$container.append($status);
-
-
-}
-
 function createProjectFullView(index) {
 	cell = cells[index];
 
@@ -506,10 +512,6 @@ function createProjectFullView(index) {
 	
 }
 
-function createProjectDescriptionDiv(i, project) {
-	return $('<div>', {id: "description_" + i, text: project.getTruncatedDescription()}).addClass("pink-description");
-}
-
 $(window).load(function() {
 	removeCurrentActiveClass();
 	$(".projects").addClass("active");
@@ -520,7 +522,8 @@ $(window).load(function() {
 
 	$("#listing").on("click", function() {
 		if ($("#listing").attr("data-layout") == 0) {
-			displayProjectsAsList();
+			listLayout = new ListLayout();
+			listLayout.displayProjectsAsList();
 		} else {
 			displayProjectsAsCells(_projects);
 		}
