@@ -51,6 +51,27 @@ function Cell() {
 		$.extend(cssParams, params[0]);
 		$.extend(animParams, params[1]);
 		_rectangle.css(cssParams).animate(animParams, 1000);
+		_rectangle.data('bg-color', _color);
+
+		this.setMouseListeners();
+	}
+
+	this.setMouseListeners = function() {
+		this.rectangle.on("mouseover", function() {
+			$(this).css("background-color", "gray");
+		})
+
+		this.rectangle.on("mouseout", function() {
+			var color = $(this).data("bg-color");
+			$(this).css("background-color", color);
+		})
+	}
+
+	this.removeMouseListeners = function() {
+		this.rectangle.unbind("mouseover");
+		this.rectangle.unbind("mouseout");
+
+		this.rectangle.css("background-color", this.color);
 	}
 
 	this.setLine = function(i) {
@@ -283,6 +304,7 @@ function displayProjectsAsCells(projects) {
 		var cell = cells[i];
 		cell.setProject(projects[i]);
 		cell.rectangle.on("click", function() {
+			cell.removeMouseListeners();
     		goProjectFullView($(this));
     	});
 	}
