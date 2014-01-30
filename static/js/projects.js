@@ -17,8 +17,10 @@ function getRandom(minValue, maxValue) {
 	return p;
 }	
 
-function Cell() {	
-	this.init = function(id, rectangle, x, y, width, height, direction, color) {
+function Cell() {};
+
+Cell.prototype = {
+	init : function(id, rectangle, x, y, width, height, direction, color) {
 		this.id = id;
 		this.rectangle = rectangle;
 		this.x = x;
@@ -27,9 +29,9 @@ function Cell() {
 		this.height = height;
 		this.direction = direction;
 		this.color = color;
-	}
+	},
 
-	this.applyCSSAndAnimate = function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
+	applyCSSAndAnimate : function(_id, _rectangle, _width, _height, _left, _top, _direction, _color) {
 		this.init(_id, _rectangle, _left, _top, _width, _height, _direction, _color);
 
 		var cssParams = {
@@ -54,9 +56,9 @@ function Cell() {
 		_rectangle.data('bg-color', _color);
 
 		this.setMouseListeners();
-	}
+	},
 
-	this.setMouseListeners = function() {
+	setMouseListeners : function() {
 		this.rectangle.on("mouseover", function() {
 			$(this).css("background-color", "gray");
 		})
@@ -65,31 +67,31 @@ function Cell() {
 			var color = $(this).data("bg-color");
 			$(this).css("background-color", color);
 		})
-	}
+	},
 
-	this.removeMouseListeners = function() {
+	removeMouseListeners : function() {
 		this.rectangle.unbind("mouseover");
 		this.rectangle.unbind("mouseout");
 
 		this.rectangle.css("background-color", this.color);
-	}
+	},
 
-	this.setLine = function(i) {
+	setLine : function(i) {
 		if (i == 0) {
 			this.line = 1;
 		} else {
 			this.line = Math.round(i/2);
 		}
-	}
+	},
 
-	this.setProject = function(obj) {
+	setProject : function(obj) {
 		this.project = new Project();
 		this.project.init(obj);
 
 		this.displayProjectInformation();
-	}
+	},
 
-	this.displayProjectInformation = function() {
+	displayProjectInformation : function() {
 		var $rect = $("#rect_"+this.id);
 		$rect.css({
 			"padding-top": "10px",
@@ -114,9 +116,9 @@ function Cell() {
 		$rect.append($title);
 		$rect.append($description);
 		$rect.append($technologies);
-	}
+	},
 
-	this.generateAnimationDirection = function(direction) {
+	generateAnimationDirection : function(direction) {
 		var _cssParams = {};
 		var _animParams = {};
 		if (direction == "top") {
@@ -146,16 +148,19 @@ function Cell() {
 };
 
 
-function Project() {
-	this.init = function(obj) {
+function Project() {};
+
+Project.prototype = {
+	
+	init : function(obj) {
 		this.id = obj.id;
 		this.title = obj.title;
 		this.description = obj.description;
 		this.status = obj.status;
 		this.technologies = obj.technologies;
-	}
+	},
 
-	this.getStatusAsString = function() {
+	getStatusAsString : function() {
 		var STATUS = ["DONE", "IN-PROGRESS"];
 		var status = this.status-1
 		if (this.status !== undefined) {
@@ -163,9 +168,9 @@ function Project() {
 				 + "Have you referenced your new status in this array?")
 			return STATUS[status];
 		}
-	}
+	},
 
-	this.getGlyphiconNameFromStatus = function() {
+	getGlyphiconNameFromStatus : function() {
 		var STATUS = ["glyphicon-ok", "glyphicon-pencil"];
 		var status = this.status-1
 		if (this.status !== undefined) {
@@ -173,16 +178,16 @@ function Project() {
 				 + "Have you referenced your new status in this array?")
 			return STATUS[status];
 		}
-	}
+	},
 
-	this.getTruncatedDescription = function() {
+	getTruncatedDescription : function() {
 		if (this.description.length > 150) {
 			return this.description.substring(0, 146) + "...";
 		} else {
 			return this.description;
 		}
 	}
-}
+};
 
 
 function fetchProjects() {
