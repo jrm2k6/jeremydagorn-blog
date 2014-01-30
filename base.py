@@ -10,6 +10,7 @@ from flask import jsonify, json, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
 from posts import PostWithMarkdownContent, load_blogpost, generate_previews
+from sqlalchemy import func
 
 from authentication import requires_auth
 
@@ -220,9 +221,9 @@ def update_resource(model_name, _id):
 
 @app.route('/posts/<post_title>', methods=['GET'])
 def fetch_post(post_title):
-    post = Post.query.filter_by(id=1).first()
-    #post = Post.query.first()
-    return render_template("lol.html", post=post)
+    post_title = post_title.replace("_", " ")
+    post = Post.query.filter(func.lower(Post.title) == post_title).first()
+    return render_template("post.html", post=post)
 
 if __name__ == '__main__':
     app.run(debug=True)
