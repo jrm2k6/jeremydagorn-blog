@@ -1,0 +1,30 @@
+pre.code-snippet {
+	padding: 14px;
+	display: inline-block;
+}
+
+.post-attributes {
+
+}
+
+.left-column {
+	list-style-type: none;
+}
+
+.author {
+	color: #ffa5d2;
+}
+
+.date {
+	color: #d8d8d8;
+}
+
+.category {
+	color: #d8d8d8;
+}
+
+.post-title {
+	padding-bottom: 25px;
+	color: #e77471;
+	font-size: 25px;
+}
