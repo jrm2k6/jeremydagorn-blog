@@ -21,6 +21,11 @@ def load_blogpost(file_to_load):
 		content = ''.join(f.readlines())
 	return content
 
+def get_content_as_markdown(file_to_load):
+	content = load_blogpost('posts/' + file_to_load)
+	content = Markup(markdown.markdown(content))
+	return content
+
 def generate_previews(posts):
 	results = []
 	for post in posts:

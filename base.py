@@ -9,7 +9,7 @@ from forms import AddUserForm, AddProjectForm, AddStatusForm, \
 from flask import jsonify, json, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
-from posts import PostWithMarkdownContent, load_blogpost, generate_previews
+from posts import PostWithMarkdownContent, load_blogpost, generate_previews, get_content_as_markdown
 from sqlalchemy import func
 
 from authentication import requires_auth
@@ -223,7 +223,9 @@ def update_resource(model_name, _id):
 def fetch_post(post_title):
     post_title = post_title.replace("_", " ")
     post = Post.query.filter(func.lower(Post.title) == post_title).first()
-    return render_template("post.html", post=post)
+    content_markdown = get_content_as_markdown(post.content)
+    post_markdown = PostWithMarkdownContent(post, content_markdown)
+    return render_template("post.html", post=post_markdown)
 
 if __name__ == '__main__':
     app.run(debug=True)
