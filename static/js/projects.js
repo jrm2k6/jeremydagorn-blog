@@ -60,12 +60,26 @@ Cell.prototype = {
 
 	setMouseListeners : function() {
 		this.rectangle.on("mouseover", function() {
-			$(this).css("background-color", "gray");
+			$(this).css({
+				        "background-color": "gray",
+		 				"-webkit-transition": "0.5s",
+    					"-moz-transition": "0.5s",
+    					"-o-transition": "0.5s",
+    					"-ms-transition": "0.5s",
+    					"transition": "0.5s"
+    				});
 		})
 
 		this.rectangle.on("mouseout", function() {
 			var color = $(this).data("bg-color");
-			$(this).css("background-color", color);
+			$(this).css({
+				        "background-color": color,
+		 				"-webkit-transition": "0.5s",
+    					"-moz-transition": "0.5s",
+    					"-o-transition": "0.5s",
+    					"-ms-transition": "0.5s",
+    					"transition": "0.5s"
+    				});
 		})
 	},
 
