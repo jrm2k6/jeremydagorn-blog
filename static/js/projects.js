@@ -2,6 +2,7 @@ var cells = [];
 var _projects;
 var MIN_SIZE = 400;
 var listLayout;
+var cellsLayout;
 
 function getWidthAsStringFromCSSProperty(value) {
 	return value.replace("px", "").toString();
@@ -448,82 +449,87 @@ ListLayout.prototype = {
 	}
 };
 
-function translateProjectsToRightExceptDiv(index) {
-	var $rectangles = $("[id^=rect_]");
+function CellLayout() {};
 
-	$rectangles.each(function(i) {
-		if (i != index) {
-			$(this).fadeOut({queue: false, duration: 200});
-			$(this).animate(
-			{
-				left: "+=400px"
-			}, 1500);
-		}
-	});
-}
+CellLayout.prototype = {
+	translateProjectsToRightExceptDiv: function (index) {
+		var $rectangles = $("[id^=rect_]");
 
-function addCrossToProjectDiv($div) {
-	var $closeButton = $('<div>');
-		$closeButton.css({"position": "absolute", "top": "0px", "right": "0px"});
-		$closeButton.addClass("glyphicon white glyphicon-remove");
-	$div.append($closeButton);
+		$rectangles.each(function(i) {
+			if (i != index) {
+				$(this).fadeOut({queue: false, duration: 200});
+				$(this).animate(
+				{
+					left: "+=400px"
+				}, 1500);
+			}
+		});
+	},
 
-	$closeButton.on("click", function() {
-		displayProjectsAsCells(_projects);
-	});
+	addCrossToProjectDiv: function($div) {
+		var $closeButton = $('<div>');
+			$closeButton.css({"position": "absolute", "top": "0px", "right": "0px"});
+			$closeButton.addClass("glyphicon white glyphicon-remove");
+		$div.append($closeButton);
 
-	$(document).keyup(function(event) {
-		if (event.which == 27) {
+		$closeButton.on("click", function() {
 			displayProjectsAsCells(_projects);
-			$(document).unbind("keyup");
-		}
-	})
-}
+		});
 
-function goProjectFullView($div) {
-	var index = $div.attr("id").split("_")[1];
-	moveProjectDivToTopLeft($div);
-	createProjectFullView(index);
-	translateProjectsToRightExceptDiv(index);
-}
+		$(document).keyup(function(event) {
+			if (event.which == 27) {
+				displayProjectsAsCells(_projects);
+				$(document).unbind("keyup");
+			}
+		});
+	},
+
+	goProjectFullView: function($div) {
+		var index = $div.attr("id").split("_")[1];
+		moveProjectDivToTopLeft($div);
+		createProjectFullView(index);
+		translateProjectsToRightExceptDiv(index);
+	},
 
 
-function moveProjectDivToTopLeft($div) {
-	$pgrid = $("#pgrid");
-	var _width = $pgrid.css("width");
-	var _height = $pgrid.css("height");
-	$div.animate({
-		top: 0,
-		left: 0,
-		width: _width,
-	}, 1500)
-}
+	moveProjectDivToTopLeft: function($div){
+		$pgrid = $("#pgrid");
+		var _width = $pgrid.css("width");
+		var _height = $pgrid.css("height");
+		$div.animate({
+			top: 0,
+			left: 0,
+			width: _width,
+		}, 1500)
+	},
 
-function createProjectFullView(index) {
-	cell = cells[index];
+	createProjectFullView: function(index) {
+		cell = cells[index];
 
-	addCrossToProjectDiv(cell.rectangle);
+		addCrossToProjectDiv(cell.rectangle);
 
-	var $status = $("#status_icon_" + index);
-	$status.removeClass("glyphicon " + cell.project.getGlyphiconNameFromStatus());
-	$status.html("");
+		var $status = $("#status_icon_" + index);
+		$status.removeClass("glyphicon " + cell.project.getGlyphiconNameFromStatus());
+		$status.html("");
 
-	var $statusAsString = $('<div>', { id: "status_" + index, text: cell.project.getStatusAsString()});
-	$statusAsString.css({"font-size": "22px", "float" : "left", "position" : "absolute", "top" : "10px", "left" : "5px"});
-	cell.rectangle.append($statusAsString);
-	$(".glyphicon").css({"font-size": "48px", "top" : "5px", "right" : "5px"});
+		var $statusAsString = $('<div>', { id: "status_" + index, text: cell.project.getStatusAsString()});
+		$statusAsString.css({"font-size": "22px", "float" : "left", "position" : "absolute", "top" : "10px", "left" : "5px"});
+		cell.rectangle.append($statusAsString);
+		$(".glyphicon").css({"font-size": "48px", "top" : "5px", "right" : "5px"});
 
-	var $title = $("#title_" + index);
-	$title.css({color: "white", "font-size": "35px", "text-align": "center"});
+		var $title = $("#title_" + index);
+		$title.css({color: "white", "font-size": "35px", "text-align": "center"});
 
-	var $description = $("#description_" + index);
-	$description.text(cell.project.description);
-	$description.css({color: "white", "font-size": "18px", "padding-bottom" : "10px"});
+		var $description = $("#description_" + index);
+		$description.text(cell.project.description);
+		$description.css({color: "white", "font-size": "18px", "padding-bottom" : "10px"});
 
-	var $technologies =  $("#technologies_" + index);
-	$technologies.text("Technologies used: " + cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
-	$technologies.css({color: "white", "font-size": "22px"});
-	
+		var $technologies =  $("#technologies_" + index);
+		$technologies.text("Technologies used: " + cell.project.technologies.toUpperCase().replace(' ', '').split(',').join(" | "));
+		$technologies.css({color: "white", "font-size": "22px"});
+		
+	}
+
 }
 
 $(window).load(function() {
@@ -539,7 +545,8 @@ $(window).load(function() {
 			listLayout = new ListLayout();
 			listLayout.displayProjectsAsList();
 		} else {
-			displayProjectsAsCells(_projects);
+			cellsLayout = new CellLayout();
+			cellsLayout.displayProjectsAsCells(_projects);
 		}
 	});
 });
