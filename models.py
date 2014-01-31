@@ -36,6 +36,7 @@ class User(db.Model):
 class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(400), unique=True)
+	#TODO: change name description to content_filename
 	description = db.Column(db.String(1000))
 	technologies = db.Column(db.String(200))
 	url = db.Column(db.String(500))
