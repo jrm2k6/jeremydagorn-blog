@@ -227,5 +227,10 @@ def fetch_post(post_title):
     post_markdown = PostWithMarkdownContent(post, content_markdown)
     return render_template("post.html", post=post_markdown)
 
+
+@app.route('/upload_datafile', methods=['POST'])
+def upload_datafile():
+    return render_template("admin.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
