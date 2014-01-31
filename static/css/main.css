@@ -36,12 +36,15 @@ body {
     background: url(img/me.jpg) no-repeat;
 }
 
-.navbar-inner {
+.navbar-inner, #footer{
     position: relative;
     background-image: none;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
     border-width: 0;
+}
+
+.navbar-inner {
+    border-radius: 5px;
 }
 
 .navbar .nav, .navbar .nav > li {
@@ -66,5 +69,14 @@ body {
 .navbar .nav > li > a:hover {
     color: #ffffff;
     text-decoration: underline;
+}
+
+#footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    color: #ddd;
+    font-size: 11px;
 }
 
