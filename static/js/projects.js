@@ -209,7 +209,6 @@
 
 	function fetchProjects() {
 		$.getJSON( "/fetch/projects", function(data) {
-			console.log(cellsLayout);
 	  		cellsLayout.displayProjectsAsCells(data);
 		});
 	}
@@ -252,21 +251,6 @@
 		while (c1 == c2);
 
 		return [COLORS[c1], COLORS[c2]];
-	}
-
-	function displayLastProject(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
-		var square = createSquareElement(index, index.toString());
-		var randomWidth = getRandom(300, gridTotalWidth/2);
-		var randomHeight = getRandom(300, gridTotalHeight/3);
-
-		var firstProjectWidth = randomWidth;
-		var cell = new Cell();
-		var cellColor = getColor()[0];
-		
-		$gridDomElement.append(square);
-
-		cell.applyCSSAndAnimate(index, square, firstProjectWidth, randomHeight, 0, posY, "bottom", cellColor);
-		cells.push(cell);
 	}
 
 	function fadeOutCells() {
@@ -521,7 +505,7 @@
 			}
 
 			if (projects.length % 2 == 1) {
-				displayLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
+				this.displayLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
 			}
 
 			for (var i=0; i<cells.length; i++) {
@@ -532,6 +516,21 @@
 		    		self.goProjectFullView($(this));
 		    	});
 			}
+		},
+
+		displayLastProject: function(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
+			var square = createSquareElement(index, index.toString());
+			var randomWidth = getRandom(300, gridTotalWidth/2);
+			var randomHeight = getRandom(300, gridTotalHeight/3);
+
+			var firstProjectWidth = randomWidth;
+			var cell = new Cell();
+			var cellColor = getColor()[0];
+			
+			$gridDomElement.append(square);
+
+			cell.applyCSSAndAnimate(index, square, firstProjectWidth, randomHeight, 0, posY, "bottom", cellColor);
+			cells.push(cell);
 		}
 	};
 
