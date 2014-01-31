@@ -26,8 +26,10 @@ pre.code-snippet {
 .post-title {
 	font-weight: bold;
 	padding-bottom: 25px;
-	color: #e77471;
+	color: #ffa5d2;
 	font-size: 25px;
+	opacity: 0.8;
+	text-shadow: 2px 2px 4px #000;
 }
 
 div.post-content {

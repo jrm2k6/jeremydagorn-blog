@@ -14,6 +14,7 @@ a.post-title {
 	color: #ffa5d2;
 	font-size: 24px;
 	font-weight: bold;
+	text-shadow: 2px 2px 4px #000;
 }
 
 a.post-title:hover {
