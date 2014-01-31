@@ -2,7 +2,8 @@ body {
 	color: white;
 }
 
-.post {
+div.post {
+	font-family: 'Oxygen', sans-serif;
 	margin-top: 10px;
 	width: 75%;
 	margin-left: 15%;

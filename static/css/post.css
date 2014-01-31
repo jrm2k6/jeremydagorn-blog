@@ -24,7 +24,13 @@ pre.code-snippet {
 }
 
 .post-title {
+	font-weight: bold;
 	padding-bottom: 25px;
 	color: #e77471;
 	font-size: 25px;
+}
+
+div.post-content {
+	font-family: 'Oxygen', sans-serif;
+	font-size: 14px;
 }
