@@ -7,7 +7,6 @@ div.post {
 	margin-top: 10px;
 	width: 75%;
 	margin-left: 15%;
-	border-bottom: 1px solid #ffa5d2;
 	padding-bottom: 15px;
 }
 
@@ -17,8 +16,26 @@ a.post-title {
 	font-weight: bold;
 }
 
+a.post-title:hover {
+	text-decoration: none;
+	border-bottom: 1px solid #ffa5d2;
+	-webkit-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-o-transition: 0.5s;
+	-ms-transition: 0.5s;
+	transition: 0.5;
+}
+
+hr.separator {
+	border-color: #ffa5d2;
+	opacity: 0.2;
+	width: 25%;
+	margin-left: 25%;
+}
+
 a.read-more {
 	color: #ffa5d2;
+	opacity: 0.8;
 }
 
 a.read-more:hover {
