@@ -5,7 +5,20 @@
 {% block css %}
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/home.css') }}"></link>
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/post.css') }}"></link>
 {% endblock %}
 {% block body %}
-  {{ post.content}}
+<div class="container-fluid">
+  <div class="col-md-2 post-attributes">
+  <ul class="left-column">
+    <li class="author">{{ post.post.post_author.username.upper() }} </li>
+    <li class="date">{{ post.post.date.date().strftime('%b, %d %Y').upper() }} </li>
+    <li class="category">{{ post.post.post_category.name.upper() }} </li>
+  </ul>
+  </div>
+  <div class="col-md-10 post-content">
+    <div class="post-title"> {{ post.post.title }} </div>
+    {{ post.content}}
+  </div>
+</div>
 {% endblock %}
