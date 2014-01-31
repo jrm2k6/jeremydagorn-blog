@@ -2,11 +2,12 @@ body {
 	color: white;
 }
 
-#post {
-	margin-top: 30px;
+.post {
+	margin-top: 10px;
 	width: 75%;
 	margin-left: 15%;
 	border-bottom: 1px solid #ffa5d2;
+	padding-bottom: 15px;
 }
 
 a.post-title {
@@ -26,4 +27,12 @@ a.read-more:hover {
 
 .post-content {
 	padding-top: 15px;
+	padding-bottom: 10px;
+	color: #d8d8d8;
 }
+
+.post-attributes {
+	padding-top: 1%;
+	padding-left: 5%;
+}
+

@@ -8,12 +8,12 @@
 {% endblock %}
 {% block body %}
 	{% for preview in previews_posts %}
-		<div id="post">
+		<div class="post container">
 			<a class="post-title" href="/posts/{{preview.title.lower().replace(" ", "_")}}"> {{ preview.title }} </a>
 			
 			<div class="post-content"> {{ preview.content }} </div>
 
-			<a class="read-more" href="/posts/{{preview.title.lower().replace(" ", "_")}}" >Read more</a>
+			<a class="read-more" href="/posts/{{preview.title.lower().replace(" ", "_")}}" >Read more...</a>
 		</div>
 	{% endfor %}
 {% endblock %}
