@@ -1,3 +1,6 @@
+/* global $, document, window, CONFIG, removeCurrentActiveClass*/
+'use strict';
+
 
 var cells = [];
 var _projects;
@@ -19,7 +22,7 @@ function getRandom(minValue, maxValue) {
 	return p;
 }	
 
-function Cell() {};
+function Cell() {}
 
 Cell.prototype = {
 	init : function(id, rectangle, x, y, width, height, direction, color) {
@@ -44,11 +47,11 @@ Cell.prototype = {
 			height: _height,
 			position: 'absolute',
 			display: 'none',
-		}
+		};
 
 		var animParams = {
 			opacity: "show",
-		}
+		};
 
 		var params = this.generateAnimationDirection(_direction);
 
@@ -63,26 +66,26 @@ Cell.prototype = {
 	setMouseListeners : function() {
 		this.rectangle.on("mouseover", function() {
 			$(this).css({
-				        "background-color": "gray",
-		 				"-webkit-transition": "0.5s",
-    					"-moz-transition": "0.5s",
-    					"-o-transition": "0.5s",
-    					"-ms-transition": "0.5s",
-    					"transition": "0.5s"
-    				});
-		})
+						"background-color": "gray",
+						"-webkit-transition": "0.5s",
+						"-moz-transition": "0.5s",
+						"-o-transition": "0.5s",
+						"-ms-transition": "0.5s",
+						"transition": "0.5s"
+			});
+		});
 
 		this.rectangle.on("mouseout", function() {
 			var color = $(this).data("bg-color");
 			$(this).css({
-				        "background-color": color,
-		 				"-webkit-transition": "0.5s",
-    					"-moz-transition": "0.5s",
-    					"-o-transition": "0.5s",
-    					"-ms-transition": "0.5s",
-    					"transition": "0.5s"
-    				});
-		})
+						"background-color": color,
+						"-webkit-transition": "0.5s",
+						"-moz-transition": "0.5s",
+						"-o-transition": "0.5s",
+						"-ms-transition": "0.5s",
+						"transition": "0.5s"
+					});
+		});
 	},
 
 	removeMouseListeners : function() {
@@ -93,7 +96,7 @@ Cell.prototype = {
 	},
 
 	setLine : function(i) {
-		if (i == 0) {
+		if (i === 0) {
 			this.line = 1;
 		} else {
 			this.line = Math.round(i/2);
@@ -113,7 +116,7 @@ Cell.prototype = {
 			"padding-top": "10px",
 			"padding-left": "10px",
 			"spacing": "5px",
-		})
+		});
 		var statusId = this.project.status;
 
 		var $statusIcon = $('<div>', {id: "status_icon_" + this.id});
@@ -138,25 +141,25 @@ Cell.prototype = {
 		var _cssParams = {};
 		var _animParams = {};
 		if (direction == "top") {
-			_cssParams["top"] = this.y - this.height;
-			_cssParams["left"] = this.x;
+			_cssParams.top = this.y - this.height;
+			_cssParams.left = this.x;
 
-			_animParams["top"] = this.y;
+			_animParams.top = this.y;
 		} else if (direction == "bottom") {
-			_cssParams["top"] = this.y + this.height;
-			_cssParams["left"] = this.x;
+			_cssParams.top = this.y + this.height;
+			_cssParams.left = this.x;
 
-			_animParams["top"] = this.y;
+			_animParams.top = this.y;
 		} else if (direction == "left") {
-			_cssParams["top"] = this.y;
-			_cssParams["left"] = this.x - this.width;
+			_cssParams.top = this.y;
+			_cssParams.left = this.x - this.width;
 
-			_animParams["left"] = this.x;
+			_animParams.left = this.x;
 		}  else if (direction == "right") {
-			_cssParams["top"] = this.y;
-			_cssParams["left"] = this.x + this.width;
+			_cssParams.top = this.y;
+			_cssParams.left = this.x + this.width;
 
-			_animParams["left"] = this.x;
+			_animParams.left = this.x;
 		}
 
 		return [_cssParams, _animParams];
@@ -164,7 +167,7 @@ Cell.prototype = {
 };
 
 
-function Project() {};
+function Project() {}
 
 Project.prototype = {
 	
@@ -178,20 +181,20 @@ Project.prototype = {
 
 	getStatusAsString : function() {
 		var STATUS = ["DONE", "IN-PROGRESS"];
-		var status = this.status-1
+		var status = this.status-1;
 		if (this.status !== undefined) {
-			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
-				 + "Have you referenced your new status in this array?")
+			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." +
+				"Have you referenced your new status in this array?");
 			return STATUS[status];
 		}
 	},
 
 	getGlyphiconNameFromStatus : function() {
 		var STATUS = ["glyphicon-ok", "glyphicon-pencil"];
-		var status = this.status-1
+		var status = this.status-1;
 		if (this.status !== undefined) {
-			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." 
-				 + "Have you referenced your new status in this array?")
+			if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." +
+				"Have you referenced your new status in this array?");
 			return STATUS[status];
 		}
 	},
@@ -205,7 +208,7 @@ Project.prototype = {
 	}
 };
 
-function ListLayout() {};
+function ListLayout() {}
 
 ListLayout.prototype = {
 	createContainerProject : function(i) {
@@ -220,11 +223,11 @@ ListLayout.prototype = {
 		$div.attr("data-status", project.getStatusAsString());
 		$div.attr("data-description", project.getTruncatedDescription());
 		$div.mouseover(function() {
-			$div.css("color", "#e77471")
-		})
+			$div.css("color", "#e77471");
+		});
 
 		$div.mouseout(function() {
-			$div.css("color", "white")
+			$div.css("color", "white");
 		});
 		var self = this;
 		$div.on("click", function() {
@@ -236,7 +239,7 @@ ListLayout.prototype = {
 	},
 
 	closeOpenItem : function(){
-		if (this.openItem == undefined) return;
+		if (this.openItem === undefined) return;
 
 		var id = parseInt(this.openItem.attr("id").split("_")[2], 10);
 		var idFullDivs = id + 1;
@@ -303,7 +306,7 @@ ListLayout.prototype = {
 	}
 };
 
-function CellLayout() {};
+function CellLayout() {}
 
 CellLayout.prototype = {
 	translateProjectsToRightExceptDiv: function (index) {
@@ -348,18 +351,18 @@ CellLayout.prototype = {
 
 
 	moveProjectDivToTopLeft: function($div){
-		$pgrid = $("#pgrid");
+		var $pgrid = $("#pgrid");
 		var _width = $pgrid.css("width");
 		var _height = $pgrid.css("height");
 		$div.animate({
 			top: 0,
 			left: 0,
 			width: _width,
-		}, 1500)
+		}, 1500);
 	},
 
 	createProjectFullView: function(index) {
-		cell = cells[index];
+		var cell = cells[index];
 
 		this.addCrossToProjectDiv(cell.rectangle);
 
@@ -386,7 +389,7 @@ CellLayout.prototype = {
 
 	displayProjectsAsCells: function(projects) {
 		var self = this;
-		if (projects.length == 0) {
+		if (projects.length === 0) {
 			$("#listing").css('display', 'none');
 		}
 		clearMainDiv();
@@ -405,8 +408,8 @@ CellLayout.prototype = {
 		var posY = 0;
 
 
-		 for (var i=0; i<MAX_INDEX; i+=2) {
-		 	var squareDivLeft = createSquareElement(i, i.toString());
+		for (var i=0; i<MAX_INDEX; i+=2) {
+			var squareDivLeft = createSquareElement(i, i.toString());
 			var squareDivRight = createSquareElement(i+1, (i+1).toString());
 			
 			var randomWidth = getRandom(300, gridTotalWidth/2);
@@ -439,13 +442,13 @@ CellLayout.prototype = {
 			this.displayLastProject(MAX_INDEX, posY, gridTotalWidth, gridTotalHeight, $grid);
 		}
 
-		for (var i=0; i<cells.length; i++) {
+		for (i=0; i<cells.length; i++) {
 			var cell = cells[i];
 			cell.setProject(projects[i]);
 			cell.rectangle.on("click", function() {
 				cell.removeMouseListeners();
-	    		self.goProjectFullView($(this));
-	    	});
+				self.goProjectFullView($(this));
+			});
 		}
 	},
 
@@ -481,7 +484,7 @@ function getDirection(i, maxIndex) {
 			d = DIRECTIONS[3];
 			break;
 		default:
-			if (i % 2 == 0) {
+			if (i % 2 === 0) {
 				d = DIRECTIONS[1];
 			} else {
 				d = DIRECTIONS[2];
@@ -511,7 +514,7 @@ function fadeOutCellsAndDisplayProjectsAsList() {
 	var displayListCallback = function() {};
 	
 	$rectangles.each(function(i, val) {
-		if (i == lastIndex) {
+		if (i === lastIndex) {
 			displayListCallback = function() {
 				clearMainDiv();
 				listLayout.displayProjectsAsList();
@@ -524,7 +527,7 @@ function fadeOutCellsAndDisplayProjectsAsList() {
 
 function fetchProjects() {
 	$.getJSON( "/fetch/projects", function(data) {
-  		cellsLayout.displayProjectsAsCells(data);
+		cellsLayout.displayProjectsAsCells(data);
 	});
 }
 
@@ -539,7 +542,7 @@ function clearMainDiv() {
 
 $(window).load(function() {
 	removeCurrentActiveClass();
-	cellsLayout = new CellLayout()
+	cellsLayout = new CellLayout();
 	
 	$(".projects").addClass("active");
 
@@ -548,7 +551,7 @@ $(window).load(function() {
 	}
 
 	$("#listing").on("click", function() {
-		if ($("#listing").attr("data-layout") == 0) {
+		if ($("#listing").attr("data-layout") === 0) {
 			listLayout = new ListLayout();
 			listLayout.displayProjectsAsList();
 		} else {
