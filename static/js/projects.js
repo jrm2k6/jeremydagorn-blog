@@ -206,74 +206,6 @@
 		}
 	};
 
-
-	function fetchProjects() {
-		$.getJSON( "/fetch/projects", function(data) {
-	  		cellsLayout.displayProjectsAsCells(data);
-		});
-	}
-
-	function getDirection(i, maxIndex) {
-		var DIRECTIONS = ["top", "left", "right", "bottom"];
-		var d;
-
-		if (i > maxIndex) throw new Error("Current index cannot be bigger than maxIndex");
-
-		switch (i) {
-			case 0:
-			case 1:
-				d = DIRECTIONS[0];
-				break;
-			case maxIndex - 1:
-			case maxIndex - 2:
-				d = DIRECTIONS[3];
-				break;
-			default:
-				if (i % 2 == 0) {
-					d = DIRECTIONS[1];
-				} else {
-					d = DIRECTIONS[2];
-				}
-				break;
-		}
-
-		return d;
-	}
-
-	function getColor() {
-		var COLORS = ["#FF7575", "#6094DB", "#FFCB2F", "#AAAAFF", "#1BA63B"];
-		var c1;
-		var c2;
-		do {
-			c1 = getRandom(0, COLORS.length-2);
-			c2 = getRandom(0, COLORS.length-2);
-		}
-		while (c1 == c2);
-
-		return [COLORS[c1], COLORS[c2]];
-	}
-
-	function fadeOutCells() {
-		var $rectangles = $("[id^=rect_]");
-		var lastIndex = $rectangles.length - 1;
-		var displayListCallback = function() {};
-		
-		$rectangles.each(function(i, val) {
-			if (i == lastIndex) {
-				displayListCallback = function() {
-					clearMainDiv();
-					listLayout.displayProjectsAsList();
-				};
-			}
-
-			$(this).fadeOut(1000, displayListCallback);
-		});
-	}
-
-	function clearMainDiv() {
-		$("#pgrid").html("");
-	}
-
 	function ListLayout() {};
 
 	ListLayout.prototype = {
@@ -357,7 +289,7 @@
 			$("#listing").text("Display as cells layout");
 			$("#listing").attr("data-layout", 1);
 		
-			fadeOutCells();
+			fadeOutCellsAndDisplayProjectsAsList();
 			
 			for (var i=0; i<cells.length; i++) {
 				var project = cells[i].project;
@@ -533,6 +465,75 @@
 			cells.push(cell);
 		}
 	};
+
+	function getDirection(i, maxIndex) {
+		var DIRECTIONS = ["top", "left", "right", "bottom"];
+		var d;
+
+		if (i > maxIndex) throw new Error("Current index cannot be bigger than maxIndex");
+
+		switch (i) {
+			case 0:
+			case 1:
+				d = DIRECTIONS[0];
+				break;
+			case maxIndex - 1:
+			case maxIndex - 2:
+				d = DIRECTIONS[3];
+				break;
+			default:
+				if (i % 2 == 0) {
+					d = DIRECTIONS[1];
+				} else {
+					d = DIRECTIONS[2];
+				}
+				break;
+		}
+
+		return d;
+	}
+
+	function getColor() {
+		var COLORS = ["#FF7575", "#6094DB", "#FFCB2F", "#AAAAFF", "#1BA63B"];
+		var c1;
+		var c2;
+		do {
+			c1 = getRandom(0, COLORS.length-2);
+			c2 = getRandom(0, COLORS.length-2);
+		}
+		while (c1 == c2);
+
+		return [COLORS[c1], COLORS[c2]];
+	}
+
+	function fadeOutCellsAndDisplayProjectsAsList() {
+		var $rectangles = $("[id^=rect_]");
+		var lastIndex = $rectangles.length - 1;
+		var displayListCallback = function() {};
+		
+		$rectangles.each(function(i, val) {
+			if (i == lastIndex) {
+				displayListCallback = function() {
+					clearMainDiv();
+					listLayout.displayProjectsAsList();
+				};
+			}
+
+			$(this).fadeOut(1000, displayListCallback);
+		});
+	}
+
+	function fetchProjects() {
+		$.getJSON( "/fetch/projects", function(data) {
+	  		cellsLayout.displayProjectsAsCells(data);
+		});
+	}
+
+
+	function clearMainDiv() {
+		$("#pgrid").html("");
+	}
+
 
 $(window).load(function() {
 	removeCurrentActiveClass();
