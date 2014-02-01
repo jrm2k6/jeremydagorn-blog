@@ -1,3 +1,5 @@
+'use strict';
+
 var REGEX_LIST_FIELDS = /[\'\[\]\' ']/g;
 
 var getResourcePath = function(that) {
@@ -5,7 +7,7 @@ var getResourcePath = function(that) {
 	var selectedId = $(that).closest('tr').find('td#id')[0].innerText;
 
 	return modelName + '/' + selectedId;
-}
+};
 
 function removeAlerts() {
     setTimeout(function(){
@@ -28,7 +30,7 @@ $(document).ready(function() {
 	$(".edit-btn").click(function() {
 		getResourcePath(this);
 		var listFields = $(this).closest('table').data('list-fields');
-		listFields = listFields.replace(REGEX_LIST_FIELDS, "").split(',')
+		listFields = listFields.replace(REGEX_LIST_FIELDS, "").split(',');
 		
 		var modelName = $(this).closest('table').data('model-name');
 		var editables = $(this).closest('tr').find('td.editable').each(function() {
@@ -38,7 +40,7 @@ $(document).ready(function() {
 		});
 
 		$(this).addClass("btn-success").val("Update").click(function() {
-			var newValuesForModelFields = {}
+			var newValuesForModelFields = {};
 			var idToUpdate;
 			for (var i = 0; i < listFields.length; i++) {
 				var key = listFields[i];
@@ -50,7 +52,7 @@ $(document).ready(function() {
 					var inputValue = $(this).closest('tr').find(inputStr).val();
 					newValuesForModelFields['_'+key] = inputValue;
 				}
-			};
+			}
 			
 			modelName = modelName + '/' + idToUpdate;
 
