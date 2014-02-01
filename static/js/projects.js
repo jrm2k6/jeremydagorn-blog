@@ -445,8 +445,8 @@ CellLayout.prototype = {
 		for (i=0; i<cells.length; i++) {
 			var cell = cells[i];
 			cell.setProject(projects[i]);
-			cell.rectangle.on("click", function() {
-				cell.removeMouseListeners();
+			cell.rectangle.on("click", {'cellClicked' : cell }, function(event) {
+				event.data.cellClicked.removeMouseListeners();
 				self.goProjectFullView($(this));
 			});
 		}
