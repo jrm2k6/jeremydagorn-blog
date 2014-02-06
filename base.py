@@ -1,3 +1,4 @@
+import json
 import sqlite3
 import markdown
 from flask import Flask, Response, request, session, g, redirect, url_for, \
@@ -6,7 +7,7 @@ from contextlib import closing
 from models import db, User, Project, Technology, Status, Category, Post
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
      AddCategoryForm, AddTechnologyForm, AddPostForm
-from flask import jsonify, json, Markup
+from flask import jsonify, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
 from posts import PostWithMarkdownContent, load_blogpost, generate_previews, get_content_as_markdown
