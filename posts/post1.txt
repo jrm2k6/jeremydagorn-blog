@@ -1,6 +1,0 @@
-#Here is a post
-which is cool
-
-    def test():
-        print ahhahaha
-
