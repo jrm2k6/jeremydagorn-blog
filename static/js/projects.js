@@ -551,7 +551,7 @@ $(window).load(function() {
 	}
 
 	$("#listing").on("click", function() {
-		if ($("#listing").attr("data-layout") === 0) {
+		if ($("#listing").attr("data-layout") === "0") {
 			listLayout = new ListLayout();
 			listLayout.displayProjectsAsList();
 		} else {
