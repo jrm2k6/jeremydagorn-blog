@@ -83,10 +83,14 @@ body {
 
 #footer {
     width: 100%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     text-align: center;
     color: #ddd;
     font-size: 11px;
+}
+
+#push {
+    height: 100px;
 }
 

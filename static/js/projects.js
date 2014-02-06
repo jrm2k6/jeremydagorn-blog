@@ -288,6 +288,7 @@ ListLayout.prototype = {
 	},
 
 	displayProjectsAsList : function() {
+		$("#pgrid").css("height", 800);
 		$("#listing").text("Display as cells layout");
 		$("#listing").attr("data-layout", 1);
 	
@@ -401,6 +402,7 @@ CellLayout.prototype = {
 		var MAX_INDEX = projects.length-1;
 
 		var $grid = $('#pgrid');
+		$grid.css({'width': '800px', 'height': '800px'});
 		var gridTotalWidth = getWidthAsStringFromCSSProperty($grid.css('width'));
 		var gridTotalHeight = getWidthAsStringFromCSSProperty($grid.css('height'));
 		
@@ -450,6 +452,14 @@ CellLayout.prototype = {
 				self.goProjectFullView($(this));
 			});
 		}
+
+		var lastCell = cells[cells.length-1];
+		var lastTop = lastCell.y + lastCell.height;
+		this.updateHeightGridDiv(lastTop);
+	},
+
+	updateHeightGridDiv : function(height) {
+		$("#pgrid").css("height", height + 20);
 	},
 
 	displayLastProject: function(index, posY, gridTotalWidth, gridTotalHeight, $gridDomElement) {
