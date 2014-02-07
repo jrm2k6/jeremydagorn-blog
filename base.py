@@ -191,8 +191,8 @@ def update_resource(model_name, _id):
     elif model_name == 'post':
         post = Post.query.filter_by(id=_id).first()
         if post is not None:
-            post.title = request.json['_title']
-            post.content = request.json['_content']
+            post.title = request.json['_title'].strip()
+            post.content = request.json['_content'].strip()
             post.date = datetime.now()
             post.category = request.json['_category']
             post.author = request.json['_author']
