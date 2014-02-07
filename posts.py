@@ -1,4 +1,5 @@
 import os
+import lxml.html
 import re
 import sys
 import config
@@ -37,13 +38,26 @@ def generate_previews(posts):
 	return results
 
 def get_text_elements(content_post):
-	NB_CHAR_PREVIEWS = 200
+	NB_CHAR_PREVIEWS = 400
 	TEXT_ELEMENT_REGEX = re.compile('<p>(.*?)</p>')
 	
 	text_without_new_lines =  ''.join(content_post.splitlines())
 	paragraphs = re.findall(TEXT_ELEMENT_REGEX, text_without_new_lines)
-	
-	for p in paragraphs:
-		if len(p) > NB_CHAR_PREVIEWS:
-			return p
-	return paragraphs[0] if len(paragraphs) > 0 else "No preview available"
+
+	h = lxml.html.fromstring(text_without_new_lines)
+	h = h.text_content().split(".")
+	preview = get_preview(h)
+
+	return preview or 'No preview available'
+
+def get_preview(sentences):
+	NB_CHAR_PREVIEWS = 400
+	current_nb_chars = 0
+	preview = []
+
+	for _sentence in sentences:
+		if current_nb_chars + len(_sentence) < NB_CHAR_PREVIEWS:
+			preview.append(_sentence)
+			current_nb_chars += len(_sentence)
+		else:
+			return '. '.join(preview) + "."
