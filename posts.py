@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import config
 from flask import url_for, Markup
 import markdown
 
@@ -17,12 +18,13 @@ class PreviewPost(object):
 
 def load_blogpost(file_to_load):
 	file_to_read = os.getcwd() + '/' + file_to_load
+	print file_to_read
 	with open(file_to_read, 'r') as f:
 		content = ''.join(f.readlines())
 	return content
 
 def get_content_as_markdown(file_to_load):
-	content = load_blogpost('posts/' + file_to_load)
+	content = load_blogpost(config.PATH_POSTS_FOLDER + file_to_load)
 	content = Markup(markdown.markdown(content))
 	return content
 
