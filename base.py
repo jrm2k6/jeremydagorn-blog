@@ -1,6 +1,7 @@
 import json
 import sqlite3
 import markdown
+import config
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
@@ -42,7 +43,7 @@ def show_home():
     to_return = []
     posts = Post.query.limit(10).all()
     for p in posts:
-        content = load_blogpost('posts/' + p.content)
+        content = load_blogpost(config.PATH_POSTS_FOLDER + p.content)
         content = Markup(markdown.markdown(content))
         to_return.append(PostWithMarkdownContent(p, content))
     previews = generate_previews(to_return)

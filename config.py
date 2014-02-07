@@ -8,5 +8,8 @@ SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'migrations')
 UPLOAD_FOLDER = '/installation/uploads'
 ALLOWED_EXTENSIONS = set(['csv'])
 
+# specify the absolute path of your posts folder
+PATH_POSTS_FOLDER='/posts/'
+
 SECRET = 'secret'
 USERNAME = 'admin'
