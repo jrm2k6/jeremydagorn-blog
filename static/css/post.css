@@ -36,3 +36,12 @@ div.post-content {
 	font-family: 'Oxygen', sans-serif;
 	font-size: 14px;
 }
+
+div.post-content h4 {
+	padding-top: 50px;
+}
+
+div.post-content h5 {
+	color: #e77471;
+	opacity: 0.8;
+}

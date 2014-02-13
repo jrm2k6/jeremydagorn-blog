@@ -17,7 +17,7 @@ from sqlalchemy import func
 from authentication import requires_auth
 
 app = Flask(__name__)
-Markdown(app)
+Markdown(app, extensions = ['codehilite'])
 app.config.from_object(__name__)
 app.config.from_object('config')
 app.secret_key = 'this is my secret key'
