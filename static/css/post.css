@@ -3,10 +3,6 @@ pre.code-snippet {
 	display: inline-block;
 }
 
-.post-attributes {
-
-}
-
 .left-column {
 	list-style-type: none;
 }
@@ -35,6 +31,7 @@ pre.code-snippet {
 div.post-content {
 	font-family: 'Oxygen', sans-serif;
 	font-size: 14px;
+	margin-bottom: 70px;
 }
 
 div.post-content h4 {
@@ -44,4 +41,8 @@ div.post-content h4 {
 div.post-content h5 {
 	color: #e77471;
 	opacity: 0.8;
+}
+
+.content {
+	margin-bottom: 70px;
 }
