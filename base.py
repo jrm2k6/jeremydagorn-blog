@@ -143,7 +143,6 @@ def add_category():
 def add_post():
     form = AddPostForm(request.form)
     if request.method == 'POST' and form.validate():
-        print form.content.data
         post = Post(form.title.data, form.content.data, datetime.now(), form.category.data, form.author.data)
         db.session.add(post)
         db.session.commit()
