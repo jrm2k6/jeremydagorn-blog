@@ -7,15 +7,7 @@ from . import PublisherAppTestCase
 import unittest
 
 
-class Tests(PublisherAppTestCase, TestCase):
-    
-    def setUp(self):
-        super(Tests, self).setUp()
-
-    def tearDown(self):
-        super(Tests, self).tearDown()
-
-class RenderTemplatesTest(Tests):
+class RenderTemplatesTest(PublisherAppTestCase, TestCase):
     render_templates = False
 
     def test_show_about(self):
