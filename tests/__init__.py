@@ -26,5 +26,6 @@ class PublisherAppTestCase(PublisherTestCase):
 
     def tearDown(self):
         super(PublisherAppTestCase, self).tearDown()
+        db.session.remove()
         db.drop_all()
         self.app_context.pop()
