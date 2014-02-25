@@ -7,19 +7,18 @@ from . import PublisherAppTestCase
 import unittest
 
 
-class Tests(PublisherAppTestCase):
+class Tests(PublisherAppTestCase, TestCase):
     
     def setUp(self):
-        super(PublisherAppTestCase, self).setUp()
+        super(Tests, self).setUp()
 
     def tearDown(self):
-        super(PublisherAppTestCase, self).tearDown()
+        super(Tests, self).tearDown()
 
 class RenderTemplatesTest(Tests):
     render_templates = False
 
     def test_show_about(self):
-        import pdb; pdb.set_trace()
         response = self.client.get('/about')
         self.assert_template_used('about.html')
 
