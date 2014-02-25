@@ -1,7 +1,9 @@
+import os
 from flask import Flask
 from flask.ext.testing import TestCase
 from unittest import TestCase
 from publishr import base
+from publishr.models import db
 
 class PublisherTestCase(TestCase):
     pass
@@ -9,14 +11,14 @@ class PublisherTestCase(TestCase):
 class PublisherAppTestCase(PublisherTestCase):
 
     def create_app(self):
+        basedir = os.path.abspath(os.path.dirname(__file__))
         app = base.app
-        app.config['TESTING'] = True
-        app.config['SQLITE_DATABASE_URI'] = 'sqlite:////temp/jdblog_test.db'
+        app.config.from_object('tests.config')
         return app
 
     def setUp(self):
         super(PublisherAppTestCase, self).setUp()
-        self.app = self._create_app()
+        self.app = self.create_app()
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
