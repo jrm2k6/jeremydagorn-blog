@@ -24,7 +24,7 @@ class RenderTemplatesTest(PublisherAppTestCase, TestCase):
 
     def test_show_projects(self):
         response = self.client.get('/projects')
-        self.assert_template_used('projects.html')   
+        self.assert_template_used('projects.html')
 
 
 if __name__ == "__main__":

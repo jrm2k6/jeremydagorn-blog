@@ -13,12 +13,12 @@ class PublisherAppTestCase(PublisherTestCase):
     def create_app(self):
         basedir = os.path.abspath(os.path.dirname(__file__))
         app = base.app
-        app.config.from_object('tests.config')
         return app
 
     def setUp(self):
         super(PublisherAppTestCase, self).setUp()
         self.app = self.create_app()
+        base.set_config(test=True)
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()

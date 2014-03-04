@@ -35,6 +35,12 @@ def create_app(db):
         db.init_app(app)
         db.create_all()
 
+def set_config(test):
+    if test:
+        app.config.from_object('tests.config')
+    else:
+        app.config.from_object('publishr.config')
+
 create_app(db)
 
 

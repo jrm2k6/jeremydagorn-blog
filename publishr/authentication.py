@@ -1,12 +1,13 @@
 from functools import wraps
 from flask import request, Response
-from config import USERNAME, SECRET
-
 
 def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
+    import base
+    USERNAME = base.app.config['USERNAME']
+    SECRET = base.app.config['SECRET']
     return username == USERNAME and password == SECRET
 
 def authenticate():
