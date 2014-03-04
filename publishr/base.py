@@ -47,7 +47,7 @@ create_app(db)
 @app.route('/')
 def show_home():
     to_return = []
-    posts = Post.query.limit(10).all()
+    posts = Post.query.all()
     for p in posts:
         content = load_blogpost(config.PATH_POSTS_FOLDER + p.content)
         content = Markup(markdown.markdown(content))
