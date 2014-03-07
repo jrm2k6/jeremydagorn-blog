@@ -49,7 +49,7 @@ def show_home():
     to_return = []
     posts = Post.query.all()
     for p in posts:
-        content = load_blogpost(config.PATH_POSTS_FOLDER + p.content)
+        content = load_blogpost(config.PATH_POSTS_FOLDER + p.filename_content)
         content = Markup(markdown.markdown(content))
         to_return.append(PostWithMarkdownContent(p, content))
     previews = generate_previews(to_return)
@@ -149,7 +149,7 @@ def add_category():
 def add_post():
     form = AddPostForm(request.form)
     if request.method == 'POST' and form.validate():
-        post = Post(form.title.data, form.content.data, datetime.now(), form.category.data, form.author.data)
+        post = Post(form.title.data, form.filename_content.data, datetime.now(), form.category.data, form.author.data)
         db.session.add(post)
         db.session.commit()
         flash('Post added', 'info')
@@ -197,7 +197,7 @@ def update_resource(model_name, _id):
         post = Post.query.filter_by(id=_id).first()
         if post is not None:
             post.title = request.json['_title'].strip()
-            post.content = request.json['_content'].strip()
+            post.filename_content = request.json['_filename_content'].strip()
             post.date = datetime.now()
             post.category = request.json['_category']
             post.author = request.json['_author']
@@ -230,7 +230,7 @@ def update_resource(model_name, _id):
 def fetch_post(post_title):
     post_title = post_title.replace("_", " ")
     post = Post.query.filter(func.lower(Post.title) == post_title).first()
-    content_markdown = get_content_as_markdown(post.content)
+    content_markdown = get_content_as_markdown(post.filename_content)
     post_markdown = PostWithMarkdownContent(post, content_markdown)
     return render_template("post.html", post=post_markdown)
 

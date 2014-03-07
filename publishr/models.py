@@ -37,7 +37,7 @@ class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(400), unique=True)
 	#TODO: change name description to content_filename
-	description = db.Column(db.String(1000))
+	filename = db.Column(db.String(1000))
 	technologies = db.Column(db.String(200))
 	url = db.Column(db.String(500))
 	status = db.Column(db.Integer, db.ForeignKey('status.id'))
@@ -87,14 +87,14 @@ class Technology(db.Model):
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(400))
-	content = db.Column(db.String(1000))
+	filename_content = db.Column(db.String(1000))
 	date = db.Column(db.DateTime)
 	category = db.Column(db.Integer, db.ForeignKey('category.id'))
 	author = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	def __init__(self, title, content, date, category, author):
+	def __init__(self, title, filename_content, date, category, author):
 		self.title = title
-		self.content = content
+		self.filename_content = filename_content
 		self.date = date
 		self.category = category
 		self.author = author
