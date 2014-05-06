@@ -1,4 +1,4 @@
-from publishr.models import User
+from publishr.models import User, Category, Technology, Status
 from unittest import TestCase
 import base64
 
@@ -25,3 +25,12 @@ class FlaskTestAuthenticationUtils(object):
 class FlaskTestModelUtils(TestCase, object):
 	def assert_user_with_username_exists_in_database(self, _username):
 		self.assertTrue(User.query.filter_by(username=_username).first() is not None)
+
+	def assert_category_with_name_exists_in_database(self, _name):
+		self.assertTrue(Category.query.filter_by(name=_name).first() is not None)
+
+	def assert_technology_with_name_exists_in_database(self, _name):
+		self.assertTrue(Technology.query.filter_by(name=_name).first() is not None)
+
+	def assert_status_with_name_exists_in_database(self, _status):
+		self.assertTrue(Status.query.filter_by(status=_status).first() is not None)
