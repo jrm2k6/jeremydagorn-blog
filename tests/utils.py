@@ -1,5 +1,7 @@
-from publishr.models import User, Category, Technology, Status
+from publishr.models import User, Category, Technology, Status, Project, Post
 from unittest import TestCase
+from publishr import base
+from publishr.models import db
 import base64
 
 class FlaskTestAuthenticationUtils(object):
@@ -34,3 +36,24 @@ class FlaskTestModelUtils(TestCase, object):
 
 	def assert_status_with_name_exists_in_database(self, _status):
 		self.assertTrue(Status.query.filter_by(status=_status).first() is not None)
+
+	def assert_project_with_title_exists_in_database(self, _title):
+		self.assertTrue(Project.query.filter_by(title=_title).first() is not None)
+
+	def assert_post_with_title_exists_in_database(self, _title):
+		self.assertTrue(Post.query.filter_by(title=_title).first() is not None)
+
+	def add_status_in_database(self):
+		status = Status("mock_status")
+		db.session.add(status)
+		db.session.commit()
+
+	def add_category_in_database(self):
+		category = Category("mock_category")
+		db.session.add(category)
+		db.session.commit()
+
+	def add_user_in_database(self):
+		user = User("mock_user", 'mock_email', 'mock_password')
+		db.session.add(user)
+		db.session.commit()

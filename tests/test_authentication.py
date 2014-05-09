@@ -62,6 +62,36 @@ class AdminAddItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationU
 
         self.assert_status_with_name_exists_in_database(status_name)
 
+    def test_add_project_in_database(self):
+
+        self.add_status_in_database()
+        
+        title_project = 'title_project'
+        res = self.get_auth_required_page_with_post_data(
+                                url='addproject', 
+                                data_dict=dict(title=title_project, description='description',
+                                    technologies='technology', url='www.url.com', status=1),
+                                username="username_test",
+                                password="secret_test")
+
+        self.assert_project_with_title_exists_in_database(title_project)
+
+
+    def test_add_post_in_database(self):
+
+        self.add_category_in_database()
+        self.add_user_in_database()
+
+        title_post = 'title_post'
+        res = self.get_auth_required_page_with_post_data(
+                            url='addpost', 
+                            data_dict=dict(title=title_post, filename='filename',
+                                category=1, author=1),
+                            username="username_test",
+                            password="secret_test")
+
+        self.assert_post_with_title_exists_in_database(title_post)
+
 
 if __name__ == "__main__":
     unittest.main()
