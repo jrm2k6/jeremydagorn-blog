@@ -43,6 +43,9 @@ class FlaskTestModelUtils(TestCase, object):
 	def assert_post_with_title_exists_in_database(self, _title):
 		self.assertTrue(Post.query.filter_by(title=_title).first() is not None)
 
+	def assert_user_with_username_exists_in_database_is_false(self, _name):
+		self.assertTrue(Project.query.filter_by(title=_name).first() is None)
+
 	def add_status_in_database(self):
 		status = Status("mock_status")
 		db.session.add(status)
@@ -54,6 +57,9 @@ class FlaskTestModelUtils(TestCase, object):
 		db.session.commit()
 
 	def add_user_in_database(self):
-		user = User("mock_user", 'mock_email', 'mock_password')
+		self.add_user_in_database_with_name('mock_user')
+
+	def add_user_in_database_with_name(self, name):
+		user = User(name, 'mock_email', 'mock_password')
 		db.session.add(user)
 		db.session.commit()
