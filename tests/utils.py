@@ -63,3 +63,7 @@ class FlaskTestModelUtils(TestCase, object):
 		user = User(name, 'mock_email', 'mock_password')
 		db.session.add(user)
 		db.session.commit()
+
+class AssertErrorCode(TestCase):
+	def assert410(self, res):
+		self.assertTrue(res._status_code == 410)
