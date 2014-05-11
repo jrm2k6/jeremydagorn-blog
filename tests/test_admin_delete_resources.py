@@ -14,7 +14,7 @@ class AdminDeleteItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
 	# no need to do it for all models, the behavior is the same
     def test_delete_user_in_database_with_existing_item(self):
     	username = 'my_user'
-    	self.add_user_in_database_with_name(username)
+    	self.add_user_in_database_with_name(username, True)
     	self.assert_user_with_username_exists_in_database(username)
 
         res = self.get_auth_required_page_with_post_data(

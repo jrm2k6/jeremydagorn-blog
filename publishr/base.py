@@ -218,7 +218,7 @@ def update_resource(model_name, _id):
             project.url = request.json['_url']
             project.status = request.json['_status']
     else:
-        resp = Response({}, status=500, mimetype='application/json')
+        return Response({}, status=500, mimetype='application/json')
     
     db.session.commit()
     js = json.dumps({})

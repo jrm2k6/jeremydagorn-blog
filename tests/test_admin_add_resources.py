@@ -51,7 +51,7 @@ class AdminAddItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationU
 
     def test_add_project_in_database(self):
 
-        self.add_status_in_database()
+        self.add_status_in_database(True)
         
         title_project = 'title_project'
         res = self.get_auth_required_page_with_post_data(
@@ -66,8 +66,8 @@ class AdminAddItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationU
 
     def test_add_post_in_database(self):
 
-        self.add_category_in_database()
-        self.add_user_in_database()
+        self.add_category_in_database(True)
+        self.add_user_in_database(True)
 
         title_post = 'title_post'
         res = self.get_auth_required_page_with_post_data(
