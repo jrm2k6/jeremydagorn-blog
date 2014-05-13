@@ -19,6 +19,7 @@ class PreviewPost(object):
 
 def load_blogpost(file_to_load):
 	file_to_read = os.getcwd() + '/' + file_to_load
+	#TODO: add try catch here
 	with open(file_to_read, 'r') as f:
 		content = ''.join(f.readlines())
 	return content
