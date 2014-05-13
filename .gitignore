@@ -4,3 +4,5 @@ env/*
 venv
 posts/
 config.py
+*/*.db
+tests/*.db
