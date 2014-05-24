@@ -2,6 +2,7 @@ import json
 import sqlite3
 import markdown
 import config
+import os
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
@@ -49,7 +50,7 @@ def show_home():
     to_return = []
     posts = Post.query.all()
     for p in posts:
-        content = load_blogpost(config.PATH_POSTS_FOLDER + p.filename_content)
+        content = load_blogpost(os.getcwd() + app.config["PATH_POSTS_FOLDER"] + p.filename_content)
         content = Markup(markdown.markdown(content))
         to_return.append(PostWithMarkdownContent(p, content))
     previews = generate_previews(to_return)
@@ -231,7 +232,7 @@ def fetch_post(post_title):
     post_title = post_title.replace("_", " ")
     post = Post.query.filter(func.lower(Post.title) == post_title).first()
     if post is not None:
-        content_markdown = get_content_as_markdown(post.filename_content)
+        content_markdown = get_content_as_markdown(os.getcwd() + app.config["PATH_POSTS_FOLDER"] + post.filename_content)
         post_markdown = PostWithMarkdownContent(post, content_markdown)
         return render_template("post.html", post=post_markdown)
     return render_template("404.html")
