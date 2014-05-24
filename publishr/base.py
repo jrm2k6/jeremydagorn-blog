@@ -233,8 +233,9 @@ def fetch_post(post_title):
     post = Post.query.filter(func.lower(Post.title) == post_title).first()
     if post is not None:
         content_markdown = get_content_as_markdown(os.getcwd() + app.config["PATH_POSTS_FOLDER"] + post.filename_content)
-        post_markdown = PostWithMarkdownContent(post, content_markdown)
-        return render_template("post.html", post=post_markdown)
+        if not content_markdown is None:
+            post_markdown = PostWithMarkdownContent(post, content_markdown)
+            return render_template("post.html", post=post_markdown)
     return render_template("404.html")
 
 

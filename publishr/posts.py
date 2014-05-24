@@ -18,14 +18,20 @@ class PreviewPost(object):
 
 
 def load_blogpost(file_to_load):
-	with open(file_to_load, 'r') as f:
-		content = ''.join(f.readlines())
-	return content
+	try:
+		with open(file_to_load, 'r') as f:
+			content = ''.join(f.readlines())
+			return content
+	except IOError as e:
+		return None
 
 def get_content_as_markdown(file_to_load):
 	content = load_blogpost(file_to_load)
-	content = Markup(markdown.markdown(content))
-	return content
+	if not content is None:
+		content = Markup(markdown.markdown(content))
+		return content
+	else:
+		return None
 
 def generate_previews(posts):
 	results = []

@@ -30,6 +30,18 @@ class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtil
         #then
         self.assert_template_used('404.html')
 
+    def test_fetch_post_with_content_file_not_existing(self):
+        #given 
+        title = 'This is my post test'
+        filename_content = 'post_not.txt'
+        self.add_post_in_database_with_properties(title, filename_content)
+
+        #when
+        self.get_page('/posts/this_is_my_post_test')
+
+        #then
+        self.assert_template_used('404.html')
+
 
 if __name__ == "__main__":
     unittest.main()
