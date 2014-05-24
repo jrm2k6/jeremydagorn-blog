@@ -36,7 +36,7 @@ $(document).ready(function() {
 		var editables = $(this).closest('tr').find('td.editable').each(function() {
 			var text = $(this).text();
 			var currentId = $(this).attr("id");
-			$(this).replaceWith('<td><input id="'+ currentId +'" type="text" value="' + text +'"></input></td>');
+			$(this).replaceWith('<td><input class="edited" id="'+ currentId +'" type="text" value="' + text +'"></input></td>');
 		});
 
 		$(this).addClass("btn-success").val("Update").click(function() {
@@ -66,10 +66,10 @@ $(document).ready(function() {
 
 			$(this).removeClass("btn-success").val("Edit");
 
-			var inputs = $(this).closest('tr').find('input').each(function() {
+			var inputs = $(this).closest('tr').find('.edited').each(function() {
 				var text = $(this).val();
 				var currentId = $(this).attr("id");
-				// $(this).replaceWith('<td class="editable" id=><input id="'+currentId+'"' + text +'</td>');
+				$(this).replaceWith('<td style="border:none;" class="editable" id="'+currentId+'">' + text.trim() +'</td>');
 			});
 		});
 	});
