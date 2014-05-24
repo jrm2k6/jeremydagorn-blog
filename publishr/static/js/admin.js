@@ -4,7 +4,7 @@ var REGEX_LIST_FIELDS = /[\'\[\]\' ']/g;
 
 var getResourcePath = function(that) {
 	var modelName = $(that).closest('table').data('model-name');
-	var selectedId = $(that).closest('tr').find('td#id')[0].innerText;
+	var selectedId = $(that).closest('tr').find('td#id')[0].textContent.trim();
 
 	return modelName + '/' + selectedId;
 };
