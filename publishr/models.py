@@ -41,9 +41,9 @@ class Project(db.Model):
 	url = db.Column(db.String(500))
 	status = db.Column(db.Integer, db.ForeignKey('status.id'))
 	
-	def __init__(self, title, description, technologies, url, status_id):
+	def __init__(self, title, filename, technologies, url, status_id):
 		self.title = title
-		self.description = description
+		self.filename = filename
 		self.technologies = technologies
 		self.url = url
 		self.status = status_id
