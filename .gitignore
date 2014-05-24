@@ -2,7 +2,7 @@
 *.swp
 env/*
 venv
-posts/
+publishr/posts/
 config.py
 */*.db
 *.db
