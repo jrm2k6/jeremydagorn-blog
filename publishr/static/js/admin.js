@@ -47,7 +47,7 @@ $(document).ready(function() {
 				var inputStr = 'input#' + key;
 				if (key === "id") {
 					var cellId = $(this).closest('tr').find('td#id')[0];
-					idToUpdate = cellId.innerText;
+					idToUpdate = cellId.textContent.trim();
 				} else {
 					var inputValue = $(this).closest('tr').find(inputStr).val();
 					newValuesForModelFields['_'+key] = inputValue;
