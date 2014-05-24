@@ -214,7 +214,7 @@ def update_resource(model_name, _id):
         project = Project.query.filter_by(id=_id).first()
         if project is not None:
             project.title = request.json['_title']
-            project.description = request.json['_description']
+            project.filename = request.json['_filename']
             project.technologies = request.json['_technologies']
             project.url = request.json['_url']
             project.status = request.json['_status']

@@ -34,7 +34,7 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
 
         res = self.get_auth_required_page_with_post_json_data(
                                 url='/update/project/1', 
-                                data_dict=json.dumps({'_title': new_project_title, '_description': '',
+                                data_dict=json.dumps({'_title': new_project_title, '_filename': '',
                                     '_status':'1', '_technologies': '', '_url':''}),
                                 username="username_test",
                                 password="secret_test")
