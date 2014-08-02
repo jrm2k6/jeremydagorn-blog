@@ -6,6 +6,8 @@ from publishr.tests.test_admin_delete_resources import AdminDeleteItemsTest
 from publishr.tests.test_admin_update_resources import AdminUpdateItemsTest
 from publishr.tests.test_fetch_posts import FetchPostsTest
 
+import sys
+
 if __name__ == "__main__":
 
     loader = TestLoader()
@@ -19,4 +21,6 @@ if __name__ == "__main__":
         ))
 
     runner = TextTestRunner(verbosity=2)
-    runner.run(suite)
+    result = runner.run(suite)
+
+    sys.exit(not result.wasSuccessful())
