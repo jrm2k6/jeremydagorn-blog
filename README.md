@@ -1,5 +1,11 @@
-jeremydagorn-blog
+
+jeremydagorn-blog 
 =================
+
+ [![Build Status](https://travis-ci.org/jrm2k6/jeremydagorn-blog.svg?branch=master)](https://travis-ci.org/jrm2k6/jeremydagorn-blog)
+ 
+ 
+
 
 New version of jeremydagorn.com
 
