@@ -19,7 +19,7 @@ from authentication import requires_auth
 app = Flask(__name__)
 Markdown(app, extensions = ['codehilite'])
 app.config.from_object(__name__)
-app.config.from_object('publishr.config')
+# app.config.from_object('config')
 app.secret_key = 'this is my secret key'
 
 MODELS_NAMES = {'user' : User,
