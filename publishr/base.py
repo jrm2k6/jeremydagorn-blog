@@ -1,7 +1,6 @@
 import json
 import sqlite3
 import markdown
-import config
 import os
 from flask import Flask, Response, request, session, g, redirect, url_for, \
      abort, render_template, flash
