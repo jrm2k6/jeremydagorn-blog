@@ -1,6 +1,6 @@
 language: python
 python:
   - "2.7"
-before_install: pip install -U --allow-external twill --allow-unverified twill twill
+before_install: bash scripts/before_install.sh
 install: pip install -r requirements.txt --use-mirrors
 script: python test_suite.py 
