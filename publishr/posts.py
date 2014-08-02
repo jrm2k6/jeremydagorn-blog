@@ -2,7 +2,6 @@ import os
 import lxml.html
 import re
 import sys
-import config
 from flask import url_for, Markup
 import markdown
 
