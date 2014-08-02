@@ -37,9 +37,9 @@ def create_app(db):
 
 def set_config(test):
     if test:
-        app.config.from_object('tests.config')
+        app.config.from_object('publishr.tests.config')
     else:
-        app.config.from_object('publishr.config')
+        app.config.from_object('config')
 
 create_app(db)
 

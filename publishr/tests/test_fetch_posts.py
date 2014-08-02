@@ -12,11 +12,10 @@ import base64
 class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils, FlaskTestModelUtils, AssertErrorCode):
     def test_fetch_post_with_existing_post_in_database(self):
         #given 
-
         title = 'This is my post test'
         filename_content = 'post1.txt'
         self.add_post_in_database_with_properties(title, filename_content)
-
+        
         #when
         self.get_page('/posts/this_is_my_post_test')
 
