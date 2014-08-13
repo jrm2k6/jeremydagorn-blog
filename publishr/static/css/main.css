@@ -57,26 +57,32 @@ body {
     padding-top: 5%;
 }
 
-.navbar .nav, .navbar .nav > li {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
+.menu {
+  height: 30px;
+  margin-bottom: 10px;
+  background:rgba(255, 255, 255, 0.1);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
 }
 
-.navbar-inner {
-    text-align: center;
+.menu-item {
+    flex: 0 0 auto;
+    margin: auto;
 }
 
-.navbar .nav > li > a {
-    float: none;
+.menu-item > a {
     line-height: 19px;
     padding: 9px 10px 11px;
     text-decoration: none;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    color:  #ddd;
+    color: #ddd;  
 }
 
-.navbar .nav > li > a:hover {
+.menu-item > a:hover {
     color: #ffffff;
     text-decoration: underline;
 }
