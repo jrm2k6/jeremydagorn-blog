@@ -19,7 +19,7 @@ from authentication import requires_auth
 app = Flask(__name__)
 Markdown(app, extensions = ['codehilite'])
 app.config.from_object(__name__)
-# app.config.from_object('config')
+app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
 
 MODELS_NAMES = {'user' : User,
@@ -39,7 +39,7 @@ def set_config(test):
     if test:
         app.config.from_object('publishr.tests.config')
     else:
-        app.config.from_object('config')
+        app.config.from_object('publishr.config')
 
 create_app(db)
 

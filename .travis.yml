@@ -8,5 +8,5 @@ notifications:
 
 before_install: bash scripts/before_install.sh
 install: pip install -r requirements.txt --use-mirrors
-before_script: export PYTHONPATH=`pwd`/test_suite.py
+before_script: export PYTHONPATH=`pwd`
 script: python test_suite.py 
