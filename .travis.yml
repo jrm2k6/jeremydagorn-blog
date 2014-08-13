@@ -9,6 +9,7 @@ notifications:
 before_install: bash scripts/before_install.sh
 install: pip install -r requirements.txt --use-mirrors
 script:
+  - mv publishr/config.py.local publishr/config.py
   - export PYTHONPATH=`pwd`
   - echo $PYTHONPATH
   - python test_suite.py
