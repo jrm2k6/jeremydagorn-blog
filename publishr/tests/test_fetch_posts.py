@@ -4,12 +4,13 @@ from flask import Flask
 from publishr import base
 from publishr.models import db
 from . import PublisherAppTestCase
-from utils import FlaskTestAuthenticationUtils, FlaskTestModelUtils, AssertErrorCode
+from utils import FlaskTestAuthenticationUtils, FlaskTestModelUtils, AssertErrorCode, FlaskTestUtils
 import unittest
 import base64
 
 
-class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils, FlaskTestModelUtils, AssertErrorCode):
+class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils, 
+                    FlaskTestModelUtils, AssertErrorCode, FlaskTestUtils):
     def test_fetch_post_with_existing_post_in_database(self):
         #given 
         title = 'This is my post test'

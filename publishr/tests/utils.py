@@ -36,10 +36,6 @@ class FlaskTestAuthenticationUtils(object):
 
 		return res
 
-	def get_page(self, url):
-		res = self.client.open(url, "GET")
-		return res
-
 class FlaskTestModelUtils(TestCase, object):
 	def assert_user_with_username_exists_in_database(self, _username):
 		self.assertTrue(User.query.filter_by(username=_username).first() is not None)
@@ -145,6 +141,10 @@ class FlaskTestModelUtils(TestCase, object):
 		db.session.add(status)
 		db.session.commit()
 
+class FlaskTestUtils(TestCase):
+	def get_page(self, url):
+		res = self.client.open(url, "GET")
+		return res
 
 class AssertErrorCode(TestCase):
 	def assert410(self, res):
