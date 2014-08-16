@@ -12,6 +12,7 @@ from flask import jsonify, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
 from posts import PostWithMarkdownContent, load_blogpost, generate_previews, get_content_as_markdown
+from content_provider import ContentProvider, ContentNotFoundException
 from sqlalchemy import func
 
 from authentication import requires_auth
@@ -61,7 +62,14 @@ def show_home_page(list_previews):
 
 @app.route('/about')
 def show_about():
-    return render_template('about.html')
+    try:
+        content_provider = ContentProvider(app.config["PATH_CONTENT_FOLDER"])
+        about_content = content_provider.load_about()
+    except ContentNotFoundException:
+        about_content = "Content not found!"
+        pass
+    
+    return render_template('about.html', content=about_content)
 
 @app.route('/projects')
 def show_projects():

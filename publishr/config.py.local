@@ -10,6 +10,8 @@ ALLOWED_EXTENSIONS = set(['csv'])
 
 # specify the absolute path of your posts folder
 PATH_POSTS_FOLDER='/posts/'
+# specify the absolute path of your content folder
+PATH_CONTENT_FOLDER='/publishr/content/'
 
 SECRET = 'secret'
 USERNAME = 'admin'
