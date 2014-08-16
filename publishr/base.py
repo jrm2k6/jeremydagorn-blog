@@ -22,13 +22,14 @@ app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
 
-MODELS_NAMES = {'user' : User,
-     'project' : Project,
-     'status' : Status,
-     'technology' : Technology,
-     'post' : Post,
-     'category' : Category
-    }
+MODELS_NAMES = {
+    'user' : User,
+    'project' : Project,
+    'status' : Status,
+    'technology' : Technology,
+    'post' : Post,
+    'category' : Category
+}
 
 def create_app(db):
     with app.app_context():
