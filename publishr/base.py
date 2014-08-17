@@ -3,39 +3,42 @@ import sqlite3
 import markdown
 import os
 from flask import Flask, Response, request, session, g, redirect, url_for, \
-     abort, render_template, flash
+    abort, render_template, flash
 from contextlib import closing
 from models import db, User, Project, Technology, Status, Category, Post
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
-     AddCategoryForm, AddTechnologyForm, AddPostForm
+    AddCategoryForm, AddTechnologyForm, AddPostForm
 from flask import jsonify, Markup
 from flaskext.markdown import Markdown
 from datetime import datetime
-from posts import PostWithMarkdownContent, load_blogpost, generate_previews, get_content_as_markdown
+from posts import PostWithMarkdownContent, load_blogpost, generate_previews, \
+    get_content_as_markdown
 from content_provider import ContentProvider, ContentNotFoundException
 from sqlalchemy import func
 
 from authentication import requires_auth
 
 app = Flask(__name__)
-Markdown(app, extensions = ['codehilite'])
+Markdown(app, extensions=['codehilite'])
 app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
 
 MODELS_NAMES = {
-    'user' : User,
-    'project' : Project,
-    'status' : Status,
-    'technology' : Technology,
-    'post' : Post,
-    'category' : Category
+    'user': User,
+    'project': Project,
+    'status': Status,
+    'technology': Technology,
+    'post': Post,
+    'category': Category
 }
+
 
 def create_app(db):
     with app.app_context():
         db.init_app(app)
         db.create_all()
+
 
 def set_config(test):
     if test:
@@ -51,14 +54,18 @@ def show_home():
     to_return = []
     posts = Post.query.all()
     for p in posts:
-        content = load_blogpost(os.getcwd() + app.config["PATH_POSTS_FOLDER"] + p.filename_content)
+        content = load_blogpost(os.getcwd() +
+                                app.config["PATH_POSTS_FOLDER"] +
+                                p.filename_content)
         content = Markup(markdown.markdown(content))
         to_return.append(PostWithMarkdownContent(p, content))
     previews = generate_previews(to_return)
     return show_home_page(previews)
 
+
 def show_home_page(list_previews):
     return render_template('home.html', previews_posts=list_previews)
+
 
 @app.route('/about')
 def show_about():
@@ -68,21 +75,24 @@ def show_about():
     except ContentNotFoundException:
         about_content = "Content not found!"
         pass
-    
     return render_template('about.html', content=about_content)
+
 
 @app.route('/projects')
 def show_projects():
     return render_template('projects.html')
 
+
 @app.route('/admin')
 @requires_auth
 def show_admin():
-	return render_template('admin.html')
+    return render_template('admin.html')
+
 
 @app.route('/blog')
 def show_blog():
     return show_home()
+
 
 @app.route('/adduser', methods=['GET', 'POST'])
 @requires_auth
@@ -95,8 +105,13 @@ def add_user():
         db.session.commit()
         flash('User added', 'info')
         return redirect(url_for('add_user'))
-    return render_template('_add.html', form=form, rows=User.query.all(), 
-        target_model="User", fields=User.__mapper__.c.keys(), action="adduser")
+    return render_template('_add.html',
+                           form=form,
+                           rows=User.query.all(),
+                           target_model="User",
+                           fields=User.__mapper__.c.keys(),
+                           action="adduser")
+
 
 @app.route('/addproject', methods=['GET', 'POST'])
 @requires_auth
@@ -104,13 +119,19 @@ def add_project():
     form = AddProjectForm(request.form)
     if request.method == 'POST' and form.validate():
         project = Project(form.title.data, form.description.data,
-                    form.technologies.data, form.url.data, form.status.data)
+                          form.technologies.data, form.url.data,
+                          form.status.data)
         db.session.add(project)
         db.session.commit()
         flash('Project added', 'info')
         return redirect(url_for('add_project'))
-    return render_template('_add.html', form=form, rows=Project.query.all(), 
-        target_model="Project", fields=Project.__mapper__.c.keys(), action="addproject")
+    return render_template('_add.html',
+                           form=form,
+                           rows=Project.query.all(),
+                           target_model="Project",
+                           fields=Project.__mapper__.c.keys(),
+                           action="addproject")
+
 
 @app.route('/addstatus', methods=['GET', 'POST'])
 @requires_auth
@@ -122,8 +143,13 @@ def add_status():
         db.session.commit()
         flash('Status added', 'info')
         return redirect(url_for('add_status'))
-    return render_template('_add.html', form=form, rows=Status.query.all(), 
-        target_model="Status", fields=Status.__mapper__.c.keys(), action="addstatus")
+    return render_template('_add.html',
+                           form=form,
+                           rows=Status.query.all(),
+                           target_model="Status",
+                           fields=Status.__mapper__.c.keys(),
+                           action="addstatus")
+
 
 @app.route('/addtechnology', methods=['GET', 'POST'])
 @requires_auth
@@ -135,8 +161,12 @@ def add_technology():
         db.session.commit()
         flash('Technology added', 'info')
         return redirect(url_for('add_technology'))
-    return render_template('_add.html', form=form, rows=Technology.query.all(), 
-        target_model="Technology", fields=Technology.__mapper__.c.keys(), action="addtechnology")
+    return render_template('_add.html',
+                           form=form,
+                           rows=Technology.query.all(),
+                           target_model="Technology",
+                           fields=Technology.__mapper__.c.keys(),
+                           action="addtechnology")
 
 
 @app.route('/addcategory', methods=['GET', 'POST'])
@@ -149,8 +179,12 @@ def add_category():
         db.session.commit()
         flash('Category added', 'info')
         return redirect(url_for('add_category'))
-    return render_template('_add.html', form=form, rows=Category.query.all(), 
-        target_model="Category", fields=Category.__mapper__.c.keys(), action="addcategory")
+    return render_template('_add.html',
+                           form=form,
+                           rows=Category.query.all(),
+                           target_model="Category",
+                           fields=Category.__mapper__.c.keys(),
+                           action="addcategory")
 
 
 @app.route('/addpost', methods=['GET', 'POST'])
@@ -158,13 +192,18 @@ def add_category():
 def add_post():
     form = AddPostForm(request.form)
     if request.method == 'POST' and form.validate():
-        post = Post(form.title.data, form.filename_content.data, datetime.now(), form.category.data, form.author.data)
+        post = Post(form.title.data, form.filename_content.data,
+                    datetime.now(), form.category.data, form.author.data)
         db.session.add(post)
         db.session.commit()
         flash('Post added', 'info')
         return redirect(url_for('add_post'))
-    return render_template('_add.html', form=form, rows=Post.query.all(), 
-        target_model="Post", fields=Post.__mapper__.c.keys(), action="addpost")
+    return render_template('_add.html',
+                           form=form,
+                           rows=Post.query.all(),
+                           target_model="Post",
+                           fields=Post.__mapper__.c.keys(),
+                           action="addpost")
 
 
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
@@ -187,7 +226,9 @@ def fetch_projects():
     response = []
     for p in projects:
         response.append(p.row2dict())
-    return Response(json.dumps(response), status=200, mimetype='application/json')
+    return Response(json.dumps(response),
+                    status=200,
+                    mimetype='application/json')
 
 
 @app.route('/update/<model_name>/<int:_id>', methods=['POST'])
@@ -228,7 +269,6 @@ def update_resource(model_name, _id):
             project.status = request.json['_status']
     else:
         return Response({}, status=500, mimetype='application/json')
-    
     db.session.commit()
     js = json.dumps({})
     resp = Response(js, status=200, mimetype='application/json')
@@ -240,8 +280,10 @@ def fetch_post(post_title):
     post_title = post_title.replace("_", " ")
     post = Post.query.filter(func.lower(Post.title) == post_title).first()
     if post is not None:
-        content_markdown = get_content_as_markdown(os.getcwd() + app.config["PATH_POSTS_FOLDER"] + post.filename_content)
-        if not content_markdown is None:
+        path = os.getcwd() + app.config["PATH_POSTS_FOLDER"]
+        content_markdown = get_content_as_markdown(path +
+                                                   post.filename_content)
+        if content_markdown is not None:
             post_markdown = PostWithMarkdownContent(post, content_markdown)
             return render_template("post.html", post=post_markdown)
     return render_template("404.html")
@@ -250,6 +292,7 @@ def fetch_post(post_title):
 @app.route('/upload_datafile', methods=['POST'])
 def upload_datafile():
     return render_template("admin.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
