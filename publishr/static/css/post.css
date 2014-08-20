@@ -1,0 +1,39 @@
+pre.code-snippet {
+  padding: 14px;
+  display: inline-block;
+}
+.left-column {
+  list-style-type: none;
+}
+.author {
+  color: #ffa5d2;
+}
+.date {
+  color: #d8d8d8;
+}
+.category {
+  color: #d8d8d8;
+}
+.post-title {
+  font-weight: bold;
+  padding-bottom: 25px;
+  color: #ffa5d2;
+  font-size: 25px;
+  opacity: 0.8;
+  text-shadow: 2px 2px 4px #000;
+}
+div.post-content {
+  font-family: 'Oxygen', sans-serif;
+  font-size: 14px;
+  margin-bottom: 70px;
+}
+div.post-content h4 {
+  padding-top: 50px;
+}
+div.post-content h5 {
+  color: #e77471;
+  opacity: 0.8;
+}
+.content {
+  margin-bottom: 70px;
+}
