@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <title> Jeremy Dagorn - Software engineer and story teller </title>
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}">
+{% assets filters="less", output="css/main.css", 'css/main.less' %}
+  <link rel=stylesheet type="text/css" href="{{ ASSET_URL }}">
+{% endassets %}
+{% assets filters="less", output="css/admin.css", 'css/admin.less' %}
+<link rel=stylesheet type="text/css" href="{{ ASSET_URL }}">
+{% endassets %}
 <script type=text/javascript src="{{
   url_for('static', filename='js/jquery.js') }}"></script>
 <script type="text/javascript">
@@ -21,19 +25,13 @@
             "Learn everywhere, everything, all the time"
     </div> 
 </header>
-<div class="navbar">
-    <div class="navbar-inner">
-        <div class="container">
-            <ul class="nav nav-pills">
-            	<li><a href="/adduser">USERS</a></li>
-                <li><a href="/addproject">PROJECTS</a></li>
-                <li><a href="/addstatus">STATUSES</a></li>
-                <li><a href="/addpost">POSTS</a></li>
-                <li><a href="/addtechnology">TECHNOLOGIES</a></li>
-                <li><a href="/addcategory">CATEGORIES</a></li>
-            </ul>
-        </div>
-    </div>
+<div class="menu">
+        <div class="menu-item active"><a href="/adduser">USERS</a></div>
+        <div class="menu-item active"><a href="/addproject">PROJECTS</a></div>
+        <div class="menu-item active"><a href="/addstatus">STATUSES</a></div>
+        <div class="menu-item active"><a href="/addpost">POSTS</a></div>
+        <div class="menu-item active"><a href="/addtechnology">TECHNOLOGIES</a></div>
+        <div class="menu-item active"><a href="/addcategory">CATEGORIES</a></div>
 </div>
 <h2>Admin interface</h2>
     {% for category, message in get_flashed_messages(with_categories=true) %}

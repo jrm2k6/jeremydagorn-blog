@@ -10,6 +10,8 @@ from forms import AddUserForm, AddProjectForm, AddStatusForm, \
     AddCategoryForm, AddTechnologyForm, AddPostForm
 from flask import jsonify, Markup
 from flaskext.markdown import Markdown
+from flask.ext.assets import Environment, Bundle
+# from flaskext.lesscss import lesscss
 from datetime import datetime
 from posts import PostWithMarkdownContent, load_blogpost, generate_previews, \
     get_content_as_markdown
@@ -19,6 +21,8 @@ from sqlalchemy import func
 from authentication import requires_auth
 
 app = Flask(__name__)
+# lesscss(app)
+assets = Environment(app)
 Markdown(app, extensions=['codehilite'])
 app.config.from_object(__name__)
 app.config.from_object('publishr.config')

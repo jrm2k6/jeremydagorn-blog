@@ -3,9 +3,9 @@
 <script type=text/javascript src="{{ url_for('static', filename='js/blog.js') }}"></script>
 {% endblock %}
 {% block css %}
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/home.css') }}"></link>
+{% assets filters="less", output="css/home.css", 'css/home.less' %}
+	<link rel=stylesheet type="text/css" href="{{ ASSET_URL }}">
+{% endassets %}
 {% endblock %}
 {% block body %}
 	{% for preview in previews_posts %}
