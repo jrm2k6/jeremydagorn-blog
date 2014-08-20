@@ -6,3 +6,5 @@ publishr/posts/
 config.py
 */*.db
 *.db
+publishr/static/*.css
+publishr/static/.webassets-cache/
