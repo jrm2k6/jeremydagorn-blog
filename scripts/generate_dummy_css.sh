@@ -1,3 +1,4 @@
 #!/usr/bin/bash
-npm install less
-lessc --version
+for name in admin home main post projects; do
+    touch publishr/static/css/$name.css
+done
