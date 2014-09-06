@@ -5,8 +5,10 @@ from unittest import TestCase
 from publishr import base
 from publishr.models import db
 
+
 class PublisherTestCase(TestCase):
     pass
+
 
 class PublisherAppTestCase(PublisherTestCase):
 

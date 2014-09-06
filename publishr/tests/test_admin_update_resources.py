@@ -11,18 +11,19 @@ import base64
 import json
 
 
-class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils, FlaskTestModelUtils, AssertErrorCode):
+class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils,
+                           FlaskTestModelUtils, AssertErrorCode):
     def test_update_user_in_database(self):
-    	username = 'my_user'
+        username = 'my_user'
         new_username = 'my_updated_user'
-    	self.add_user_in_database_with_name(username, True)
-    	self.assert_user_with_username_exists_in_database(username)
+        self.add_user_in_database_with_name(username, True)
+        self.assert_user_with_username_exists_in_database(username)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/user/1', 
-                                data_dict=json.dumps({'_email':'email', '_username': new_username}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/user/1',
+            data_dict=json.dumps({'_email': 'email', '_username': new_username}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_user_has_updated_values(username, new_username)
 
@@ -33,11 +34,11 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         self.assert_project_with_title_exists_in_database(project_title)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/project/1', 
-                                data_dict=json.dumps({'_title': new_project_title, '_filename': '',
-                                    '_status':'1', '_technologies': '', '_url':''}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/project/1',
+            data_dict=json.dumps({'_title': new_project_title, '_filename': '',
+                                  '_status': '1', '_technologies': '', '_url': ''}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_project_has_updated_values(project_title, new_project_title)
 
@@ -48,10 +49,10 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         self.assert_category_with_name_exists_in_database(name)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/category/1', 
-                                data_dict=json.dumps({'_name': new_name}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/category/1',
+            data_dict=json.dumps({'_name': new_name}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_category_has_updated_values(name, new_name)
 
@@ -62,10 +63,10 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         self.assert_status_with_name_exists_in_database(name)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/status/1', 
-                                data_dict=json.dumps({'_status': new_name}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/status/1',
+            data_dict=json.dumps({'_status': new_name}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_status_has_updated_values(name, new_name)
 
@@ -76,10 +77,10 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         self.assert_technology_with_name_exists_in_database(name)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/technology/1', 
-                                data_dict=json.dumps({'_name': new_name}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/technology/1',
+            data_dict=json.dumps({'_name': new_name}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_technology_has_updated_values(name, new_name)
 
@@ -90,20 +91,20 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         self.assert_post_with_title_exists_in_database(title)
 
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/post/1', 
-                                data_dict=json.dumps({'_title': new_title, '_filename_content': '',
-                                    '_author':1, '_category':1}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/post/1',
+            data_dict=json.dumps({'_title': new_title, '_filename_content': '',
+                                  '_author': 1, '_category': 1}),
+            username="username_test",
+            password="secret_test")
 
         self.assert_post_has_updated_values(title, new_title)
 
     def test_update_non_existing_model(self):
         res = self.get_auth_required_page_with_post_json_data(
-                                url='/update/non-existing/1', 
-                                data_dict=json.dumps({}),
-                                username="username_test",
-                                password="secret_test")
+            url='/update/non-existing/1',
+            data_dict=json.dumps({}),
+            username="username_test",
+            password="secret_test")
 
         self.assert500(res)
 

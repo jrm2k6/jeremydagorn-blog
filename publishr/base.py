@@ -18,7 +18,7 @@ from content_provider import ContentProvider, ContentNotFoundException
 from sqlalchemy import func
 
 from authentication import requires_auth
-from installation import upload_filedata 
+from installation import upload_filedata
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -297,7 +297,8 @@ def upload_datafile():
     if request.method == 'POST':
         _file = request.files["file"]
         if not upload_filedata(_file):
-            flash("Something went wrong while uploading, check that your file is really a .csv file")
+            flash("Something went wrong while uploading, \
+                check that your file is really a .csv file")
     return render_template("admin.html")
 
 

@@ -8,6 +8,7 @@ from utils import FlaskTestAuthenticationUtils, FlaskTestModelUtils
 import unittest
 import base64
 
+
 class AdminAuthenticationTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils):
     def test_show_admin_with_correct_credentials_returns_200(self):
         res = self.login_with_credentials_request("admin", "username_test", "secret_test")
