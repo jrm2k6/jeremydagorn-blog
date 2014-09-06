@@ -9,37 +9,37 @@ import unittest
 import base64
 
 
-class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils, 
-                    FlaskTestModelUtils, AssertErrorCode, FlaskTestUtils):
+class FetchPostsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationUtils,
+                     FlaskTestModelUtils, AssertErrorCode, FlaskTestUtils):
     def test_fetch_post_with_existing_post_in_database(self):
-        #given 
+        # given
         title = 'This is my post test'
         filename_content = 'post1.txt'
         self.add_post_in_database_with_properties(title, filename_content)
-        
-        #when
+
+        # when
         self.get_page('/posts/this_is_my_post_test')
 
-        #then
+        # then
         self.assert_template_used('post.html')
 
     def test_fetch_post_with_non_existing_post_in_database(self):
-        #when
+        # when
         self.get_page('/posts/this_is_my_post_test')
 
-        #then
+        # then
         self.assert_template_used('404.html')
 
     def test_fetch_post_with_content_file_not_existing(self):
-        #given 
+        # given
         title = 'This is my post test'
         filename_content = 'post_not.txt'
         self.add_post_in_database_with_properties(title, filename_content)
 
-        #when
+        # when
         self.get_page('/posts/this_is_my_post_test')
 
-        #then
+        # then
         self.assert_template_used('404.html')
 
 

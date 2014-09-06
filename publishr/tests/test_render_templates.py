@@ -16,7 +16,7 @@ class RenderTemplatesTest(PublisherAppTestCase, TestCase):
 
     def test_show_home(self):
         response = self.client.get('/')
-        self.assert_template_used('home.html')   
+        self.assert_template_used('home.html')
 
     def test_show_blog(self):
         response = self.client.get('/blog')

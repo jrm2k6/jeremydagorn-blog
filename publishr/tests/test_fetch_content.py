@@ -10,20 +10,17 @@ from utils import FlaskTestAuthenticationUtils, FlaskTestModelUtils, FlaskTestUt
 from publishr.content_provider import ContentProvider, ContentNotFoundException
 
 
-
 class FetchContentTest(PublisherAppTestCase, TestCase, AssertErrorCode, FlaskTestUtils):
     def test_load_about_not_existing(self):
-        
         # given
         content_provider = ContentProvider("wrong_path")
         content_provider.load_file = Mock()
         content_provider.load_file.return_value = None
         # then
         with self.assertRaises(ContentNotFoundException):
-    		content_provider.load_about()
+            content_provider.load_about()
 
     def test_load_about_existing(self):
-        
         # given
         content_provider = ContentProvider("")
         content_provider.load_file = Mock()
