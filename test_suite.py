@@ -6,6 +6,8 @@ from publishr.tests.test_admin_delete_resources import AdminDeleteItemsTest
 from publishr.tests.test_admin_update_resources import AdminUpdateItemsTest
 from publishr.tests.test_fetch_posts import FetchPostsTest
 from publishr.tests.test_fetch_content import FetchContentTest
+from publishr.tests.test_upload_file import SaveFileTest 
+
 
 import sys
 
@@ -19,7 +21,8 @@ if __name__ == "__main__":
         loader.loadTestsFromTestCase(AdminDeleteItemsTest),
         loader.loadTestsFromTestCase(AdminUpdateItemsTest),
         loader.loadTestsFromTestCase(FetchPostsTest),
-        loader.loadTestsFromTestCase(FetchContentTest)
+        loader.loadTestsFromTestCase(FetchContentTest),
+        loader.loadTestsFromTestCase(SaveFileTest)
         ))
 
     runner = TextTestRunner(verbosity=2)

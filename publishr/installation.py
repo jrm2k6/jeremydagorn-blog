@@ -1,6 +1,7 @@
 import os
 import sys
 
+
 class CsvUserDataParser:
     def __init__(self, _path_file):
         self.path_file = _path_file
@@ -13,7 +14,7 @@ def upload_filedata(uploaded_file):
     success = True
     parser = CsvUserDataParser('')
     try:
-    	save_file(uploaded_file)
+        save_file(uploaded_file)
     except ExtensionNotSupportedException as e:
         success = False
     return success
@@ -22,7 +23,7 @@ def upload_filedata(uploaded_file):
 def save_file(_file):
     from base import app
     _filename = _file.filename
-    if allowed_file(_filename, app.config['ALLOWED_EXTENSIONS']):
+    if allowed_file(_filename, app.config['ALLOWED_EXTENSIONS'] or []):
         destination_folder = os.getcwd() + '/publishr' + app.config['UPLOAD_FOLDER']
         destination = os.path.join(destination_folder, _filename)
         _file.save(destination)
@@ -31,8 +32,8 @@ def save_file(_file):
 
 
 def allowed_file(_filename, extensions):
-    return _filename.split('.')[-1] in extensions
+    return extensions == set("*") or _filename.split('.')[-1] in extensions
 
 
 class ExtensionNotSupportedException(Exception):
-     pass
+    pass
