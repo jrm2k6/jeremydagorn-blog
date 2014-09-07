@@ -2,7 +2,13 @@ import os
 import sys
 import csv
 
+from publishr.models import User, Project, Status, Technology, Category
+
 class CsvUserDataParser:
+    STRING_TO_MODEL_NAME = {"user": User, "project": Project, "status": Status, "technology": Technology,
+               "category": Category
+              }
+
     def __init__(self):
         pass
 
@@ -10,8 +16,18 @@ class CsvUserDataParser:
         with open(location_file, 'r+') as handler:
              content = csv.reader(handler)
              for row in content:
-                 print ', '.join(row) 
-             
+                 if row[0] in CsvUserDataParser.STRING_TO_MODEL_NAME:
+                    item = CsvUserDataItem(row[0], row[1:]) 
+                    print item 
+
+
+class CsvUserDataItem:
+    def __init__(self, type_item, properties):
+        self.type_item = type_item
+        self.properties = properties
+
+    def __str__(self):
+        return '<CsvUserDataItem > ' + self.type_item + ' ' + str(self.properties)
 
 
 def upload_filedata(uploaded_file):
