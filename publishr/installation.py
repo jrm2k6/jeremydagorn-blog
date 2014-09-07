@@ -1,32 +1,38 @@
 import os
 import sys
-
+import csv
 
 class CsvUserDataParser:
-    def __init__(self, _path_file):
-        self.path_file = _path_file
+    def __init__(self):
+        pass
 
-    def parse(self):
-        return ''
+    def parse(self, location_file):
+        with open(location_file, 'r+') as handler:
+             content = csv.reader(handler)
+             for row in content:
+                 print ', '.join(row) 
+             
 
 
 def upload_filedata(uploaded_file):
+    from base import app
     success = True
-    parser = CsvUserDataParser('')
+    parser = CsvUserDataParser()
+    location_to_save = os.getcwd() + '/publishr' + app.config['UPLOAD_FOLDER'] + '/' 
+    location_file = location_to_save + uploaded_file.filename 
     try:
-        save_file(uploaded_file)
+        save_file(uploaded_file, location_to_save)
+        parser.parse(location_file)
     except ExtensionNotSupportedException as e:
         success = False
     return success
 
 
-def save_file(_file):
+def save_file(_file, destination_folder):
     from base import app
     _filename = _file.filename
     if allowed_file(_filename, app.config['ALLOWED_EXTENSIONS'] or []):
-        destination_folder = os.getcwd() + '/publishr' + app.config['UPLOAD_FOLDER']
-        destination = os.path.join(destination_folder, _filename)
-        _file.save(destination)
+        _file.save(destination_folder + _filename)
     else:
         raise ExtensionNotSupportedException(_filename.split('.')[-1] + 'not in supported extensions')
 
