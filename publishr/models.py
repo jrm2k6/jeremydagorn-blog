@@ -7,7 +7,6 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
@@ -33,7 +32,10 @@ class User(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
-
+    
+    @staticmethod
+    def get_settable_columns():
+        return User.__mapper__.c.keys()[1:]
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,6 +68,10 @@ class Project(db.Model):
                 d[prop.key] = getattr(self, prop.key)
         return d
 
+    @staticmethod
+    def get_settable_columns():
+        return Project.__mapper__.c.keys()[1:]
+
 
 class Technology(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -82,6 +88,10 @@ class Technology(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
+
+    @staticmethod
+    def get_settable_columns():
+        return Technology.__mapper__.c.keys()[1:]
 
 
 class Post(db.Model):
@@ -104,7 +114,10 @@ class Post(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
-
+ 
+    @staticmethod
+    def get_settable_columns():
+        return Post.__mapper__.c.keys()[1:]
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -123,6 +136,9 @@ class Category(db.Model):
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
 
+    @staticmethod
+    def get_settable_columns():
+        return Category.__mapper__.c.keys()[1:]
 
 class Status(db.Model):
     column_list = ('id', 'status')
@@ -144,3 +160,7 @@ class Status(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
+
+    @staticmethod
+    def get_settable_columns():
+        return Status.__mapper__.c.keys()[1:]
