@@ -37,6 +37,10 @@ class User(db.Model):
     def get_settable_columns():
         return User.__mapper__.c.keys()[1:]
 
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1], fields[1][1], fields[2][1])
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(400), unique=True)
@@ -51,6 +55,10 @@ class Project(db.Model):
         self.technologies = technologies
         self.url = url
         self.status = status_id
+
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1])
 
     def __repr__(self):
         return '<Project %r  - %r >' % (self.title, self.technologies)
@@ -93,6 +101,9 @@ class Technology(db.Model):
     def get_settable_columns():
         return Technology.__mapper__.c.keys()[1:]
 
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1]) 
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -119,6 +130,10 @@ class Post(db.Model):
     def get_settable_columns():
         return Post.__mapper__.c.keys()[1:]
 
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1]) 
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(400), unique=True)
@@ -139,6 +154,10 @@ class Category(db.Model):
     @staticmethod
     def get_settable_columns():
         return Category.__mapper__.c.keys()[1:]
+
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1], fields[1][1]) 
 
 class Status(db.Model):
     column_list = ('id', 'status')
@@ -164,3 +183,7 @@ class Status(db.Model):
     @staticmethod
     def get_settable_columns():
         return Status.__mapper__.c.keys()[1:]
+
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1]) 
