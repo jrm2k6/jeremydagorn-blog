@@ -36,6 +36,7 @@ MODELS_NAMES = {
     'category': Category
 }
 
+app.MODELS_NAMES = MODELS_NAMES
 
 def create_app(db):
     with app.app_context():
