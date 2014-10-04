@@ -4,24 +4,28 @@ import csv
 
 from publishr.models import db, User, Project, Status, Technology, Category
 
+
 class CsvUserDataParser:
-    STRING_TO_MODEL_NAME = {"user": User, "project": Project, "status": Status, "technology": Technology,
-               "category": Category
-              }
+    STRING_TO_MODEL_NAME = {
+        "user": User,
+        "project": Project,
+        "status": Status,
+        "technology": Technology,
+        "category": Category
+        }
 
     def __init__(self):
         pass
 
     def parse(self, location_file):
         items = []
-        
         with open(location_file, 'r+') as handler:
-             content = csv.reader(handler)
-             for row in content:
-                 if row[0] in CsvUserDataParser.STRING_TO_MODEL_NAME:
-                    item = CsvUserDataItem(row[0], row[1:]) 
-                    items.append(item) 
-        return items    
+            content = csv.reader(handler)
+            for row in content:
+                if row[0] in CsvUserDataParser.STRING_TO_MODEL_NAME:
+                    item = CsvUserDataItem(row[0], row[1:])
+                    items.append(item)
+        return items
 
 
 class CsvUserDataItem:
@@ -45,13 +49,13 @@ def upload_filedata(uploaded_file):
     from base import app
     success = True
     parser = CsvUserDataParser()
-    location_to_save = os.getcwd() + '/publishr' + app.config['UPLOAD_FOLDER'] + '/' 
-    location_file = location_to_save + uploaded_file.filename 
+    location_to_save = os.getcwd() + '/publishr' + app.config['UPLOAD_FOLDER'] + '/'
+    location_file = location_to_save + uploaded_file.filename
     try:
         save_file(uploaded_file, location_to_save)
         items = parser.parse(location_file)
         if len(items) > 0:
-           populate_database(items)
+            populate_database(items)
     except ExtensionNotSupportedException as e:
         success = False
     return success
@@ -65,8 +69,9 @@ def populate_database(items):
         current_model_name = app.MODELS_NAMES[type_item]
         properties_tuples = zip(current_model_name.get_settable_columns(), properties)
         new_database_item = current_model_name.from_list(properties_tuples)
-	db.session.add(new_database_item)
+        db.session.add(new_database_item)
     db.session.commit()
+
 
 def save_file(_file, destination_folder):
     from base import app

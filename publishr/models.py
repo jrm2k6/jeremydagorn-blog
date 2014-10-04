@@ -32,7 +32,7 @@ class User(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
-    
+
     @staticmethod
     def get_settable_columns():
         return User.__mapper__.c.keys()[1:]
@@ -40,6 +40,7 @@ class User(db.Model):
     @classmethod
     def from_list(cls, fields):
         return cls(fields[0][1], fields[1][1], fields[2][1])
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -103,7 +104,8 @@ class Technology(db.Model):
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1]) 
+        return cls(fields[0][1])
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -125,14 +127,15 @@ class Post(db.Model):
         return [(prop.key, getattr(self, prop.key))
                 for prop in class_mapper(self.__class__).iterate_properties
                 if isinstance(prop, ColumnProperty)]
- 
+
     @staticmethod
     def get_settable_columns():
         return Post.__mapper__.c.keys()[1:]
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1]) 
+        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1])
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -157,7 +160,8 @@ class Category(db.Model):
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1], fields[1][1]) 
+        return cls(fields[0][1], fields[1][1])
+
 
 class Status(db.Model):
     column_list = ('id', 'status')
@@ -186,4 +190,4 @@ class Status(db.Model):
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1]) 
+        return cls(fields[0][1])

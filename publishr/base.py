@@ -38,6 +38,7 @@ MODELS_NAMES = {
 
 app.MODELS_NAMES = MODELS_NAMES
 
+
 def create_app(db):
     with app.app_context():
         db.init_app(app)
