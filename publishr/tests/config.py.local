@@ -3,6 +3,7 @@ import os
 SECRET = 'secret_test'
 USERNAME = 'username_test'
 
+# use ramdisk if your unit tests run too slowly, as it will decrease considerably the execution time
 SQLALCHEMY_DATABASE_URI = 'sqlite:////mnt/ramdisk/testdb.db'
 PATH_POSTS_FOLDER = '/publishr/tests/posts/'
 PATH_CONTENT_FOLDER = '/publishr/tests/content/'
