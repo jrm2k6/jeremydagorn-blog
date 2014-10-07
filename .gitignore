@@ -3,7 +3,6 @@
 env/*
 venv
 publishr/posts/
-config.py
 */*.db
 *.db
 publishr/static/css/*.css
