@@ -160,7 +160,7 @@ class Category(db.Model):
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1], fields[1][1])
+        return cls(fields[0][1])
 
 
 class Status(db.Model):
