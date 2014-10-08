@@ -56,6 +56,8 @@ def upload_filedata(uploaded_file):
         items = parser.parse(location_file)
         if len(items) > 0:
             populate_database(items)
+        else:
+            raise NoItemsGeneratedFromParsingException()
     except ExtensionNotSupportedException as e:
         success = False
     return success
@@ -87,4 +89,8 @@ def allowed_file(_filename, extensions):
 
 
 class ExtensionNotSupportedException(Exception):
+    pass
+
+
+class NoItemsGeneratedFromParsingException(Exception):
     pass
