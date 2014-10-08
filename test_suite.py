@@ -7,6 +7,7 @@ from publishr.tests.test_admin_update_resources import AdminUpdateItemsTest
 from publishr.tests.test_fetch_posts import FetchPostsTest
 from publishr.tests.test_fetch_content import FetchContentTest
 from publishr.tests.test_upload_file import SaveFileTest 
+from publishr.tests.test_parse_file import ParseUploadCsvTest, PopulateDatabaseTest
 
 
 import sys
@@ -22,6 +23,8 @@ if __name__ == "__main__":
         loader.loadTestsFromTestCase(AdminUpdateItemsTest),
         loader.loadTestsFromTestCase(FetchPostsTest),
         loader.loadTestsFromTestCase(FetchContentTest),
+        loader.loadTestsFromTestCase(ParseUploadCsvTest),
+        loader.loadTestsFromTestCase(PopulateDatabaseTest),
         loader.loadTestsFromTestCase(SaveFileTest)
         ))
 
