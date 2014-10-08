@@ -60,6 +60,8 @@ def upload_filedata(uploaded_file):
             raise NoItemsGeneratedFromParsingException()
     except ExtensionNotSupportedException as e:
         success = False
+    except NonExistentModelException as e:
+        success = False
     return success
 
 
@@ -68,10 +70,15 @@ def populate_database(items):
         type_item = item.type
         properties = item.properties
         from base import app
-        current_model_name = app.MODELS_NAMES[type_item]
-        properties_tuples = zip(current_model_name.get_settable_columns(), properties)
-        new_database_item = current_model_name.from_list(properties_tuples)
-        db.session.add(new_database_item)
+        try:
+            current_model_name = app.MODELS_NAMES[type_item]
+            properties_tuples = zip(current_model_name.get_settable_columns(), properties)
+            new_database_item = current_model_name.from_list(properties_tuples)
+            db.session.add(new_database_item)
+        except KeyError as e:
+            db.session.commit()
+            raise NonExistentModelException(type_item + ' is not an existing model')
+    
     db.session.commit()
 
 
@@ -93,4 +100,7 @@ class ExtensionNotSupportedException(Exception):
 
 
 class NoItemsGeneratedFromParsingException(Exception):
+    pass
+
+class NonExistentModelException(Exception):
     pass
