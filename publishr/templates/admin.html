@@ -9,5 +9,14 @@
 	    	Click <a href="#">here</a> for more information about how to structure your csv file (or check the <a href="#">wiki</a> of the project)
 	    </p>
   	</form>
+
+        <h6> Database export </h6>
+        <input type=button class="export-database-btn btn btn-primary" value="Export database">
+
+        <h6> Database import </h6>
+        <form class="form-upload form-group" action="/import_database" method=post enctype=multipart/form-data>
+		<p><input type=file name=file></p>
+	    <input type=submit class="btn btn-primary" value=Import>
+        </form>
 <div>
 {% endblock %}

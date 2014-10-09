@@ -73,4 +73,12 @@ $(document).ready(function() {
 			});
 		});
 	});
+
+
+        $('.export-database-btn').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/export_database'
+            })
+        });
 });
