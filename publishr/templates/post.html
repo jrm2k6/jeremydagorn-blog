@@ -18,7 +18,9 @@
   <ul class="left-column">
     <li class="author">{{ post.post.post_author.username.upper() }} </li>
     <li class="date">{{ post.post.date.date().strftime('%b, %d %Y').upper() }} </li>
-    <li class="category">{{ post.post.post_category.name.upper() }} </li>
+    {% if post.post.post_category is not none %}
+    <li class="category">{{ post.post.post_category.name.upper()}} </li>
+    {% endif %}
   </ul>
   </div>
   <div class="col-md-10 post-content">
