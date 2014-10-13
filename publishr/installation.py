@@ -98,7 +98,6 @@ def allowed_file(_filename, extensions):
 class ExtensionNotSupportedException(Exception):
     pass
 
-
 class NoItemsGeneratedFromParsingException(Exception):
     pass
 
