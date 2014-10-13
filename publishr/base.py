@@ -20,7 +20,7 @@ from sqlalchemy import func
 from authentication import requires_auth
 from installation import upload_filedata
 from database_exporter import DatabaseExporter
-
+from database_importer import DatabaseImporter
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -311,6 +311,18 @@ def export_database():
     db_exporter = DatabaseExporter(app.config['SQLALCHEMY_DATABASE_URI'])
     db_exporter.run()
     return render_template("admin.html")
+
+
+@app.route('/import_database', methods=['POST'])
+def import_database():
+    if request.method == 'POST':
+       _file = request.files["file"]
+       db_importer = DatabaseImporter(app.config['SQLALCHEMY_DATABASE_URI'], _file)
+       db_importer.run()
+       return render_template("admin.html")
+    else:
+        flash("Something went wrong while importing your file")
+        return render_template("admin.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
