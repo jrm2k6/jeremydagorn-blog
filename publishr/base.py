@@ -43,9 +43,23 @@ app.MODELS_NAMES = MODELS_NAMES
 
 def create_app(db):
     with app.app_context():
+        initializer = AppInitializer(app)
+        initializer.set_jinja_global_variables()
         db.init_app(app)
         db.create_all()
 
+class AppInitializer:
+    def __init__(self, app):
+        self.app = app
+
+    def set_jinja_global_variables(self):
+        try:
+            self.app.jinja_env.globals['has_ga_infos'] = True
+            self.app.jinja_env.globals['ga_key'] = self.app.config['GOOGLE_ANALYTICS_KEY']
+            self.app.jinja_env.globals['ga_domain'] = self.app.config['GOOGLE_ANALYTICS_DOMAIN']
+        except KeyError as e:
+            self.app.jinja_env.globals['has_ga_infos'] = False
+        
 
 def set_config(test):
     if test:
@@ -323,6 +337,7 @@ def import_database():
     else:
         flash("Something went wrong while importing your file")
         return render_template("admin.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
