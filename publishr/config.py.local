@@ -15,3 +15,6 @@ PATH_CONTENT_FOLDER='/publishr/content/'
 
 SECRET = 'secret'
 USERNAME = 'admin'
+
+GOOGLE_ANALYTICS_KEY = 'your google analytics API key'
+GOOGLE_ANALYTICS_DOMAIN = 'your google analytics domain name'
