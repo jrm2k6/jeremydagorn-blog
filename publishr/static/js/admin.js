@@ -81,4 +81,27 @@ $(document).ready(function() {
                 url: '/export_database'
             })
         });
+
+        $('.authorize-export-posts-btn').click(function() {
+        	$.ajax({
+        		type: 'GET',
+        		url: '/authorize_posts_backup',
+        		dataType: 'json'
+        	}).success(function(data) {
+        		$('.authorize-url').css('display', 'block');
+        		$('.authorize-url').html("<div><a href=" + data["aurl"] + " target=_blank>" + data["aurl"] + "</a><div>"
+        			+"<div><input type=\"text\" name=\"export-verification-code\"></input><input type=\"button\" class=\"export-posts-btn btn btn-primary disabled\" value=\"Submit code\"></input>");
+        		
+        		$('input[name=export-verification-code]').bind("propertychange input paste", function() {
+        			$(".export-posts-btn").removeClass("disabled");
+        		});
+
+        		$(".export-posts-btn").click(function() {
+        			console.log($(".export-verification-code"));
+
+        		})
+        	}).error(function(data) {
+        		alert('Error');
+        	})
+        });
 });

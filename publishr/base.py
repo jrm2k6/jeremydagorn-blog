@@ -21,6 +21,7 @@ from authentication import requires_auth
 from installation import upload_filedata
 from database_exporter import DatabaseExporter
 from database_importer import DatabaseImporter
+from posts_exporter import PostsExporter
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -337,6 +338,13 @@ def import_database():
     else:
         flash("Something went wrong while importing your file")
         return render_template("admin.html")
+
+
+@app.route('/authorize_posts_backup', methods=['GET'])
+def authorize_posts_backup():
+    posts_exporter = PostsExporter()
+    authorize_url = posts_exporter.get_authorize_url()
+    return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':
