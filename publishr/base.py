@@ -51,6 +51,7 @@ def create_app(db):
         db.init_app(app)
         db.create_all()
 
+
 class AppInitializer:
     def __init__(self, app):
         self.app = app
@@ -62,7 +63,7 @@ class AppInitializer:
             self.app.jinja_env.globals['ga_domain'] = self.app.config['GOOGLE_ANALYTICS_DOMAIN']
         except KeyError as e:
             self.app.jinja_env.globals['has_ga_infos'] = False
-        
+
 
 def set_config(test):
     if test:
@@ -333,10 +334,10 @@ def export_database():
 @app.route('/import_database', methods=['POST'])
 def import_database():
     if request.method == 'POST':
-       _file = request.files["file"]
-       db_importer = DatabaseImporter(app.config['SQLALCHEMY_DATABASE_URI'], _file)
-       db_importer.run()
-       return render_template("admin.html")
+        _file = request.files["file"]
+        db_importer = DatabaseImporter(app.config['SQLALCHEMY_DATABASE_URI'], _file)
+        db_importer.run()
+        return render_template("admin.html")
     else:
         flash("Something went wrong while importing your file")
         return render_template("admin.html")

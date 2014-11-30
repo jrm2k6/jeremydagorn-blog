@@ -4,6 +4,7 @@ config.py
 *.pyc
 *.swp
 env/*
+posts/
 venv
 publishr/posts/
 */*.db

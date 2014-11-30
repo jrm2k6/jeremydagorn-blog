@@ -2,9 +2,10 @@ import os
 import subprocess
 import sys
 
+
 class DatabaseImporter:
     def __init__(self, database_path, uploaded_file):
-        self.database_path= database_path
+        self.database_path = database_path
         self.uploaded_file = uploaded_file
 
     def run(self):

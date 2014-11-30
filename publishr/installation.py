@@ -78,7 +78,7 @@ def populate_database(items):
         except KeyError as e:
             db.session.commit()
             raise NonExistentModelException(type_item + ' is not an existing model')
-    
+
     db.session.commit()
 
 
@@ -98,8 +98,10 @@ def allowed_file(_filename, extensions):
 class ExtensionNotSupportedException(Exception):
     pass
 
+
 class NoItemsGeneratedFromParsingException(Exception):
     pass
+
 
 class NonExistentModelException(Exception):
     pass

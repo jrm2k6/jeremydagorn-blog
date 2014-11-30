@@ -8,8 +8,8 @@ from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
 from oauth2client.client import OAuth2WebServerFlow, FlowExchangeError
 
-class PostsExporter:
 
+class PostsExporter:
     def __init__(self, client_id, client_secret):
         # Check https://developers.google.com/drive/scopes for all available scopes
         OAUTH_SCOPE = 'https://www.googleapis.com/auth/drive'
@@ -19,7 +19,7 @@ class PostsExporter:
 
         # Run through the OAuth flow and retrieve credentials
         self.flow = OAuth2WebServerFlow(client_id, client_secret, OAUTH_SCOPE,
-                           redirect_uri=REDIRECT_URI)
+                                        redirect_uri=REDIRECT_URI)
 
     def get_authorize_url(self):
         authorize_url = self.flow.step1_get_authorize_url()
@@ -33,10 +33,11 @@ class PostsExporter:
             self.http = credentials.authorize(self.http)
 
             self.exportable_posts = self.get_exportable_posts()
-            return Response(json.dumps({'exportablePosts': self.exportable_posts}), status=200, mimetype='application/json')
+            return Response(json.dumps({'exportablePosts': self.exportable_posts}),
+                            status=200, mimetype='application/json')
         except FlowExchangeError:
             return Response(json.dumps({}), status=500, mimetype='application/json')
-        
+
     def get_exportable_posts(self):
         from base import app
         try:
@@ -58,5 +59,4 @@ class PostsExporter:
             }
 
             exported_file = drive_service.files().insert(body=body, media_body=media_body).execute()
-        
         return Response(json.dumps({}), status=200, mimetype='application/json')
