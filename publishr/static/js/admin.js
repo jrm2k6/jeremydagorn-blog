@@ -90,18 +90,59 @@ $(document).ready(function() {
         	}).success(function(data) {
         		$('.authorize-url').css('display', 'block');
         		$('.authorize-url').html("<div><a href=" + data["aurl"] + " target=_blank>" + data["aurl"] + "</a><div>"
-        			+"<div><input type=\"text\" name=\"export-verification-code\"></input><input type=\"button\" class=\"export-posts-btn btn btn-primary disabled\" value=\"Submit code\"></input>");
+        			+"<div><form id=\"form-verification-code\" method=\"post\" role=\"form\">"
+        			+ "<input type=\"text\" class=\"export-form-input\" name=\"verification-code\"></input>"
+        			+"<input type=\"button\" class=\"export-verification-code-btn btn btn-primary disabled\" value=\"Submit code\">"
+        			+ "</input></form>");
         		
-        		$('input[name=export-verification-code]').bind("propertychange input paste", function() {
-        			$(".export-posts-btn").removeClass("disabled");
+        		$('input[class=export-form-input]').bind("propertychange input paste", function() {
+        			$(".export-verification-code-btn").removeClass("disabled");
         		});
 
-        		$(".export-posts-btn").click(function() {
-        			console.log($(".export-verification-code"));
-
-        		})
+        		$('.export-verification-code-btn').click(function() {
+        			$.ajax({
+        				type: 'POST',
+        				url: '/submit_verification_code',
+        				dataType: 'json',
+        				data: $('#form-verification-code').serialize()
+        			}).success(function(data) {
+        				showAvailableFilesToExport(data["exportablePosts"]);
+        				$('.btn-posts-choice').click(function() {
+        					$.ajax({
+        						type: 'POST',
+        						url: '/export_files',
+        						dataType: 'json',
+        						data: $('#form-posts-choice').serialize()
+        					});
+        				});
+        			}).error( function(data) {
+        				$('.authorize-url').css('display', 'block');
+        				$('.authorize-url').html("<div class=\"alert alert-error alert-dismissible\" role=\"alert\">"
+        				+ "Oops, the code you submitted is wrong!</div>");
+        			})
+        		});
         	}).error(function(data) {
-        		alert('Error');
+        		$('.authorize-url').css('display', 'block');
+        		$('.authorize-url').html("<div class=\"alert alert-error alert-dismissible\" role=\"alert\">"
+        			+ "Oops something went wrong!</div>");
         	})
         });
+
+	var showAvailableFilesToExport = function(exportablePosts) {
+		$('.authorize-url').css('display', 'block');
+        $('.authorize-url').html("<div class=\"div-exportable-files\">"
+        	+"<form id=\"form-posts-choice\" method=\"post\" role=\"form\">"
+        	+"<fieldset class=\"group\">"
+        	+"<legend>Available files to export</legend>"
+			+"<ul class=\"ul-exportable-files\">"
+			+"</ul>" 
+			+"</fieldset>"
+			+"<input type=\"button\" class=\"btn-posts-choice btn btn-primary\" value=\"Export files\">"
+        	+"</input></form></div>");
+
+        for (var i=0; i<exportablePosts.length; i++) {
+        	$('.ul-exportable-files').append('<li><input type=\"checkbox\" name=\"v'+i+'\" value=\"'+exportablePosts[i]+'\"/><label for=\"v'+i+'\">'+exportablePosts[i]+'</label></li>');
+        }
+
+	}
 });

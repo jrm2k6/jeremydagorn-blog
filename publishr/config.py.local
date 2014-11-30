@@ -18,3 +18,6 @@ USERNAME = 'admin'
 
 GOOGLE_ANALYTICS_KEY = 'your google analytics API key'
 GOOGLE_ANALYTICS_DOMAIN = 'your google analytics domain name'
+
+GOOGLE_DRIVE_API_CLIENT_ID = 'your id'
+GOOGLE_DRIVE_API_CLIENT_SECRET = 'your secret'

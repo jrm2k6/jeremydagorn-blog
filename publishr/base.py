@@ -41,6 +41,8 @@ MODELS_NAMES = {
 
 app.MODELS_NAMES = MODELS_NAMES
 
+posts_exporter = PostsExporter(app.config['GOOGLE_DRIVE_API_CLIENT_ID'], app.config['GOOGLE_DRIVE_API_CLIENT_SECRET'])
+
 
 def create_app(db):
     with app.app_context():
@@ -342,10 +344,26 @@ def import_database():
 
 @app.route('/authorize_posts_backup', methods=['GET'])
 def authorize_posts_backup():
-    posts_exporter = PostsExporter()
     authorize_url = posts_exporter.get_authorize_url()
-    return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
+    if authorize_url is not None:
+        return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
+    else:
+        return Response(json.dumps({}), status=500, mimetype='application/json')
 
+
+@app.route('/submit_verification_code', methods=['POST'])
+def submit_verification_code():
+    verification_code_submitted = request.form['verification-code']
+    if verification_code_submitted is not None:
+        return posts_exporter.verify_credentials(verification_code_submitted)
+    else:
+        return Response(json.dumps({}), status=500, mimetype='application/json')
+
+
+@app.route('/export_files', methods=['POST'])
+def export_files():
+    checked_files = [v for k, v in request.form.iteritems()]
+    return posts_exporter.export_posts(checked_files)
 
 if __name__ == '__main__':
     app.run(debug=True)
