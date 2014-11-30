@@ -33,7 +33,6 @@ class PostsExporter:
             self.http = credentials.authorize(self.http)
 
             self.exportable_posts = self.get_exportable_posts()
-            print self.exportable_posts
             return Response(json.dumps({'exportablePosts': self.exportable_posts}), status=200, mimetype='application/json')
         except FlowExchangeError:
             return Response(json.dumps({}), status=500, mimetype='application/json')
