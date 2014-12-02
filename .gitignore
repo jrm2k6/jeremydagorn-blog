@@ -1,3 +1,4 @@
+app.wsgi
 htmlcov/
 .coverage
 config.py
