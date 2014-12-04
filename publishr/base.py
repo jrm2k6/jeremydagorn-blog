@@ -31,7 +31,6 @@ Markdown(app, extensions=['codehilite'])
 app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
-redis_server = Redis()
 memc = memcache.Client([app.config['MEMCACHED_SERVER_ADDRESS']])
 
 MODELS_NAMES = {
