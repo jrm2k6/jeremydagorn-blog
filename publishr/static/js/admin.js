@@ -85,7 +85,6 @@ $(document).ready(function() {
         $('.authorize-export-posts-btn').click(function(event) {
             var exportBtnElement = $(event.target);
             var exportType = exportBtnElement.data('exportType');
-            console.log(exportType);
         	$.ajax({
         		type: 'GET',
         		url: '/authorize_posts_backup/' + exportType,
