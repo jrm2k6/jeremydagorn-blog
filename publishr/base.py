@@ -2,6 +2,9 @@ import json
 import sqlite3
 import markdown
 import os
+import memcache
+
+from redis import Redis
 from flask import Flask, Response, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from contextlib import closing
@@ -21,7 +24,7 @@ from authentication import requires_auth
 from installation import upload_filedata
 from database_exporter import DatabaseExporter
 from database_importer import DatabaseImporter
-from posts_exporter import PostsExporter
+from posts_exporter import post_exporter_factory
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -29,6 +32,8 @@ Markdown(app, extensions=['codehilite'])
 app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
+redis_server = Redis()
+memc = memcache.Client([app.config['MEMCACHED_SERVER_ADDRESS']])
 
 MODELS_NAMES = {
     'user': User,
@@ -40,9 +45,6 @@ MODELS_NAMES = {
 }
 
 app.MODELS_NAMES = MODELS_NAMES
-
-posts_exporter = PostsExporter(app.config['GOOGLE_DRIVE_API_CLIENT_ID'], app.config['GOOGLE_DRIVE_API_CLIENT_SECRET'])
-
 
 def create_app(db):
     with app.app_context():
@@ -343,9 +345,11 @@ def import_database():
         return render_template("admin.html")
 
 
-@app.route('/authorize_posts_backup', methods=['GET'])
-def authorize_posts_backup():
-    authorize_url = posts_exporter.get_authorize_url()
+@app.route('/authorize_posts_backup/<export_type>', methods=['GET'])
+def authorize_posts_backup(export_type):
+    posts_exporter_instance = post_exporter_factory(export_type)             
+    memc.set('posts_exporter_instance', posts_exporter_instance)
+    authorize_url = posts_exporter_instance.get_authorize_url()
     if authorize_url is not None:
         return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
     else:
@@ -355,8 +359,9 @@ def authorize_posts_backup():
 @app.route('/submit_verification_code', methods=['POST'])
 def submit_verification_code():
     verification_code_submitted = request.form['verification-code']
-    if verification_code_submitted is not None:
-        return posts_exporter.verify_credentials(verification_code_submitted)
+    posts_exporter_instance = memc.get('posts_exporter_instance')
+    if verification_code_submitted is not None and posts_exporter_instance is not None:
+        return posts_exporter_instance.verify_credentials(verification_code_submitted)
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')
 
@@ -364,7 +369,12 @@ def submit_verification_code():
 @app.route('/export_files', methods=['POST'])
 def export_files():
     checked_files = [v for k, v in request.form.iteritems()]
-    return posts_exporter.export_posts(checked_files)
+    posts_exporter_instance = memc.get('posts_exporter_instance')
+    if posts_exporter_instance is not None:
+        print 'lol'
+        return posts_exporter_instance.export_posts(checked_files)
+    else:
+        return Response(json.dumps({}), status=500, mimetype='application/json')        
 
 if __name__ == '__main__':
     app.run(debug=True)
