@@ -23,7 +23,7 @@ from authentication import requires_auth
 from installation import upload_filedata
 from database_exporter import DatabaseExporter
 from database_importer import DatabaseImporter
-from posts_exporter import post_exporter_factory
+from posts_exporter import post_exporter_factory, PostsExporterGoogleDrive
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -348,6 +348,7 @@ def authorize_posts_backup(export_type):
     posts_exporter_instance = post_exporter_factory(export_type)             
     memc.set('posts_exporter_instance', posts_exporter_instance)
     authorize_url = posts_exporter_instance.get_authorize_url()
+
     if authorize_url is not None:
         return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
     else:
@@ -359,7 +360,9 @@ def submit_verification_code():
     verification_code_submitted = request.form['verification-code']
     posts_exporter_instance = memc.get('posts_exporter_instance')
     if verification_code_submitted is not None and posts_exporter_instance is not None:
-        return posts_exporter_instance.verify_credentials(verification_code_submitted)
+        resp = posts_exporter_instance.verify_credentials(verification_code_submitted)
+        memc.set('posts_exporter_instance', posts_exporter_instance)
+        return resp
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')
 
@@ -369,8 +372,9 @@ def export_files():
     checked_files = [v for k, v in request.form.iteritems()]
     posts_exporter_instance = memc.get('posts_exporter_instance')
     if posts_exporter_instance is not None:
-        print 'lol'
-        return posts_exporter_instance.export_posts(checked_files)
+        resp = posts_exporter_instance.export_posts(checked_files)
+        memc.delete('posts_exporter_instance')
+        return resp
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')        
 
