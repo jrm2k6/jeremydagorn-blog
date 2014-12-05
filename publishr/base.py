@@ -23,7 +23,7 @@ from authentication import requires_auth
 from installation import upload_filedata
 from database_exporter import DatabaseExporter
 from database_importer import DatabaseImporter
-from posts_exporter import post_exporter_factory, PostsExporterGoogleDrive
+from posts_exporter import post_exporter_factory
 
 app = Flask(__name__)
 assets = Environment(app)
