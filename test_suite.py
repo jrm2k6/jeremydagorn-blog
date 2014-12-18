@@ -10,6 +10,7 @@ from publishr.tests.test_upload_file import SaveFileTest
 from publishr.tests.test_parse_file import ParseUploadCsvTest, PopulateDatabaseTest
 from publishr.tests.test_database_exporter import DatabaseExporterTest
 from publishr.tests.test_add_global_env_jinja import VerifyGoogleAnalyticsTest
+from publishr.tests.test_template_filters import TemplateFilterPluralizeTest
 
 
 import sys
@@ -29,7 +30,8 @@ if __name__ == "__main__":
         loader.loadTestsFromTestCase(PopulateDatabaseTest),
         loader.loadTestsFromTestCase(DatabaseExporterTest),
         loader.loadTestsFromTestCase(SaveFileTest),
-        loader.loadTestsFromTestCase(VerifyGoogleAnalyticsTest)
+        loader.loadTestsFromTestCase(VerifyGoogleAnalyticsTest),
+        loader.loadTestsFromTestCase(TemplateFilterPluralizeTest)
         ))
 
     runner = TextTestRunner(verbosity=2)

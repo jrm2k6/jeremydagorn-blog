@@ -12,7 +12,7 @@
 </form>
 
 <h2> 
-      Existing {{ target_model.lower() }}s
+      Existing {{ target_model.lower() | force_pluralize }}
 </h2>
   <table class="mtable table table-condensed" data-list-fields='{{ fields }}' data-model-name='{{ target_model.lower() }}'>
     <thead><tr>

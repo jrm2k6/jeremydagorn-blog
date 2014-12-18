@@ -74,6 +74,16 @@ def set_config(test):
 create_app(db)
 
 
+@app.template_filter()
+def force_pluralize(word):
+    last_char = word[-1]
+    if last_char == 'y':
+        return word[:-1] + 'ies'
+    elif last_char == 's':
+        return word + 'es'
+    else:
+        return word + 's'
+
 @app.route('/')
 def show_home():
     to_return = []
