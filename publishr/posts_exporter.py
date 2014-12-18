@@ -42,7 +42,6 @@ class PostsExporterGoogleDrive(PostsExporter):
             # Create an httplib2.Http object and authorize it with our credentials
             self.http = httplib2.Http()
             self.http = credentials.authorize(self.http)
-            import pdb;pdb.set_trace()
             self.exportable_posts = self.get_exportable_posts()
             return Response(json.dumps({'exportablePosts': self.exportable_posts}),
                             status=200, mimetype='application/json')
@@ -54,7 +53,7 @@ class PostsExporterGoogleDrive(PostsExporter):
 
         drive_service = build('drive', 'v2', http=self.http)
         directory_to_ls = os.getcwd() + app.config['PATH_POSTS_FOLDER']
-        print directory_to_ls
+
         for post_file in selected_posts:
             media_body = MediaFileUpload(directory_to_ls + post_file, mimetype='text/plain', resumable=True)
             body = {
