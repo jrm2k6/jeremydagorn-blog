@@ -156,3 +156,6 @@ class AssertErrorCode(TestCase):
 
     def assert500(self, res):
         self.assertTrue(res._status_code == 500)
+
+    def assert200(self, res):
+        self.assertTrue(res._status_code == 200)
