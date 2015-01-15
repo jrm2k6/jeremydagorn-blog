@@ -44,6 +44,7 @@ MODELS_NAMES = {
 
 app.MODELS_NAMES = MODELS_NAMES
 
+
 def create_app(db):
     with app.app_context():
         initializer = AppInitializer(app)
@@ -83,6 +84,7 @@ def force_pluralize(word):
         return word + 'es'
     else:
         return word + 's'
+
 
 @app.route('/')
 def show_home():
@@ -355,14 +357,21 @@ def import_database():
 
 @app.route('/authorize_posts_backup/<export_type>', methods=['GET'])
 def authorize_posts_backup(export_type):
-    posts_exporter_instance = post_exporter_factory(export_type)             
+    posts_exporter_instance = post_exporter_factory(export_type)       
     memc.set('posts_exporter_instance', posts_exporter_instance)
-    authorize_url = posts_exporter_instance.get_authorize_url()
 
+    authorize_url = posts_exporter_instance.get_authorize_url()
     if authorize_url is not None:
         return Response(json.dumps({"aurl": authorize_url}), status=200, mimetype='application/json')
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')
+
+
+@app.route('/export_archive', methods=['GET'])
+def export_archive():
+    posts_exporter_instance = post_exporter_factory('archive')
+    memc.set('posts_exporter_instance', posts_exporter_instance)
+    return posts_exporter_instance.get_response_with_available_files()
 
 
 @app.route('/submit_verification_code', methods=['POST'])
@@ -386,7 +395,7 @@ def export_files():
         memc.delete('posts_exporter_instance')
         return resp
     else:
-        return Response(json.dumps({}), status=500, mimetype='application/json')        
+        return Response(json.dumps({}), status=500, mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(debug=True)

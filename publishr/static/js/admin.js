@@ -82,6 +82,15 @@ $(document).ready(function() {
             })
         });
 
+        $('#archive-export').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/export_archive',
+            }).success(function(data) {
+                showAvailableFilesToExport(data["exportablePosts"], true);
+            })
+        });
+
         $('.authorize-export-posts-btn').click(function(event) {
             var exportBtnElement = $(event.target);
             var exportType = exportBtnElement.data('exportType');
@@ -108,7 +117,7 @@ $(document).ready(function() {
         				dataType: 'json',
         				data: $('#form-verification-code').serialize()
         			}).success(function(data) {
-        				showAvailableFilesToExport(data["exportablePosts"]);
+        				showAvailableFilesToExport(data["exportablePosts"], false);
         				$('.btn-posts-choice').click(function() {
         					$.ajax({
         						type: 'POST',
@@ -130,16 +139,24 @@ $(document).ready(function() {
         	})
         });
 
-	var showAvailableFilesToExport = function(exportablePosts) {
+	var showAvailableFilesToExport = function(exportablePosts, isDirectDownload) {
+        var btnType = (isDirectDownload) ? "submit" : "button";
+        var formDeclaration = "";
+        if (isDirectDownload) {
+            formDeclaration = "<form id=\"form-posts-choice\" method=\"post\" role=\"form\" action=\"/export_files\">";
+        } else {
+            formDeclaration = "<form id=\"form-posts-choice\" method=\"post\" role=\"form\">";
+        }
+
 		$('.authorize-url').css('display', 'block');
         $('.authorize-url').html("<div class=\"div-exportable-files\">"
-        	+"<form id=\"form-posts-choice\" method=\"post\" role=\"form\">"
+        	+ formDeclaration
         	+"<fieldset class=\"group\">"
         	+"<legend>Available files to export</legend>"
 			+"<ul class=\"ul-exportable-files\">"
 			+"</ul>" 
 			+"</fieldset>"
-			+"<input type=\"button\" class=\"btn-posts-choice btn btn-primary\" value=\"Export files\">"
+			+"<input type=" + btnType +" class=\"btn-posts-choice btn btn-primary\" value=\"Export files\">"
         	+"</input></form></div>");
 
         for (var i=0; i<exportablePosts.length; i++) {

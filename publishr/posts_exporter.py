@@ -4,7 +4,9 @@ import json
 import os
 import dropbox
 
-from flask import Response
+from flask import Response, send_file
+from zipfile import ZipFile
+from io import BytesIO
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
 from oauth2client.client import OAuth2WebServerFlow, FlowExchangeError
@@ -18,6 +20,33 @@ class PostsExporter(object):
             return os.listdir(directory_to_ls)
         except Exception as e:
             return None
+
+
+class PostsExporterArchive(PostsExporter):
+    def __init__(self):
+        super(PostsExporter, self).__init__()
+
+    def get_response_with_available_files(self):
+        self.exportable_posts = self.get_exportable_posts()
+        return Response(json.dumps({'exportablePosts': self.exportable_posts}),
+                        status=200, mimetype='application/json')
+
+    def export_posts(self, selected_posts):
+        memory_file = self.write_zip(selected_posts)
+        return send_file(memory_file, attachment_filename='backup.zip', as_attachment=True)
+
+    def write_zip(self, selected_posts):
+        from base import app
+
+        directory_to_ls = os.getcwd() + app.config['PATH_POSTS_FOLDER']
+
+        memory_file = BytesIO()
+        with ZipFile(memory_file, 'a') as zf:
+            for post in selected_posts:
+                zf.write(os.path.join(directory_to_ls, post))
+        memory_file.seek(0)
+        return memory_file
+
 
 class PostsExporterGoogleDrive(PostsExporter):
     def __init__(self, client_id, client_secret):
@@ -104,7 +133,9 @@ def post_exporter_factory(_type):
         return PostsExporterDropbox(app.config['DROPBOX_CORE_API_APP_ID'],
                                     app.config['DROPBOX_CORE_API_APP_SECRET'])
     elif _type == "google-drive":
-        return PostsExporterGoogleDrive(app.config['GOOGLE_DRIVE_API_CLIENT_ID'], 
+        return PostsExporterGoogleDrive(app.config['GOOGLE_DRIVE_API_CLIENT_ID'],
                                         app.config['GOOGLE_DRIVE_API_CLIENT_SECRET'])
-    assert 0, "Bad export type for post exporter creation: " + _type
+    elif _type == "archive":
+        return PostsExporterArchive()
 
+    assert 0, "Bad export type for post exporter creation: " + _type

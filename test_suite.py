@@ -11,6 +11,7 @@ from publishr.tests.test_parse_file import ParseUploadCsvTest, PopulateDatabaseT
 from publishr.tests.test_database_exporter import DatabaseExporterTest
 from publishr.tests.test_add_global_env_jinja import VerifyGoogleAnalyticsTest
 from publishr.tests.test_template_filters import TemplateFilterPluralizeTest
+from publishr.tests.test_post_exporter import PostsExporterAuthorizeUrlTest
 
 
 import sys
@@ -31,7 +32,8 @@ if __name__ == "__main__":
         loader.loadTestsFromTestCase(DatabaseExporterTest),
         loader.loadTestsFromTestCase(SaveFileTest),
         loader.loadTestsFromTestCase(VerifyGoogleAnalyticsTest),
-        loader.loadTestsFromTestCase(TemplateFilterPluralizeTest)
+        loader.loadTestsFromTestCase(TemplateFilterPluralizeTest),
+        loader.loadTestsFromTestCase(PostsExporterAuthorizeUrlTest)
         ))
 
     runner = TextTestRunner(verbosity=2)
