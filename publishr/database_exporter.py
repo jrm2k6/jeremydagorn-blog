@@ -19,10 +19,10 @@ class DatabaseExporter:
 
         if not os.path.exists(destination_folder):
             os.makedirs(destination_folder)
-        
+
         with open(destination + '.temp', 'w+') as temp_file:
                 subprocess.call(["sqlite3", self.path_database_file, ".dump"], stdout=temp_file)
-        
+
         with open(destination + '.dump', 'w+') as output_file:
                 subprocess.call(["grep", "INSERT INTO", destination + '.temp'], stdout=output_file)
 
