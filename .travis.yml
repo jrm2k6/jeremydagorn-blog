@@ -14,4 +14,4 @@ script:
   - bash scripts/generate_dummy_css.sh
   - export PYTHONPATH=`pwd`
   - echo $PYTHONPATH
-  - python test_suite.py
+  - nosetests publishr/tests/
