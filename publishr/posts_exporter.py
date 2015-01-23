@@ -67,10 +67,10 @@ class PostsExporterGoogleDrive(PostsExporter):
 
     def verify_credentials(self, _code):
         try:
-            credentials = self.flow.step2_exchange(_code)
+            self.credentials = self.flow.step2_exchange(_code)
             # Create an httplib2.Http object and authorize it with our credentials
-            self.http = httplib2.Http()
-            self.http = credentials.authorize(self.http)
+            _http = httplib2.Http()
+            http = self.credentials.authorize(_http)
             self.exportable_posts = self.get_exportable_posts()
             return Response(json.dumps({'exportablePosts': self.exportable_posts}),
                             status=200, mimetype='application/json')
@@ -80,7 +80,11 @@ class PostsExporterGoogleDrive(PostsExporter):
     def export_posts(self, selected_posts):
         from base import app
 
-        drive_service = build('drive', 'v2', http=self.http)
+        # there should be no need to reauthorize - TODO: decorator
+        _http = httplib2.Http()
+        http = self.credentials.authorize(_http)
+        drive_service = build('drive', 'v2', http=http)
+
         directory_to_ls = os.getcwd() + app.config['PATH_POSTS_FOLDER']
 
         for post_file in selected_posts:
@@ -89,7 +93,8 @@ class PostsExporterGoogleDrive(PostsExporter):
                 'title': post_file,
                 'mimeType': 'text/plain'
             }
-            exported_file = drive_service.files().insert(body=body, media_body=media_body).execute(http=self.http)
+            exported_file = drive_service.files().insert(body=body, media_body=media_body).execute(http=http)
+
         return Response(json.dumps({}), status=200, mimetype='application/json')
 
 
