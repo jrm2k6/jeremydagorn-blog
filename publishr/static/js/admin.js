@@ -124,7 +124,15 @@ $(document).ready(function() {
         						url: '/export_files',
         						dataType: 'json',
         						data: $('#form-posts-choice').serialize()
-        					});
+        					}).success(function(data) {
+                                $('.authorize-url').css('display', 'block');
+                                $('.authorize-url').html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\">"
+                                    + "File(s) successfully exported!</div>");
+                            }).error(function(data) {
+                                $('.authorize-url').css('display', 'block');
+                                $('.authorize-url').html("<div class=\"alert alert-error alert-dismissible\" role=\"alert\">"
+                                    + "Oops, something went wrong!</div>");
+                            });
         				});
         			}).error( function(data) {
         				$('.authorize-url').css('display', 'block');
@@ -135,7 +143,7 @@ $(document).ready(function() {
         	}).error(function(data) {
         		$('.authorize-url').css('display', 'block');
         		$('.authorize-url').html("<div class=\"alert alert-error alert-dismissible\" role=\"alert\">"
-        			+ "Oops something went wrong!</div>");
+        			+ "Oops, something went wrong!</div>");
         	})
         });
 

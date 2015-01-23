@@ -78,25 +78,25 @@ class PostsExporterGoogleDrive(PostsExporter):
             return Response(json.dumps({}), status=500, mimetype='application/json')
 
     def export_posts(self, selected_posts):
-        from base import app
+        try:
+            from base import app
+            # there should be no need to reauthorize - TODO: decorator
+            _http = httplib2.Http()
+            http = self.credentials.authorize(_http)
+            drive_service = build('drive', 'v2', http=http)
 
-        # there should be no need to reauthorize - TODO: decorator
-        _http = httplib2.Http()
-        http = self.credentials.authorize(_http)
-        drive_service = build('drive', 'v2', http=http)
+            directory_to_ls = os.getcwd() + app.config['PATH_POSTS_FOLDER']
 
-        directory_to_ls = os.getcwd() + app.config['PATH_POSTS_FOLDER']
-
-        for post_file in selected_posts:
-            media_body = MediaFileUpload(directory_to_ls + post_file, mimetype='text/plain', resumable=True)
-            body = {
-                'title': post_file,
-                'mimeType': 'text/plain'
-            }
-            exported_file = drive_service.files().insert(body=body, media_body=media_body).execute(http=http)
-
-        return Response(json.dumps({}), status=200, mimetype='application/json')
-
+            for post_file in selected_posts:
+                media_body = MediaFileUpload(directory_to_ls + post_file, mimetype='text/plain', resumable=True)
+                body = {
+                    'title': post_file,
+                    'mimeType': 'text/plain'
+                }
+                exported_file = drive_service.files().insert(body=body, media_body=media_body).execute(http=http)
+            return Response(json.dumps({}), status=200, mimetype='application/json')
+        except Exception as e:
+            return Response(json.dumps({}), status=500, mimetype='application/json')
 
 class PostsExporterDropbox(PostsExporter):
     def __init__(self, client_id, client_secret):
