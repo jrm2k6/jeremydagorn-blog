@@ -7,6 +7,6 @@ Before Prezi, I did some internships in France, and in the USA (UC Santa Cruz). 
 that's why I lived in France, USA, Canada, and Hungary.
 I love to learn new languages, and I have a<span class="love"> *secret* love </span> for functional programming, even if I am still a beginner.
 
-You can find here my formal resume.
+You can find my resume [here](http://resume-jeremydagorn.herokuapp.com/).
 
 You can also reach me on [Github](http://www.github.com/jrm2k6) and [Twitter](http://twitter.com/jrm2k6).
