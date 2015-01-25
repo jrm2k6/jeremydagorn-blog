@@ -26,8 +26,17 @@ form textarea#content {
 	justify-content: center;
 	align-items: center;
 	border: 2px dotted white;
-	border-radius: 5px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.1);
 	.pointer;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.3);
+	}
+
+	&:active {
+		background: rgba(255, 255, 255, 0.6);
+	}
 }
 
 #content {
