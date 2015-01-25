@@ -1,6 +1,38 @@
+@import 'mixins.less';
+
 form textarea#content {
      width: 70%;
      height: 400px;
+}
+
+#container-wrapper {
+	display: flex;
+	width: 100%;
+	justify-content: space-around;
+}
+
+#left-menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex: 1;
+}
+
+.left-menu-item {
+	flex: 1;
+	max-height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 2px dotted white;
+	border-radius: 5px;
+	.pointer;
+}
+
+#content {
+	margin-left: 10px;
+	flex: 7;
 }
 
 .form-upload {
@@ -13,6 +45,6 @@ form textarea#content {
 
 .ul-exportable-files li { 
 	border: 1px transparent solid; 
-	display:inline-block;
-	width:12em;
+	display: inline-block;
+	width: 12em;
 }

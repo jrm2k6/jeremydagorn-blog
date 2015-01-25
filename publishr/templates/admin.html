@@ -1,30 +1,40 @@
 {% extends "layout_admin.html" %}
 {% block body %}
-<div class="container">
-	<h6>Upload your csv file containing your data:<h6>
-	<form class="form-upload form-group" action="/upload_datafile" method=post enctype=multipart/form-data>
-		<p><input type=file name=file></p>
-	    <input type=submit class="btn btn-primary" value=Upload>
-	    <p class="help-block">
-	    	Click <a href="#">here</a> for more information about how to structure your csv file (or check the <a href="#">wiki</a> of the project)
-	    </p>
-  	</form>
+<div>
+    <div id="container-wrapper">
+        <div id="left-menu">
+            <div class="left-menu-item" data-content="database-tab"><div><i class="fa fa-database fa-3x"></i></div>Database</div>
+            <div class="left-menu-item" data-content="exports-tab"><div><i class="fa fa-upload fa-3x"></i></div>Export Posts</div>
+            <div class="left-menu-item" data-content="styles-tab"><div><i class="fa fa-code fa-3x"></i></div>Styles</div>
+            <div class="left-menu-item" data-content="settings-tab"><div><i class="fa fa-cog fa-3x"></i></div>Settings</div>
+        </div>
+        <div id="content">
+        	<h6>Upload your csv file containing your data:<h6>
+        	<form class="form-upload form-group" action="/upload_datafile" method=post enctype=multipart/form-data>
+        		<p><input type=file name=file></p>
+        	    <input type=submit class="btn btn-primary" value=Upload>
+        	    <p class="help-block">
+        	    	Click <a href="#">here</a> for more information about how to structure your csv file (or check the <a href="#">wiki</a> of the project)
+        	    </p>
+          	</form>
 
-        <h6> Database export </h6>
-        <input type=button class="export-database-btn btn btn-primary" value="Export database">
+                <h6> Database export </h6>
+                <input type=button class="export-database-btn btn btn-primary" value="Export database">
 
-        <h6> Database import </h6>
-        <form class="form-upload form-group" action="/import_database" method=post enctype=multipart/form-data>
-		<p><input type=file name=file></p>
-	    <input type=submit class="btn btn-primary" value=Import>
-        </form>
+                <h6> Database import </h6>
+                <form class="form-upload form-group" action="/import_database" method=post enctype=multipart/form-data>
+        		<p><input type=file name=file></p>
+        	    <input type=submit class="btn btn-primary" value=Import>
+                </form>
 
-        <input type="button" class="authorize-export-posts-btn btn btn-primary" value="Export Posts to Google Drive" 
-        data-export-type="google-drive">
-        <input type="button" class="authorize-export-posts-btn btn btn-primary" value="Export Posts to Dropbox" 
-        data-export-type="dropbox">
-        <input type="button" class="btn btn-primary" id="archive-export" value="Export Posts to an archive" 
-        data-export-type="archive">
-        <div class="authorize-url"></div>
+                <input type="button" class="authorize-export-posts-btn btn btn-primary" value="Export Posts to Google Drive" 
+                data-export-type="google-drive">
+                <input type="button" class="authorize-export-posts-btn btn btn-primary" value="Export Posts to Dropbox" 
+                data-export-type="dropbox">
+                <input type="button" class="btn btn-primary" id="archive-export" value="Export Posts to an archive" 
+                data-export-type="archive">
+                <div class="authorize-url"></div>
+        </div>
+    </div>
 <div>
 {% endblock %}
