@@ -172,4 +172,19 @@ $(document).ready(function() {
         }
 
 	}
+
+    $('.left-menu-item').click(function(event) {
+        var menuItem = $(this);
+        var tabToOpen = menuItem.data('content');
+        var tabElems = $("div[id$='-tab']");
+
+        tabElems.each(function(index, elem) {
+            var $elem = $(elem);
+            if ($elem.attr('id') === tabToOpen) {
+                $elem.css('display', 'block');
+            } else {
+                $elem.css('display', 'none');
+            }
+        });
+    })
 });
