@@ -1,6 +1,6 @@
 {% extends "layout_admin.html" %}
 {% block body %}
-<h1>Add {{ target_model }}</h1>
+<h1>Add {{ target_model | spacify }}</h1>
 {% from "_formhelpers.html" import render_field %}
 <form method=post action="{{ action }}">
   <dl>
@@ -12,7 +12,7 @@
 </form>
 
 <h2> 
-      Existing {{ target_model.lower() | force_pluralize }}
+      Existing {{ target_model | spacify| force_pluralize }}
 </h2>
   <table class="mtable table table-condensed" data-list-fields='{{ fields }}' data-model-name='{{ target_model.lower() }}'>
     <thead><tr>

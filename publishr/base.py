@@ -85,6 +85,11 @@ def force_pluralize(word):
     else:
         return word + 's'
 
+@app.template_filter()
+def spacify(word):
+    # CamelCase model name means there are composed of several words in reality
+    return reduce(lambda acc, curr: acc+ " " + curr if curr.isupper() else acc + curr, word)
+
 
 @app.route('/')
 def show_home():
