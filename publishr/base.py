@@ -329,7 +329,7 @@ def update_resource(model_name, _id):
             project.technologies = request.json['_technologies']
             project.url = request.json['_url']
             project.status = request.json['_status']
-    elif model_name == 'social_network':
+    elif model_name == 'socialnetwork':
         social_network = SocialNetwork.query.filter_by(id=_id).first()
         if social_network is not None:
             social_network.name = request.json['_name']

@@ -1,4 +1,5 @@
-from publishr.models import User, Category, Technology, Status, Project, Post
+from publishr.models import User, Category, Technology, \
+    Status, Project, Post, SocialNetwork
 from unittest import TestCase
 from publishr import base
 from publishr.models import db
@@ -57,6 +58,9 @@ class FlaskTestModelUtils(TestCase, object):
     def assert_post_with_title_exists_in_database(self, _title):
         self.assertTrue(Post.query.filter_by(title=_title).first() is not None)
 
+    def assert_social_network_with_name_exists_in_database(self, _name):
+        self.assertTrue(SocialNetwork.query.filter_by(name=_name).first() is not None)
+
     def assert_user_with_username_exists_in_database_is_false(self, _name):
         self.assertTrue(Project.query.filter_by(title=_name).first() is None)
 
@@ -83,6 +87,11 @@ class FlaskTestModelUtils(TestCase, object):
     def assert_post_has_updated_values(self, _title, new_title):
         self.assertTrue(Post.query.filter_by(title=_title).first() is None)
         self.assertTrue(Post.query.filter_by(title=new_title).first() is not None)
+
+    def assert_social_network_has_updated_values(self, _name, new_name):
+        print SocialNetwork.query.filter_by(name=_name).first()
+        self.assertTrue(SocialNetwork.query.filter_by(name=_name).first() is None)
+        self.assertTrue(SocialNetwork.query.filter_by(name=new_name).first() is not None)
 
     def add_status_in_database(self, should_commit):
         status = Status("mock_status")
@@ -141,6 +150,11 @@ class FlaskTestModelUtils(TestCase, object):
     def add_status_in_database_with_name(self, _name):
         status = Status(_name)
         db.session.add(status)
+        db.session.commit()
+
+    def add_social_network_in_database_with_name(self, _name):
+        social_network = SocialNetwork(_name, '', True)
+        db.session.add(social_network)
         db.session.commit()
 
 
