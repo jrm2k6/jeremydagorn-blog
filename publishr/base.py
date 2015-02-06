@@ -271,7 +271,6 @@ def add_social_network():
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
 @requires_auth
 def delete_resource(model_name, _id):
-    import pdb; pdb.set_trace()
     row_count = MODELS_NAMES[model_name].query.filter_by(id=_id).delete()
 
     if row_count >= 1:
