@@ -78,5 +78,15 @@ class AdminAddItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationU
 
         self.assert_post_with_title_exists_in_database(title_post)
 
+    def test_add_social_network_in_database(self):
+        sn_name = "test_sn"
+        res = self.get_auth_required_page_with_post_data(
+            url='addsocialnetwork',
+            data_dict=dict(name=sn_name, url='urlmin'),
+            username="username_test",
+            password="secret_test")
+
+        self.assert_social_network_with_name_exists_in_database(sn_name)
+
 if __name__ == "__main__":
     unittest.main()
