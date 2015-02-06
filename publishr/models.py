@@ -90,7 +90,7 @@ class Technology(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<Technology %r  - %r >' % self.name
+        return '<Technology %r>' % self.name
 
     def columns(self):
         """Return the actual columns of a SQLAlchemy-mapped object"""
@@ -187,6 +187,38 @@ class Status(db.Model):
     @staticmethod
     def get_settable_columns():
         return Status.__mapper__.c.keys()[1:]
+
+    @classmethod
+    def from_list(cls, fields):
+        return cls(fields[0][1])
+
+
+class SocialNetwork(db.Model):
+    column_list = ('id', 'name', 'url', 'is_shown')
+    editable_column = ('name', 'url', 'is_shown')
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), unique=True, nullable=False)
+    url = db.Column(db.String(400), unique=True, nullable=False)
+    is_shown = db.Column(db.Boolean, default=True)
+
+    def __init__(self, name, url, is_shown):
+        self.name = name
+        self.url = url
+        self.is_shown = is_shown
+
+    def __repr__(self):
+        return '<Social Network %r %r>' % (self.name, self.url)
+
+    def columns(self):
+        """Return the actual columns of a SQLAlchemy-mapped object"""
+        return [(prop.key, getattr(self, prop.key))
+                for prop in class_mapper(self.__class__).iterate_properties
+                if isinstance(prop, ColumnProperty)]
+
+    @staticmethod
+    def get_settable_columns():
+        return SocialNetwork.__mapper__.c.keys()[1:]
 
     @classmethod
     def from_list(cls, fields):

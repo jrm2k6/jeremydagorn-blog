@@ -35,3 +35,8 @@ class AddTechnologyForm(Form):
 
 class AddCategoryForm(Form):
     name = TextField('Name', [validators.Length(min=4, max=200)])
+
+
+class AddSocialNetworkForm(Form):
+    name = TextField('Name', [validators.Length(min=4, max=200)])
+    url = TextField('Url', [validators.Length(min=4, max=400)])

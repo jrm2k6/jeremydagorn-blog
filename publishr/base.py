@@ -7,9 +7,10 @@ import memcache
 from flask import Flask, Response, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from contextlib import closing
-from models import db, User, Project, Technology, Status, Category, Post
+from models import db, User, Project, Technology, Status, Category, Post, \
+    SocialNetwork
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
-    AddCategoryForm, AddTechnologyForm, AddPostForm
+    AddCategoryForm, AddTechnologyForm, AddPostForm, AddSocialNetworkForm
 from flask import jsonify, Markup
 from flaskext.markdown import Markdown
 from flask.ext.assets import Environment, Bundle
@@ -39,7 +40,8 @@ MODELS_NAMES = {
     'status': Status,
     'technology': Technology,
     'post': Post,
-    'category': Category
+    'category': Category,
+    'socialnetwork': SocialNetwork
 }
 
 app.MODELS_NAMES = MODELS_NAMES
@@ -248,9 +250,28 @@ def add_post():
                            action="addpost")
 
 
+@app.route('/addsocialnetwork', methods=['GET', 'POST'])
+@requires_auth
+def add_social_network():
+    form = AddSocialNetworkForm(request.form)
+    if request.method == 'POST' and form.validate():
+        social_network = SocialNetwork(form.name.data, form.url.data, True)
+        db.session.add(social_network)
+        db.session.commit()
+        flash('Social Network added', 'info')
+        return redirect(url_for('add_social_network'))
+    return render_template('_add.html',
+                           form=form,
+                           rows=SocialNetwork.query.all(),
+                           target_model="SocialNetwork",
+                           fields=SocialNetwork.__mapper__.c.keys(),
+                           action="addsocialnetwork")
+
+
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
 @requires_auth
 def delete_resource(model_name, _id):
+    import pdb; pdb.set_trace()
     row_count = MODELS_NAMES[model_name].query.filter_by(id=_id).delete()
 
     if row_count >= 1:
@@ -309,6 +330,11 @@ def update_resource(model_name, _id):
             project.technologies = request.json['_technologies']
             project.url = request.json['_url']
             project.status = request.json['_status']
+    elif model_name == 'social_network':
+        social_network = SocialNetwork.query.filter_by(id=_id).first()
+        if social_network is not None:
+            social_network.name = request.json['_name']
+            social_network.url = request.json['_url']
     else:
         return Response({}, status=500, mimetype='application/json')
     db.session.commit()
