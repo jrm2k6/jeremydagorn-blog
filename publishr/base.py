@@ -92,6 +92,10 @@ def spacify(word):
     # CamelCase model name means there are composed of several words in reality
     return reduce(lambda acc, curr: acc+ " " + curr if curr.isupper() else acc + curr, word)
 
+@app.context_processor
+def get_social_networks():
+    social_networks = SocialNetwork.query.filter_by(is_shown=True).all()
+    return dict(shown_social_networks=social_networks)
 
 @app.route('/')
 def show_home():

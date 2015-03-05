@@ -23,13 +23,15 @@
 </script>
 {% block js_script %}{% endblock %}
 {% block css %}{% endblock %}
+{% macro icon(site) %}
+    <img src="{{ url_for('static', filename='css/img/{0}.png'.format(site)) }}" class="social-icons">
+{% endmacro %}
 <header class="subhead">
     <div class="container">
         <div class="social">
-                <a href="http://www.twitter.com/jrm2k6" target="_blank"><img class="social-icons" src= "{{ url_for('static', filename='css/img/twitter.png') }}"></a>
-                <a href="http://www.github.com/jrm2k6" target="_blank"><img class="social-icons" src= "{{ url_for('static', filename='css/img/github.png') }}"></a>
-                <a href="http://ca.linkedin.com/in/jeremydagorn" target="_blank"><img class="social-icons" src= "{{ url_for('static', filename='css/img/linkedin.png') }}"></a>
-                <a href="http://www.instagram.com/ohyeahserpieyeah" target="_blank"><img class="social-icons" src= "{{ url_for('static', filename='css/img/instagram.png') }}"></a>
+                {% for item in shown_social_networks %}
+                  <a href={{item.url}} target="_blank">{{icon(item.name)}}</a>
+                {% endfor %}
             </div>
         <div class="first_line">
             <a class="icon" href="/"></a>
