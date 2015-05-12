@@ -1,3 +1,4 @@
+app.ini
 app.wsgi
 htmlcov/
 .coverage

@@ -1,0 +1,14 @@
+[uwsgi]
+logto = /tmp/jdblog.log 
+module = wsgi
+master = true
+callable = app
+processes = 5
+socket = jeremydagorn.sock
+chmod-socket = 666
+pythonpath = %d
+uid = www-data
+gid = www-data
+vacuum = true
+die-on-term = true
+
