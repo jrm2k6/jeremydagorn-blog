@@ -1,0 +1,11 @@
+description "uWSGI server instance configured to serve jeremydagorn.com"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+setuid jrm2k6
+setgid www-data
+
+env PATH=/home/jrm2k6/jeremydagorn-blog/publishr
+chdir /home/jrm2k6/jeremydagorn-blog
+exec uwsgi --ini app.ini
