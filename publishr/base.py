@@ -33,7 +33,6 @@ app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
 memc = memcache.Client([app.config['MEMCACHED_SERVER_ADDRESS']])
-
 MODELS_NAMES = {
     'user': User,
     'project': Project,
@@ -431,5 +430,7 @@ def export_files():
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')
 
+#from werkzeug.debug import DebuggedApplication
+#app.wsgi_app = DebuggedApplication( app.wsgi_app, True )
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=False)
