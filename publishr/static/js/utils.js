@@ -1,5 +1,5 @@
 'use strict';
 
 function removeCurrentActiveClass() {
-	$(".active").removeClass("active");
+    $(".active").removeClass("active");
 }
