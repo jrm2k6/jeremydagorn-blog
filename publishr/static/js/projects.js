@@ -16,14 +16,14 @@ Project.prototype = {
         this.description = obj.filename;
         this.status = obj.status;
         this.technologies = obj.technologies;
-            return this;
-        },
+        return this;
+    },
 
     getStatusAsString : function() {
-        var STATUS = ["DONE", "IN-PROGRESS"];
+        var STATUS = ["DONE", "IN-PROGRESS", "IN-MY-MIND"];
         var status = this.status-1;
         
-                if (this.status !== undefined) {
+        if (this.status !== undefined) {
             if (status >= STATUS.length) throw new Error("Status id needs to be lower than the length of array STATUS." +
                 "Have you referenced your new status in this array?");
             return STATUS[status];

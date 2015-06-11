@@ -294,7 +294,18 @@ def fetch_projects():
     projects = Project.query.all()
     response = []
     for p in projects:
-        response.append(p.row2dict())
+        obj_project = p.row2dict()
+        
+        technologies_current_project = ProjectsTechnologies.query.filter_by(project_id=obj_project["id"]).all()
+        _technologies= []
+        for elem in technologies_current_project:
+            technology = Technology.query.filter_by(id=elem.technology_id).first()
+            if technology:
+                _technologies.append(technology.name)
+        
+        obj_project["technologies"] = ','.join(_technologies)
+        response.append(obj_project)
+
     return Response(json.dumps(response),
                     status=200,
                     mimetype='application/json')
@@ -437,4 +448,4 @@ def export_files():
 #from werkzeug.debug import DebuggedApplication
 #app.wsgi_app = DebuggedApplication( app.wsgi_app, True )
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=True)
