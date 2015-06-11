@@ -1,4 +1,4 @@
-from models import db, Status, Category, User
+from models import db, Status, Category, User, Technology
 from wtforms import SelectField
 
 
@@ -18,3 +18,10 @@ class AuthorField(SelectField):
     def __init__(self, *args, **kwargs):
         super(AuthorField, self).__init__(*args, **kwargs)
         self.choices = db.session.query(User.id, User.username).all()
+
+
+class TechnologyField(SelectField):
+	def __init__(self, *args, **kwargs):
+		super(TechnologyField, self).__init__(*args, **kwargs)
+		self.choices = db.session.query(Technology.id, Technology.name)
+
