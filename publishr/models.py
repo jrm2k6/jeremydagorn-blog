@@ -43,26 +43,25 @@ class User(db.Model):
 
 
 class Project(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(400), unique=True)
     filename = db.Column(db.String(1000))
-    technologies = db.Column(db.String(200))
     url = db.Column(db.String(500))
     status = db.Column(db.Integer, db.ForeignKey('status.id'))
 
-    def __init__(self, title, filename, technologies, url, status_id):
+    def __init__(self, title, filename, url, status_id):
         self.title = title
         self.filename = filename
-        self.technologies = technologies
         self.url = url
         self.status = status_id
 
     @classmethod
     def from_list(cls, fields):
-        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1])
+        return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1])
 
     def __repr__(self):
-        return '<Project %r  - %r >' % (self.title, self.technologies)
+        return '<Project %r >' % (self.title)
 
     def columns(self):
         """Return the actual columns of a SQLAlchemy-mapped object"""
