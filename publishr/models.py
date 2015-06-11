@@ -222,3 +222,13 @@ class SocialNetwork(db.Model):
     @classmethod
     def from_list(cls, fields):
         return cls(fields[0][1])
+
+
+class ProjectsTechnologies(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    technology_id = db.Column(db.Integer, db.ForeignKey('technology.id'))
+
+    def __init__(self, project_id, technology_id):
+        self.project_id = project_id
+        self.technology_id = technology_id
