@@ -98,6 +98,7 @@ class PostsExporterGoogleDrive(PostsExporter):
         except Exception as e:
             return Response(json.dumps({}), status=500, mimetype='application/json')
 
+
 class PostsExporterDropbox(PostsExporter):
     def __init__(self, client_id, client_secret):
         super(PostsExporter, self).__init__()

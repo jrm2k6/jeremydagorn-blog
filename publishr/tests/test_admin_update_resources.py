@@ -104,7 +104,7 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         new_name = 'instagram'
         self.add_social_network_in_database_with_name(name)
         self.assert_social_network_with_name_exists_in_database(name)
-        
+
         res = self.get_auth_required_page_with_post_json_data(
             url='/update/socialnetwork/1',
             data_dict=json.dumps({'_name': new_name, '_url': '', '_is_shown': True}),

@@ -14,11 +14,11 @@ class TemplateFilterPluralizeTest(unittest.TestCase):
 
 
 class TemplateFilterSpacifyTest(unittest.TestCase):
-	def test_spacify_lowercase_str(self):
-		self.assertEquals(spacify('iamlowercase'), 'iamlowercase')
+    def test_spacify_lowercase_str(self):
+        self.assertEquals(spacify('iamlowercase'), 'iamlowercase')
 
-	def test_spacify_camel_case_str(self):
-		self.assertEquals(spacify('IAmCamelCase'), 'I Am Camel Case')
+    def test_spacify_camel_case_str(self):
+        self.assertEquals(spacify('IAmCamelCase'), 'I Am Camel Case')
 
-	def test_spacify_oterh_camel_case_str(self):
-		self.assertEquals(spacify('iAmCamelCase'), 'i Am Camel Case')
+    def test_spacify_oterh_camel_case_str(self):
+        self.assertEquals(spacify('iAmCamelCase'), 'i Am Camel Case')

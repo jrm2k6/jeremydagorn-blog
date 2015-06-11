@@ -21,7 +21,6 @@ class AuthorField(SelectField):
 
 
 class TechnologyField(SelectField):
-	def __init__(self, *args, **kwargs):
-		super(TechnologyField, self).__init__(*args, **kwargs)
-		self.choices = db.session.query(Technology.id, Technology.name)
-
+    def __init__(self, *args, **kwargs):
+        super(TechnologyField, self).__init__(*args, **kwargs)
+        self.choices = db.session.query(Technology.id, Technology.name)

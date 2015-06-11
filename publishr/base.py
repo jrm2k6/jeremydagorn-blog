@@ -86,15 +86,18 @@ def force_pluralize(word):
     else:
         return word + 's'
 
+
 @app.template_filter()
 def spacify(word):
     # CamelCase model name means there are composed of several words in reality
-    return reduce(lambda acc, curr: acc+ " " + curr if curr.isupper() else acc + curr, word)
+    return reduce(lambda acc, curr: acc + " " + curr if curr.isupper() else acc + curr, word)
+
 
 @app.context_processor
 def get_social_networks():
     social_networks = SocialNetwork.query.filter_by(is_shown=True).all()
     return dict(shown_social_networks=social_networks)
+
 
 @app.route('/')
 def show_home():
@@ -295,14 +298,14 @@ def fetch_projects():
     response = []
     for p in projects:
         obj_project = p.row2dict()
-        
+
         technologies_current_project = ProjectsTechnologies.query.filter_by(project_id=obj_project["id"]).all()
-        _technologies= []
+        _technologies = []
         for elem in technologies_current_project:
             technology = Technology.query.filter_by(id=elem.technology_id).first()
             if technology:
                 _technologies.append(technology.name)
-        
+
         obj_project["technologies"] = ','.join(_technologies)
         response.append(obj_project)
 
@@ -405,7 +408,7 @@ def import_database():
 
 @app.route('/authorize_posts_backup/<export_type>', methods=['GET'])
 def authorize_posts_backup(export_type):
-    posts_exporter_instance = post_exporter_factory(export_type)       
+    posts_exporter_instance = post_exporter_factory(export_type)
     memc.set('posts_exporter_instance', posts_exporter_instance)
 
     authorize_url = posts_exporter_instance.get_authorize_url()
@@ -445,7 +448,7 @@ def export_files():
     else:
         return Response(json.dumps({}), status=500, mimetype='application/json')
 
-#from werkzeug.debug import DebuggedApplication
-#app.wsgi_app = DebuggedApplication( app.wsgi_app, True )
+# from werkzeug.debug import DebuggedApplication
+# app.wsgi_app = DebuggedApplication( app.wsgi_app, True )
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
