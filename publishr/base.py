@@ -8,7 +8,7 @@ from flask import Flask, Response, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from contextlib import closing
 from models import db, User, Project, Technology, Status, Category, Post, \
-    SocialNetwork
+    SocialNetwork, ProjectsTechnologies
 from forms import AddUserForm, AddProjectForm, AddStatusForm, \
     AddCategoryForm, AddTechnologyForm, AddPostForm, AddSocialNetworkForm
 from flask import jsonify, Markup
@@ -166,10 +166,14 @@ def add_project():
     form = AddProjectForm(request.form)
     if request.method == 'POST' and form.validate():
         project = Project(form.title.data, form.description.data,
-                          form.technologies.data, form.url.data,
-                          form.status.data)
+                          form.url.data, form.status.data)
         db.session.add(project)
         db.session.commit()
+
+        project_technology = ProjectsTechnologies(project.id, form.technologies.data)
+        db.session.add(project_technology)
+        db.session.commit()
+
         flash('Project added', 'info')
         return redirect(url_for('add_project'))
     return render_template('_add.html',

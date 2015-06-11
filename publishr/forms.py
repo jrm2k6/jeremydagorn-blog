@@ -1,6 +1,6 @@
 from wtforms import Form, BooleanField, TextField, TextAreaField, PasswordField, \
     validators, SelectField, DateField
-from wtfcustomwidgets import StatusField, CategoryField, AuthorField
+from wtfcustomwidgets import StatusField, CategoryField, AuthorField, TechnologyField
 
 
 class AddUserForm(Form):
@@ -12,8 +12,7 @@ class AddUserForm(Form):
 class AddProjectForm(Form):
     title = TextField('Title', [validators.Length(min=4, max=200)])
     description = TextField('Description', [validators.Length(min=6, max=400)])
-    technologies = TextField('Technologies',
-                             [validators.Length(min=6, max=400)])
+    technologies = TechnologyField('Technologies', coerce=int)
     url = TextField('Url', [validators.Length(min=6, max=600)])
     status = StatusField('Status', coerce=int)
 
