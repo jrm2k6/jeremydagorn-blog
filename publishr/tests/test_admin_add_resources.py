@@ -51,17 +51,19 @@ class AdminAddItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticationU
         self.assert_status_with_name_exists_in_database(status_name)
 
     def test_add_project_in_database(self):
-
+        self.add_technology_in_database(False)
         self.add_status_in_database(True)
+
         title_project = 'title_project'
         res = self.get_auth_required_page_with_post_data(
             url='addproject',
             data_dict=dict(title=title_project, description='description',
-                           technologies='technology', url='www.url.com', status=1),
+                           technologies=1, url='www.url.com', status=1),
             username="username_test",
             password="secret_test")
 
         self.assert_project_with_title_exists_in_database(title_project)
+        self.assert_project_technology_exists_in_database(1, 1)
 
     def test_add_post_in_database(self):
 

@@ -1,5 +1,5 @@
 from publishr.models import User, Category, Technology, \
-    Status, Project, Post, SocialNetwork
+    Status, Project, Post, SocialNetwork, ProjectsTechnologies
 from unittest import TestCase
 from publishr import base
 from publishr.models import db
@@ -52,6 +52,11 @@ class FlaskTestModelUtils(TestCase, object):
     def assert_status_with_name_exists_in_database(self, _status):
         self.assertTrue(Status.query.filter_by(status=_status).first() is not None)
 
+    def assert_project_technology_exists_in_database(self, _project_id, _technology_id):
+        project_technology_item = ProjectsTechnologies.query.filter_by(project_id=_project_id,
+                                                                       technology_id=_technology_id).first()
+        self.assertTrue(project_technology_item is not None)
+
     def assert_project_with_title_exists_in_database(self, _title):
         self.assertTrue(Project.query.filter_by(title=_title).first() is not None)
 
@@ -98,6 +103,12 @@ class FlaskTestModelUtils(TestCase, object):
         if should_commit:
             db.session.commit()
 
+    def add_technology_in_database(self, should_commit):
+        technology = Technology("mock_technology")
+        db.session.add(technology)
+        if should_commit:
+            db.session.commit()
+
     def add_category_in_database(self, should_commit):
         category = Category("mock_category")
         db.session.add(category)
@@ -116,7 +127,7 @@ class FlaskTestModelUtils(TestCase, object):
 
     def add_project_in_database_with_title(self, _title):
         self.add_status_in_database(False)
-        project = Project(_title, '', '', '', 1)
+        project = Project(_title, '', '', 1)
         db.session.add(project)
         db.session.commit()
 
