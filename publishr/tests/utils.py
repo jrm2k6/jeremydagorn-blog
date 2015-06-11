@@ -89,7 +89,6 @@ class FlaskTestModelUtils(TestCase, object):
         self.assertTrue(Post.query.filter_by(title=new_title).first() is not None)
 
     def assert_social_network_has_updated_values(self, _name, new_name):
-        print SocialNetwork.query.filter_by(name=_name).first()
         self.assertTrue(SocialNetwork.query.filter_by(name=_name).first() is None)
         self.assertTrue(SocialNetwork.query.filter_by(name=new_name).first() is not None)
 
