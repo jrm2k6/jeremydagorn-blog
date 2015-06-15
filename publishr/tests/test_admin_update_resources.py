@@ -36,11 +36,30 @@ class AdminUpdateItemsTest(PublisherAppTestCase, TestCase, FlaskTestAuthenticati
         res = self.get_auth_required_page_with_post_json_data(
             url='/update/project/1',
             data_dict=json.dumps({'_title': new_project_title, '_filename': '',
-                                  '_status': '1', '_technologies': '', '_url': ''}),
+                                  '_status': '1', '_technology': '2', '_url': ''}),
             username="username_test",
             password="secret_test")
 
         self.assert_project_has_updated_values(project_title, new_project_title)
+
+    def test_update_project_in_database_updates_project_technology_pivot_table(self):
+        project_title = 'my_project_name'
+        new_project_title = 'my_new_project_name'
+        self.add_project_in_database_with_title(project_title)
+        self.add_technology_in_database_with_name('technology1')
+        self.add_technology_in_database_with_name('technology2')
+        self.assert_project_with_title_exists_in_database(project_title)
+        self.add_project_and_technology_in_projects_technologies(1,2)
+
+        res = self.get_auth_required_page_with_post_json_data(
+            url='/update/project/1',
+            data_dict=json.dumps({'_title': new_project_title, '_filename': '',
+                                  '_status': '1', '_technology': '1', '_url': ''}),
+            username="username_test",
+            password="secret_test")
+
+        self.assert_project_has_updated_technology(1, 2, 1)
+
 
     def test_update_category_in_database(self):
         name = 'my_category'

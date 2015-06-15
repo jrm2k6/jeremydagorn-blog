@@ -14,23 +14,50 @@
 <h2> 
       Existing {{ target_model | spacify| force_pluralize }}
 </h2>
-  <table class="mtable table table-condensed" data-list-fields='{{ fields }}' data-model-name='{{ target_model.lower() }}'>
-    <thead><tr>
+  <table class="mtable table table-condensed" 
+         data-list-fields='{{ fields }}'
+         {% if pivot_data_update %} data-list-pivot-fields='{{pivot_data_update|map(attribute=0)|join(', ')}}' {% endif %}
+         data-model-name='{{ target_model.lower() }}'>
+    <thead>
+      <tr>
        {% for field in fields %}
-        <th> {{ field.capitalize() }}</th>
+        <th>{{ field.capitalize() }}</th>
         {% endfor %}
-      </tr></thead>
-    </tr>
+        {% for field in extra_fields %}
+          <th>{{ field.capitalize() }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
     {% for o in rows %}
     <tr>
       {% for col, value in o.columns() %}
         <td id="{{col}}" {% if not col == "id" %} class="editable" {% endif %}> {{ value|safe }} </td>
       {% endfor %}
+      {% if pivot_data %}
+        {% for elem in pivot_data %}
+          {% if elem[0] == o.id %}
+            <td id="{{elem[2]}}" 
+                class="editable" 
+                data-{{elem[2]}}-id="{{elem[1].id}}" 
+                data-widget-type="{{elem[3]}}"
+                data-row-id="{{o.id}}"> {{ elem[1].name|safe }} </td>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
         <td><input type='button' class="btn btn-primary edit-btn" value='Edit'></td>
         <td><input type='button' class="btn btn-danger delete-btn" value='Delete'></td>
     </tr>
-    {% endfor %} 
+    {% endfor %}
   </table>
+  {% for elem in pivot_data_update %}
+    {% if elem[2] == 'select' %}
+      <select class="hide" id="update-{{elem[0]}}">
+        {% for item in elem[1] %}
+          <option value={{item.id}}>{{item.name}}</option>
+        {% endfor %}
+      </select>
+    {% endif %}
+  {% endfor %}
 {% endblock %}
 
 

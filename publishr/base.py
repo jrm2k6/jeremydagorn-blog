@@ -33,6 +33,7 @@ app.config.from_object(__name__)
 app.config.from_object('publishr.config')
 app.secret_key = 'this is my secret key'
 memc = memcache.Client([app.config['MEMCACHED_SERVER_ADDRESS']])
+
 MODELS_NAMES = {
     'user': User,
     'project': Project,
@@ -41,6 +42,10 @@ MODELS_NAMES = {
     'post': Post,
     'category': Category,
     'socialnetwork': SocialNetwork
+}
+
+MODELS_PIVOT = {
+    'projects_technologies': ProjectsTechnologies
 }
 
 app.MODELS_NAMES = MODELS_NAMES
@@ -179,11 +184,23 @@ def add_project():
 
         flash('Project added', 'info')
         return redirect(url_for('add_project'))
+
+    pivot_data = []
+    technologies = ProjectsTechnologies.query.all()
+    for elem in technologies:
+        technology = Technology.query.filter_by(id=elem.technology_id).first()
+        pivot_data.append((elem.project_id, technology, 'technology', 'select'))
+
+    print pivot_data
+
     return render_template('_add.html',
                            form=form,
                            rows=Project.query.all(),
                            target_model="Project",
                            fields=Project.__mapper__.c.keys(),
+                           extra_fields=Project.get_pivot_readable_fields(),
+                           pivot_data=pivot_data,
+                           pivot_data_update=[('technology', Technology.query.all(), 'select')],
                            action="addproject")
 
 
@@ -281,7 +298,16 @@ def add_social_network():
 @app.route('/delete/<model_name>/<int:_id>', methods=['POST'])
 @requires_auth
 def delete_resource(model_name, _id):
-    row_count = MODELS_NAMES[model_name].query.filter_by(id=_id).delete()
+    _model = MODELS_NAMES[model_name]
+
+    if _model.has_pivot_data():
+        _pivot_table, field_name = _model.get_pivot_data()
+        _pivot_model = MODELS_PIVOT[_pivot_table]
+        _filter_params = {field_name: _id}
+
+        _pivot_model.query.filter_by(**_filter_params).delete()
+
+    row_count = _model.query.filter_by(id=_id).delete()
 
     if row_count >= 1:
         db.session.commit()
@@ -347,9 +373,13 @@ def update_resource(model_name, _id):
         if project is not None:
             project.title = request.json['_title']
             project.filename = request.json['_filename']
-            project.technologies = request.json['_technologies']
             project.url = request.json['_url']
             project.status = request.json['_status']
+
+            project_technology = ProjectsTechnologies.query.filter_by(project_id=_id).first()
+            if project_technology is not None:
+                project_technology.technology_id = request.json['_technology']
+                
     elif model_name == 'socialnetwork':
         social_network = SocialNetwork.query.filter_by(id=_id).first()
         if social_network is not None:

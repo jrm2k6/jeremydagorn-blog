@@ -97,6 +97,12 @@ class FlaskTestModelUtils(TestCase, object):
         self.assertTrue(SocialNetwork.query.filter_by(name=_name).first() is None)
         self.assertTrue(SocialNetwork.query.filter_by(name=new_name).first() is not None)
 
+    def assert_project_has_updated_technology(self, _project_id, previous_technology_id, new_technology_id):
+        previous_params = {'project_id': _project_id, 'technology_id': previous_technology_id}
+        new_params = {'project_id': _project_id, 'technology_id': new_technology_id}
+        self.assertTrue(ProjectsTechnologies.query.filter_by(**previous_params).first() is None)
+        self.assertTrue(ProjectsTechnologies.query.filter_by(**new_params).first() is not None)
+
     def add_status_in_database(self, should_commit):
         status = Status("mock_status")
         db.session.add(status)
@@ -124,6 +130,11 @@ class FlaskTestModelUtils(TestCase, object):
         db.session.add(user)
         if should_commit:
             db.session.commit()
+
+    def add_project_and_technology_in_projects_technologies(self, project_id, techno_id):
+        pt = ProjectsTechnologies(project_id, techno_id)
+        db.session.add(pt)
+        db.session.commit()
 
     def add_project_in_database_with_title(self, _title):
         self.add_status_in_database(False)

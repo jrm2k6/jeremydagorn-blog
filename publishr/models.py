@@ -41,9 +41,12 @@ class User(db.Model):
     def from_list(cls, fields):
         return cls(fields[0][1], fields[1][1], fields[2][1])
 
+    @classmethod
+    def has_pivot_data(cls):
+        return False
+
 
 class Project(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(400), unique=True)
     filename = db.Column(db.String(1000))
@@ -80,6 +83,22 @@ class Project(db.Model):
     def get_settable_columns():
         return Project.__mapper__.c.keys()[1:]
 
+    @classmethod
+    def has_pivot_data(cls):
+        return True
+
+    @classmethod
+    def get_pivot_data(cls):
+        return 'projects_technologies', 'project_id'
+
+    @classmethod
+    def get_pivot_value_col_name(cls):
+        return 'projects_technologies', 'technology_id'
+
+    @classmethod
+    def get_pivot_readable_fields(cls):
+        return ['Technology']
+
 
 class Technology(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -104,6 +123,10 @@ class Technology(db.Model):
     @classmethod
     def from_list(cls, fields):
         return cls(fields[0][1])
+
+    @classmethod
+    def has_pivot_data(cls):
+        return False
 
 
 class Post(db.Model):
@@ -135,6 +158,10 @@ class Post(db.Model):
     def from_list(cls, fields):
         return cls(fields[0][1], fields[1][1], fields[2][1], fields[3][1], fields[4][1])
 
+    @classmethod
+    def has_pivot_data(cls):
+        return False
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -160,6 +187,10 @@ class Category(db.Model):
     @classmethod
     def from_list(cls, fields):
         return cls(fields[0][1])
+
+    @classmethod
+    def has_pivot_data(cls):
+        return False
 
 
 class Status(db.Model):
@@ -190,6 +221,10 @@ class Status(db.Model):
     @classmethod
     def from_list(cls, fields):
         return cls(fields[0][1])
+
+    @classmethod
+    def has_pivot_data(cls):
+        return False
 
 
 class SocialNetwork(db.Model):
@@ -223,6 +258,10 @@ class SocialNetwork(db.Model):
     def from_list(cls, fields):
         return cls(fields[0][1])
 
+    @classmethod
+    def has_pivot_data(cls):
+        return False
+
 
 class ProjectsTechnologies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -232,3 +271,7 @@ class ProjectsTechnologies(db.Model):
     def __init__(self, project_id, technology_id):
         self.project_id = project_id
         self.technology_id = technology_id
+
+    @classmethod
+    def has_pivot_data(cls):
+        return False
